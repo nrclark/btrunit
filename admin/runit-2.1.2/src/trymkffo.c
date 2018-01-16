@@ -5,5 +5,5 @@
 
 void main()
 {
-  mkfifo("temp-trymkffo",0);
+    mkfifo("temp-trymkffo", 0);
 }

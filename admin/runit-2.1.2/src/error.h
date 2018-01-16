@@ -5,7 +5,7 @@
 
 /* 20030124: include <errno.h> -upcoming glibc changes */
 #include <errno.h>
- 
+
 /* extern int errno; */
 
 extern int error_intr;

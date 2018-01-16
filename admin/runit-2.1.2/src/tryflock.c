@@ -6,5 +6,5 @@
 
 main()
 {
-  flock(0,LOCK_EX | LOCK_UN | LOCK_NB);
+    flock(0, LOCK_EX | LOCK_UN | LOCK_NB);
 }

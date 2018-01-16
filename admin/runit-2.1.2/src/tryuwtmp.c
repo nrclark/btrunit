@@ -3,7 +3,8 @@
 
 struct utmp ut;
 
-int main(void) {
-  char *s =ut.ut_name;
-  return(0);
+int main(void)
+{
+    char *s = ut.ut_name;
+    return(0);
 }

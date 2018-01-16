@@ -4,9 +4,9 @@
 #include <sys/types.h>
 
 struct uidgid {
-  uid_t uid;
-  gid_t gid[61];
-  int gids;
+    uid_t uid;
+    gid_t gid[61];
+    int gids;
 };
 
 /* user */

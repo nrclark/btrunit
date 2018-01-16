@@ -3,6 +3,7 @@
 
 /* sysdep: -std reboot */
 
-int reboot_system(int what) {
-  return(reboot(what, (char *)0));
+int reboot_system(int what)
+{
+    return(reboot(what, (char *)0));
 }

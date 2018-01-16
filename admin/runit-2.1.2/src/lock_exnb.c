@@ -7,7 +7,13 @@
 #include "lock.h"
 
 #ifdef HASFLOCK
-int lock_exnb(int fd) { return flock(fd,LOCK_EX | LOCK_NB); }
+int lock_exnb(int fd)
+{
+    return flock(fd, LOCK_EX | LOCK_NB);
+}
 #else
-int lock_exnb(int fd) { return lockf(fd,2,0); }
+int lock_exnb(int fd)
+{
+    return lockf(fd, 2, 0);
+}
 #endif

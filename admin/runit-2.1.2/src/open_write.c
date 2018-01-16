@@ -5,4 +5,6 @@
 #include "open.h"
 
 int open_write(const char *fn)
-{ return open(fn,O_WRONLY | O_NDELAY); }
+{
+    return open(fn, O_WRONLY | O_NDELAY);
+}

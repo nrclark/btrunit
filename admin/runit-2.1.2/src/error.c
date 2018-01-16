@@ -7,126 +7,126 @@
 
 int error_intr =
 #ifdef EINTR
-EINTR;
+    EINTR;
 #else
--1;
+    -1;
 #endif
 
 int error_nomem =
 #ifdef ENOMEM
-ENOMEM;
+    ENOMEM;
 #else
--2;
+    -2;
 #endif
 
-int error_noent = 
+int error_noent =
 #ifdef ENOENT
-ENOENT;
+    ENOENT;
 #else
--3;
+    -3;
 #endif
 
 int error_txtbsy =
 #ifdef ETXTBSY
-ETXTBSY;
+    ETXTBSY;
 #else
--4;
+    -4;
 #endif
 
 int error_io =
 #ifdef EIO
-EIO;
+    EIO;
 #else
--5;
+    -5;
 #endif
 
 int error_exist =
 #ifdef EEXIST
-EEXIST;
+    EEXIST;
 #else
--6;
+    -6;
 #endif
 
 int error_timeout =
 #ifdef ETIMEDOUT
-ETIMEDOUT;
+    ETIMEDOUT;
 #else
--7;
+    -7;
 #endif
 
 int error_inprogress =
 #ifdef EINPROGRESS
-EINPROGRESS;
+    EINPROGRESS;
 #else
--8;
+    -8;
 #endif
 
 int error_wouldblock =
 #ifdef EWOULDBLOCK
-EWOULDBLOCK;
+    EWOULDBLOCK;
 #else
--9;
+    -9;
 #endif
 
 int error_again =
 #ifdef EAGAIN
-EAGAIN;
+    EAGAIN;
 #else
--10;
+    -10;
 #endif
 
 int error_pipe =
 #ifdef EPIPE
-EPIPE;
+    EPIPE;
 #else
--11;
+    -11;
 #endif
 
 int error_perm =
 #ifdef EPERM
-EPERM;
+    EPERM;
 #else
--12;
+    -12;
 #endif
 
 int error_acces =
 #ifdef EACCES
-EACCES;
+    EACCES;
 #else
--13;
+    -13;
 #endif
 
 int error_nodevice =
 #ifdef ENXIO
-ENXIO;
+    ENXIO;
 #else
--14;
+    -14;
 #endif
 
 int error_proto =
 #ifdef EPROTO
-EPROTO;
+    EPROTO;
 #else
--15;
+    -15;
 #endif
 
 int error_isdir =
 #ifdef EISDIR
-EISDIR;
+    EISDIR;
 #else
--16;
+    -16;
 #endif
 
 int error_connrefused =
 #ifdef ECONNREFUSED
-ECONNREFUSED;
+    ECONNREFUSED;
 #else
--17;
+    -17;
 #endif
 
 int error_notdir =
 #ifdef ENOTDIR
-ENOTDIR;
+    ENOTDIR;
 #else
--18;
+    -18;
 #endif

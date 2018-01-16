@@ -5,5 +5,5 @@
 
 main()
 {
-  waitpid(0,0,0);
+    waitpid(0, 0, 0);
 }

@@ -4,18 +4,20 @@
 #define STRERR_H
 
 struct strerr {
-  struct strerr *who;
-  const char *x;
-  const char *y;
-  const char *z;
+    struct strerr *who;
+    const char *x;
+    const char *y;
+    const char *z;
 } ;
 
 extern struct strerr strerr_sys;
 extern void strerr_sysinit(void);
 
 extern const char *strerr(const struct strerr *);
-extern void strerr_warn(const char *,const char *,const char *,const char *,const char *,const char *,const struct strerr *);
-extern void strerr_die(int,const char *,const char *,const char *,const char *,const char *,const char *,const struct strerr *);
+extern void strerr_warn(const char *, const char *, const char *, const char *,
+                        const char *, const char *, const struct strerr *);
+extern void strerr_die(int, const char *, const char *, const char *,
+                       const char *, const char *, const char *, const struct strerr *);
 
 #define STRERR(r,se,a) \
 { se.who = 0; se.x = a; se.y = 0; se.z = 0; return r; }
