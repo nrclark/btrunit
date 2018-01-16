@@ -2,6 +2,8 @@
 --style=linux
 --convert-tabs
 --add-brackets
+--add-braces
+--pad-header
 --align-reference=name
 --align-pointer=name
 --unpad-paren
