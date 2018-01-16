@@ -2,10 +2,10 @@
 
 #include "byte.h"
 
-unsigned int byte_chr(char *s, register unsigned int n, int c)
+unsigned int byte_chr(char *s, unsigned int n, int c)
 {
-    register char ch;
-    register char *t;
+    char ch;
+    char *t;
 
     ch = c;
     t = s;

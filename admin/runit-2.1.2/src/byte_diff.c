@@ -2,7 +2,7 @@
 
 #include "byte.h"
 
-int byte_diff(register char *s, register unsigned int n, register char *t)
+int byte_diff(char *s, unsigned int n, char *t)
 {
     for (;;) {
         if (!n) {
