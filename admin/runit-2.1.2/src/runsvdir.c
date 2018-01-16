@@ -74,6 +74,7 @@ void runsv(int no, char *name)
         warn("unable to fork for ", name);
         return;
     }
+
     if (pid == 0) {
         /* child */
         const char *prog[3];
@@ -83,12 +84,15 @@ void runsv(int no, char *name)
         prog[2] = 0;
         sig_uncatch(sig_hangup);
         sig_uncatch(sig_term);
+
         if (pgrp) {
             setsid();
         }
+
         pathexec_run(*prog, prog, (const char *const *)environ);
         fatal("unable to start runsv ", name);
     }
+
     sv[no].pid = pid;
 }
 
@@ -103,37 +107,47 @@ void runsvdir(void)
         warn("unable to open directory ", svdir);
         return;
     }
+
     for (i = 0; i < svnum; i++) {
         sv[i].isgone = 1;
     }
+
     errno = 0;
+
     while ((d = readdir(dir))) {
         if (d->d_name[0] == '.') {
             continue;
         }
+
         if (stat(d->d_name, &s) == -1) {
             warn("unable to stat ", d->d_name);
             errno = 0;
             continue;
         }
+
         if (!S_ISDIR(s.st_mode)) {
             continue;
         }
+
         for (i = 0; i < svnum; i++) {
             if ((sv[i].ino == s.st_ino) && (sv[i].dev == s.st_dev)) {
                 sv[i].isgone = 0;
+
                 if (!sv[i].pid) {
                     runsv(i, d->d_name);
                 }
+
                 break;
             }
         }
+
         if (i == svnum) {
             /* new service */
             if (svnum >= MAXSERVICES) {
                 warn3x("unable to start runsv ", d->d_name, ": too many services.");
                 continue;
             }
+
             sv[i].ino = s.st_ino;
             sv[i].dev = s.st_dev;
             sv[i].pid = 0;
@@ -143,12 +157,14 @@ void runsvdir(void)
             check = 1;
         }
     }
+
     if (errno) {
         warn("unable to read directory ", svdir);
         closedir(dir);
         check = 1;
         return;
     }
+
     closedir(dir);
 
     /* SIGTERM removed runsv's */
@@ -156,9 +172,11 @@ void runsvdir(void)
         if (!sv[i].isgone) {
             continue;
         }
+
         if (sv[i].pid) {
             kill(sv[i].pid, SIGTERM);
         }
+
         sv[i] = sv[--svnum];
         check = 1;
     }
@@ -170,18 +188,22 @@ int setup_log(void)
         warn3x("log must have at least seven characters.", 0, 0);
         return (0);
     }
+
     if (pipe(logpipe) == -1) {
         warn3x("unable to create pipe for log.", 0, 0);
         return (-1);
     }
+
     coe(logpipe[1]);
     coe(logpipe[0]);
     ndelay_on(logpipe[0]);
     ndelay_on(logpipe[1]);
+
     if (fd_copy(2, logpipe[1]) == -1) {
         warn3x("unable to set filedescriptor for log.", 0, 0);
         return (-1);
     }
+
     io[0].fd = logpipe[0];
     io[0].events = IOPAUSE_READ;
     taia_now(&stamplog);
@@ -202,16 +224,20 @@ int main(int argc, char **argv)
     int i;
 
     progname = *argv++;
+
     if (!argv || !*argv) {
         usage();
     }
+
     if (**argv == '-') {
         switch (*(*argv + 1)) {
             case 'P':
                 pgrp = 1;
+
             case '-':
                 ++argv;
         }
+
         if (!argv || !*argv) {
             usage();
         }
@@ -220,16 +246,20 @@ int main(int argc, char **argv)
     sig_catch(sig_term, s_term);
     sig_catch(sig_hangup, s_hangup);
     svdir = *argv++;
+
     if (argv && *argv) {
         rplog = *argv;
+
         if (setup_log() != 1) {
             rplog = 0;
             warn3x("log service disabled.", 0, 0);
         }
     }
+
     if ((curdir = open_read(".")) == -1) {
         fatal("unable to open current directory", 0);
     }
+
     coe(curdir);
 
     taia_now(&stampcheck);
@@ -240,6 +270,7 @@ int main(int argc, char **argv)
             if ((pid = wait_nohang(&wstat)) <= 0) {
                 break;
             }
+
             for (i = 0; i < svnum; i++) {
                 if (pid == sv[i].pid) {
                     /* runsv has gone */
@@ -251,15 +282,18 @@ int main(int argc, char **argv)
         }
 
         taia_now(&now);
+
         if (now.sec.x < (stampcheck.sec.x - 3)) {
             /* time warp */
             warn3x("time warp: resetting time stamp.", 0, 0);
             taia_now(&stampcheck);
             taia_now(&now);
+
             if (rplog) {
                 taia_now(&stamplog);
             }
         }
+
         if (taia_less(&now, &stampcheck) == 0) {
             /* wait at least a second */
             taia_uint(&deadline, 1);
@@ -274,10 +308,13 @@ int main(int argc, char **argv)
                         dev = s.st_dev;
                         ino = s.st_ino;
                         check = 0;
+
                         if (now.sec.x <= (4611686018427387914ULL + (uint64)mtime)) {
                             sleep(1);
                         }
+
                         runsvdir();
+
                         while (fchdir(curdir) == -1) {
                             warn("unable to change directory, pausing", 0);
                             sleep(5);
@@ -297,15 +334,18 @@ int main(int argc, char **argv)
                 taia_uint(&deadline, 900);
                 taia_add(&stamplog, &now, &deadline);
             }
+
         taia_uint(&deadline, check ? 1 : 5);
         taia_add(&deadline, &now, &deadline);
 
         sig_block(sig_child);
+
         if (rplog) {
             iopause(io, 1, &deadline, &now);
         } else {
             iopause(0, 0, &deadline, &now);
         }
+
         sig_unblock(sig_child);
 
         if (rplog && (io[0].revents | IOPAUSE_READ))
@@ -314,20 +354,24 @@ int main(int argc, char **argv)
                     for (i = 6; i < rploglen; i++) {
                         rplog[i - 1] = rplog[i];
                     }
+
                     rplog[rploglen - 1] = ch;
                 }
 
         switch (exitsoon) {
             case 1:
                 _exit(0);
+
             case 2:
                 for (i = 0; i < svnum; i++)
                     if (sv[i].pid) {
                         kill(sv[i].pid, SIGTERM);
                     }
+
                 _exit(111);
         }
     }
+
     /* not reached */
     _exit(0);
 }

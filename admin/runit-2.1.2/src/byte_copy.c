@@ -8,21 +8,28 @@ void byte_copy(char *to, unsigned int n, char *from)
         if (!n) {
             return;
         }
+
         *to++ = *from++;
         --n;
+
         if (!n) {
             return;
         }
+
         *to++ = *from++;
         --n;
+
         if (!n) {
             return;
         }
+
         *to++ = *from++;
         --n;
+
         if (!n) {
             return;
         }
+
         *to++ = *from++;
         --n;
     }

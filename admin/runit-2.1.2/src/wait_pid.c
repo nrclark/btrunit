@@ -14,6 +14,7 @@ int wait_pid(int *wstat, int pid)
     do {
         r = waitpid(pid, wstat, 0);
     } while ((r == -1) && (errno == error_intr));
+
     return r;
 }
 
@@ -36,12 +37,14 @@ int wait_pid(int *wstat, int pid)
 
     do {
         r = wait(wstat);
+
         if ((r != pid) && (r != -1)) {
             oldwstat = *wstat;
             oldpid = r;
             continue;
         }
     } while ((r == -1) && (errno == error_intr));
+
     return r;
 }
 

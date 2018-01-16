@@ -39,14 +39,17 @@ int main(int argc, char **argv)
     int ino;
 
     progname = *argv++;
+
     if (!argv || !*argv) {
         usage();
     }
 
     new = *argv;
+
     if (new[0] == '.') {
         fatalx(new, ": must not start with a dot.");
     }
+
     if (chdir(SVDIR) == -1) {
         fatal("unable to chdir: ", SVDIR);
     }
@@ -55,16 +58,21 @@ int main(int argc, char **argv)
         if (errno == error_noent) {
             fatal(new, 0);
         }
+
         fatal("unable to stat: ", new);
     }
+
     if (!S_ISDIR(s.st_mode)) {
         fatalx(new, "not a directory.");
     }
+
     ino = s.st_ino;
     dev = s.st_dev;
+
     if (stat("current", &s) == -1) {
         fatal("unable to stat: ", "current");
     }
+
     if ((s.st_ino == ino) && (s.st_dev == dev)) {
         buffer_puts(buffer_1, "runsvchdir: ");
         buffer_puts(buffer_1, new);
@@ -77,23 +85,30 @@ int main(int argc, char **argv)
         if (errno != error_noent) {
             fatal("unable to unlink: ", "current.new");
         }
+
     if (symlink(new, "current.new") == -1) {
         fatal("unable to create: current.new -> ", new);
     }
+
     if (unlink("previous") == -1)
         if (errno != error_noent) {
             fatal("unable to unlink: ", "previous");
         }
+
     if (rename("current", "previous") == -1) {
         fatal("unable to copy: current to ", "previous");
     }
+
     if (rename("current.new", "current") == -1) {
         warn("unable to move: current.new to ", "current");
+
         if (rename("previous", "current") == -1) {
             fatal("unable to move previous back to ", "current");
         }
+
         _exit(111);
     }
+
     buffer_puts(buffer_1, "runsvchdir: ");
     buffer_puts(buffer_1, new);
     buffer_puts(buffer_1, ": now current.\n");

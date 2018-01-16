@@ -24,13 +24,16 @@ void runit_halt(void)
     if (open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");
     }
+
     if (chmod(STOPIT, 0100) == -1) {
         strerr_die4sys(111, FATAL, "unable to chmod ", STOPIT, ": ");
     }
+
     if (chmod(REBOOT, 0) == -1)
         if (errno != error_noent) {
             strerr_die4sys(111, FATAL, "unable to chmod ", REBOOT, ": ");
         }
+
     kill(1, sig_cont);
     _exit(0);
 }
@@ -40,15 +43,19 @@ void runit_reboot(void)
     if (open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");
     }
+
     if (chmod(STOPIT, 0100) == -1) {
         strerr_die4sys(111, FATAL, "unable to chmod ", STOPIT, ": ");
     }
+
     if (open_trunc(REBOOT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", REBOOT, ": ");
     }
+
     if (chmod(REBOOT, 0100) == -1) {
         strerr_die4sys(111, FATAL, "unable to chmod ", REBOOT, ": ");
     }
+
     kill(1, sig_cont);
     _exit(0);
 }
@@ -73,20 +80,25 @@ int main(int argc, const char *const *argv, char *const *envp)
     if (!*argv || ! **argv) {
         usage();
     }
+
     switch (**argv) {
         case '0':
             runit_halt();
             break;
+
         case '6':
             runit_reboot();
             break;
+
         case '-':
             if ((*argv)[1] == 'V') {
                 strerr_warn1("$Id: f075d98bf7dd17c893021f9572cbb970cdad8dcf $\n", 0);
             }
+
         default:
             usage();
     }
+
     /* not reached */
     _exit(0);
 }

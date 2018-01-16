@@ -18,9 +18,11 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
         t = *stamp;
         taia_sub(&t, deadline, &t);
         d = taia_approx(&t);
+
         if (d > 1000.0) {
             d = 1000.0;
         }
+
         millisecs = d * 1000.0 + 20.0;
     }
 
@@ -48,11 +50,14 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
         FD_ZERO(&wfds);
 
         nfds = 1;
+
         for (i = 0; i < len; ++i) {
             fd = x[i].fd;
+
             if (fd < 0) {
                 continue;
             }
+
             if (fd >= 8 * sizeof(fd_set)) {
                 continue; /*XXX*/
             }
@@ -60,9 +65,11 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
             if (fd >= nfds) {
                 nfds = fd + 1;
             }
+
             if (x[i].events & IOPAUSE_READ) {
                 FD_SET(fd, &rfds);
             }
+
             if (x[i].events & IOPAUSE_WRITE) {
                 FD_SET(fd, &wfds);
             }
@@ -74,13 +81,16 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
         if (select(nfds, &rfds, &wfds, (fd_set *)0, &tv) <= 0) {
             return;
         }
+
         /* XXX: for EBADF, could seek out and destroy the bad descriptor */
 
         for (i = 0; i < len; ++i) {
             fd = x[i].fd;
+
             if (fd < 0) {
                 continue;
             }
+
             if (fd >= 8 * sizeof(fd_set)) {
                 continue; /*XXX*/
             }
@@ -89,6 +99,7 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
                 if (FD_ISSET(fd, &rfds)) {
                     x[i].revents |= IOPAUSE_READ;
                 }
+
             if (x[i].events & IOPAUSE_WRITE)
                 if (FD_ISSET(fd, &wfds)) {
                     x[i].revents |= IOPAUSE_WRITE;

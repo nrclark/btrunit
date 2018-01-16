@@ -10,10 +10,13 @@ unsigned int fmt_ptime2(char *s, struct taia *ta, char sep)
     if (ta->sec.x < 4611686018427387914ULL) {
         return (0); /* impossible? */
     }
+
     u = ta->sec.x - 4611686018427387914ULL;
+
     if (!(t = gmtime((time_t *)&u))) {
         return (0);
     }
+
     fmt_ulong(s, 1900 + t->tm_year);
     s[4] = '-';
     fmt_uint0(&s[5], t->tm_mon + 1, 2);
@@ -48,9 +51,11 @@ unsigned int fmt_taia(char *s, struct taia *t)
 
     taia_pack(pack, t);
     s[0] = '@';
+
     for (i = 0; i < 12; ++i) {
         s[i * 2 + 1] = hex[(pack[i] >> 4) & 15];
         s[i * 2 + 2] = hex[pack[i] & 15];
     }
+
     return (25);
 }

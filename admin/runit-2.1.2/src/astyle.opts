@@ -3,6 +3,7 @@
 --convert-tabs
 --add-brackets
 --add-braces
+--break-blocks
 --pad-header
 --align-reference=name
 --align-pointer=name

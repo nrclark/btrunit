@@ -43,12 +43,15 @@ int ctrl(char *name, char c)
         } else {
             warn(name, "unable to open supervise/control");
         }
+
         return (-1);
     }
+
     if (write(fd, &c, 1) != 1) {
         warn(name, "unable to write to supervise/control");
         return (-1);
     }
+
     return (1);
 }
 
@@ -67,6 +70,7 @@ int main(int argc, char **argv)
     switch ((c = **argv)) {
         case 'e':
             c = 'x';
+
         case 'u':
         case 'd':
         case 'o':
@@ -82,10 +86,13 @@ int main(int argc, char **argv)
         case '1':
         case '2':
             break;
+
         default:
             usage();
     }
+
     dir = ++argv;
+
     if (!dir || !*dir) {
         usage();
     }
@@ -94,19 +101,24 @@ int main(int argc, char **argv)
         rc = 100;
         fatal("unable to open current directory");
     }
+
     for (; dir && *dir; dir++) {
         if (chdir(*dir) == -1) {
             warn(*dir, "unable to change directory");
             continue;
         }
+
         ctrl(*dir, c);
+
         if (fchdir(curdir) == -1) {
             rc = 100;
             fatal("unable to change directory");
         }
     }
+
     if (rc > 100) {
         rc = 100;
     }
+
     _exit(rc);
 }

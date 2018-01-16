@@ -36,8 +36,10 @@ int main(void)
     u += u;
     u += u;
     u += u;
+
     if (!u) {
         _exit(1);
     }
+
     _exit(0);
 }
