@@ -81,19 +81,21 @@ int main(int argc, char **argv)
         _exit(0);
     }
 
-    if (unlink("current.new") == -1)
+    if (unlink("current.new") == -1) {
         if (errno != error_noent) {
             fatal("unable to unlink: ", "current.new");
         }
+    }
 
     if (symlink(new, "current.new") == -1) {
         fatal("unable to create: current.new -> ", new);
     }
 
-    if (unlink("previous") == -1)
+    if (unlink("previous") == -1) {
         if (errno != error_noent) {
             fatal("unable to unlink: ", "previous");
         }
+    }
 
     if (rename("current", "previous") == -1) {
         fatal("unable to copy: current to ", "previous");

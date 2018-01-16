@@ -182,7 +182,7 @@ void update_status(struct svdir *s)
         buffer_puts(&b, ", got TERM");
     }
 
-    if (s->state != S_DOWN)
+    if (s->state != S_DOWN) {
         switch (s->want) {
             case W_DOWN:
                 buffer_puts(&b, ", want down");
@@ -192,6 +192,7 @@ void update_status(struct svdir *s)
                 buffer_puts(&b, ", want exit");
                 break;
         }
+    }
 
     buffer_puts(&b, "\n");
     buffer_flush(&b);
@@ -744,15 +745,17 @@ int main(int argc, char **argv)
         struct taia now;
         char ch;
 
-        if (haslog)
+        if (haslog) {
             if (!svd[1].pid && (svd[1].want == W_UP)) {
                 startservice(&svd[1]);
             }
+        }
 
-        if (!svd[0].pid)
+        if (!svd[0].pid) {
             if ((svd[0].want == W_UP) || (svd[0].state == S_FINISH)) {
                 startservice(&svd[0]);
             }
+        }
 
         x[0].fd = selfpipe[0];
         x[0].events = IOPAUSE_READ;
@@ -774,8 +777,8 @@ int main(int argc, char **argv)
         sig_block(sig_term);
         sig_block(sig_child);
 
-        while (read(selfpipe[0], &ch, 1) == 1)
-            ;
+        while (read(selfpipe[0], &ch, 1) == 1) {
+        }
 
         for (;;) {
             int child;
@@ -797,13 +800,14 @@ int main(int argc, char **argv)
                 svd[0].wstat = wstat;
                 svd[0].ctrl &= ~C_TERM;
 
-                if (svd[0].state != S_FINISH)
+                if (svd[0].state != S_FINISH) {
                     if ((fd = open_read("finish")) != -1) {
                         close(fd);
                         svd[0].state = S_FINISH;
                         update_status(&svd[0]);
                         continue;
                     }
+                }
 
                 svd[0].state = S_DOWN;
                 taia_uint(&deadline, 1);
@@ -838,10 +842,11 @@ int main(int argc, char **argv)
             ctrl(&svd[0], ch);
         }
 
-        if (haslog)
+        if (haslog) {
             if (read(svd[1].fdcontrol, &ch, 1) == 1) {
                 ctrl(&svd[1], ch);
             }
+        }
 
         if (sigterm) {
             ctrl(&svd[0], 'x');

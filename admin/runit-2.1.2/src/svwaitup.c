@@ -85,10 +85,11 @@ int main(int argc, const char *const *argv)
     dir = argv;
 
     while (*dir) {
-        if (dir != argv)
+        if (dir != argv) {
             if (fchdir(wdir) == -1) {
                 fatal("unable to switch to starting directory");
             }
+        }
 
         if (chdir(*dir) == -1) {
             warn(*dir, ": unable to change directory: ", &strerr_sys);

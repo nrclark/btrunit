@@ -33,6 +33,10 @@ format-%: %
 	cat $*.temp.c | sed -r 's/[=][ \t]+/= /g' > $*.temp2.c && mv $*.temp2.c $*.temp.c
 	cat $*.temp.c | sed -r 's/[=] [#]if/=\n#if/g' > $*.temp2.c && mv $*.temp2.c $*.temp.c
 	sed -ri 's/[ \t]+\\$$/ \\/g' $*.temp.c
+	uncrustify -c uncrustify.cfg --no-backup $*.temp.c -lc
+	cat $*.temp.c | \
+		python -c 'import re; import sys; data = sys.stdin.read().decode(); sys.stdout.write(re.sub("^[ \t]*[\n][ \t]*[}]", "}", data, flags=re.M))' \
+		> $*.temp2.c && mv $*.temp2.c $*.temp.c
 	astyle --options=astyle.opts $*.temp.c
 	sed -i 's@^// *DUMMYinclude@#include@g' $*.temp.c
 	if ! diff -q $*.temp.c $* 1>/dev/null; then cp $*.temp.c $*; fi

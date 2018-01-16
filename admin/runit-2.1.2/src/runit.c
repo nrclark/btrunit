@@ -182,10 +182,11 @@ int main(int argc, const char *const *argv, char *const *envp)
             while (read(selfpipe[0], &ch, 1) == 1) {
             }
 
-            while ((child = wait_nohang(&wstat)) > 0)
+            while ((child = wait_nohang(&wstat)) > 0) {
                 if (child == pid) {
                     break;
                 }
+            }
 
             if (child == -1) {
                 strerr_warn2(WARNING, "wait_nohang, pausing: ", &strerr_sys);
@@ -209,7 +210,7 @@ int main(int argc, const char *const *argv, char *const *envp)
                         strerr_warn3(WARNING, "child failed: ", stage[st], 0);
                     }
 
-                    if (st == 0)
+                    if (st == 0) {
 
                         /* this is stage 1 */
                         if (wait_crashed(wstat) || (wait_exitcode(wstat) == 100)) {
@@ -218,8 +219,9 @@ int main(int argc, const char *const *argv, char *const *envp)
                             st++;
                             break;
                         }
+                    }
 
-                    if (st == 1)
+                    if (st == 1) {
 
                         /* this is stage 2 */
                         if (wait_crashed(wstat) || (wait_exitcode(wstat) == 111)) {
@@ -230,6 +232,7 @@ int main(int argc, const char *const *argv, char *const *envp)
                             st--;
                             break;
                         }
+                    }
                 }
 
                 strerr_warn3(INFO, "leave stage: ", stage[st], 0);
@@ -404,8 +407,8 @@ int main(int argc, const char *const *argv, char *const *envp)
         default:
             sig_unblock(sig_child);
 
-            while (wait_pid(0, pid) == -1)
-                ;
+            while (wait_pid(0, pid) == -1) {
+            }
     }
 
 #endif

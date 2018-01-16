@@ -20,8 +20,9 @@ static int allwrite(int (*op)(), int fd, const char *buf, unsigned int len)
             return -1; /* note that some data may have been written */
         }
 
-        if (w == 0)
-            ; /* luser's fault */
+        if (w == 0) {
+            /* luser's fault */
+        }
 
         buf += w;
         len -= w;

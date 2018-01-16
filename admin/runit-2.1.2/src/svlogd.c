@@ -322,7 +322,7 @@ void rmoldest(struct logdir *ld)
 
     errno = 0;
 
-    while ((f = readdir(d)))
+    while ((f = readdir(d))) {
         if ((f->d_name[0] == '@') && (str_len(f->d_name) == 27)) {
             if (f->d_name[26] == 't') {
                 if (unlink(f->d_name) == -1) {
@@ -338,6 +338,7 @@ void rmoldest(struct logdir *ld)
 
             errno = 0;
         }
+    }
 
     if (errno) {
         warn2("unable to read directory", ld->name);
@@ -365,9 +366,10 @@ unsigned int rotate(struct logdir *ld)
         return (0);
     }
 
-    if (ld->ppid)
-        while (!processorstop(ld))
-            ;
+    if (ld->ppid) {
+        while (!processorstop(ld)) {
+        }
+    }
 
     while (fchdir(ld->fddir) == -1) {
         pause2("unable to change directory, want rotate", ld->name);
@@ -480,7 +482,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
 
             errno = 0;
 
-            while ((f = readdir(d)))
+            while ((f = readdir(d))) {
                 if ((f->d_name[0] == '@') && (str_len(f->d_name) == 27)) {
                     ++j;
 
@@ -488,6 +490,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
                         byte_copy(oldest, 27, f->d_name);
                     }
                 }
+            }
 
             if (errno) {
                 warn2("unable to read directory, want remove old logfile",
@@ -497,7 +500,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
             closedir(d);
             errno = ENOSPC;
 
-            if (j > (dir + n)->nmin)
+            if (j > (dir + n)->nmin) {
                 if (*oldest == '@') {
                     strerr_warn5(WARNING, "out of disk space, delete: ", (dir + n)->name,
                                  "/", oldest, 0);
@@ -512,6 +515,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
                         pause1("unable to change to initial working directory");
                     }
                 }
+            }
         }
 
         if (errno) {
@@ -521,11 +525,13 @@ int buffer_pwrite(int n, char *s, unsigned int len)
 
     (dir + n)->size += i;
 
-    if ((dir + n)->sizemax)
-        if (s[i - 1] == '\n')
+    if ((dir + n)->sizemax) {
+        if (s[i - 1] == '\n') {
             if ((dir + n)->size >= ((dir + n)->sizemax - linemax)) {
                 rotate(dir + n);
             }
+        }
+    }
 
     return (i);
 }
@@ -940,7 +946,7 @@ int buffer_pread(int fd, char *s, unsigned int len)
     taia_uint(&trotate, 2744);
     taia_add(&trotate, &now, &trotate);
 
-    for (i = 0; i < dirn; ++i)
+    for (i = 0; i < dirn; ++i) {
         if ((dir + i)->tmax) {
             if (taia_less(&dir[i].trotate, &now)) {
                 rotate(dir + i);
@@ -950,6 +956,7 @@ int buffer_pread(int fd, char *s, unsigned int len)
                 trotate = dir[i].trotate;
             }
         }
+    }
 
     sig_unblock(sig_term);
     sig_unblock(sig_child);
@@ -994,13 +1001,15 @@ void sig_child_handler(void)
         strerr_warn2(INFO, "sigchild received.", 0);
     }
 
-    while ((pid = wait_nohang(&wstat)) > 0)
-        for (l = 0; l < dirn; ++l)
+    while ((pid = wait_nohang(&wstat)) > 0) {
+        for (l = 0; l < dirn; ++l) {
             if (dir[l].ppid == pid) {
                 dir[l].ppid = 0;
                 processorstop(&dir[l]);
                 break;
             }
+        }
+    }
 }
 void sig_alarm_handler(void)
 {
@@ -1215,12 +1224,14 @@ int main(int argc, const char **argv)
             if (repl) {
                 if ((ch < 32) || (ch > 126)) {
                     ch = repl;
-                } else
-                    for (i = 0; replace[i]; ++i)
+                } else {
+                    for (i = 0; replace[i]; ++i) {
                         if (ch == replace[i]) {
                             ch = repl;
                             break;
                         }
+                    }
+                }
             }
 
             line[linelen] = ch;
@@ -1230,7 +1241,7 @@ int main(int argc, const char **argv)
             break; /* data buffer is empty */
         }
 
-        for (i = 0; i < dirn; ++i)
+        for (i = 0; i < dirn; ++i) {
             if (dir[i].fddir != -1) {
                 if (dir[i].inst.len) {
                     logmatch(&dir[i]);
@@ -1262,11 +1273,12 @@ int main(int argc, const char **argv)
                 if (dir[i].udpaddr.sin_port != 0) {
                     fdudp = socket(AF_INET, SOCK_DGRAM, 0);
 
-                    if (fdudp)
+                    if (fdudp) {
                         if (ndelay_on(fdudp) == -1) {
                             close(fdudp);
                             fdudp = -1;
                         }
+                    }
 
                     if (fdudp == -1) {
                         buffer_puts(&dir[i].b, "warning: no udp socket available: ");
@@ -1287,24 +1299,27 @@ int main(int argc, const char **argv)
                             pause_nomem();
                         }
 
-                        if (timestamp)
+                        if (timestamp) {
                             while (!stralloc_cats(&sa, stamp)) {
                                 pause_nomem();
                             }
+                        }
 
-                        if (dir[i].prefix.len)
+                        if (dir[i].prefix.len) {
                             while (!stralloc_cats(&sa, dir[i].prefix.s)) {
                                 pause_nomem();
                             }
+                        }
 
                         while (!stralloc_catb(&sa, line, linelen)) {
                             pause_nomem();
                         }
 
-                        if (linelen == linemax)
+                        if (linelen == linemax) {
                             while (!stralloc_cats(&sa, "...")) {
                                 pause_nomem();
                             }
+                        }
 
                         while (!stralloc_append(&sa, "\n")) {
                             pause_nomem();
@@ -1334,8 +1349,9 @@ int main(int argc, const char **argv)
                     buffer_put(&dir[i].b, line, linelen);
                 }
             }
+        }
 
-        if (linelen == linemax)
+        if (linelen == linemax) {
             for (;;) {
                 if (buffer_GETC(&data, &ch) <= 0) {
                     exitasap = 1;
@@ -1346,7 +1362,7 @@ int main(int argc, const char **argv)
                     break;
                 }
 
-                for (i = 0; i < dirn; ++i)
+                for (i = 0; i < dirn; ++i) {
                     if (dir[i].fddir != -1) {
                         if (dir[i].match != '+') {
                             continue;
@@ -1356,9 +1372,11 @@ int main(int argc, const char **argv)
                             buffer_PUTC(&dir[i].b, ch);
                         }
                     }
+                }
             }
+        }
 
-        for (i = 0; i < dirn; ++i)
+        for (i = 0; i < dirn; ++i) {
             if (dir[i].fddir != -1) {
                 if (dir[i].match != '+') {
                     continue;
@@ -1370,12 +1388,14 @@ int main(int argc, const char **argv)
                     buffer_flush(&dir[i].b);
                 }
             }
+        }
     }
 
     for (i = 0; i < dirn; ++i) {
-        if (dir[i].ppid)
-            while (!processorstop(&dir[i]))
-                ;
+        if (dir[i].ppid) {
+            while (!processorstop(&dir[i])) {
+            }
+        }
 
         logdir_close(&dir[i]);
     }

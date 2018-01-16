@@ -21,9 +21,9 @@
 #include "direntry.h"
 
 #define USAGE_MAIN \
-  " [-vP012] [-u user[:group]] [-U user[:group]] [-b argv0] [-e dir] [-/ " \
-  "root] [-n nice] [-l|-L lock] [-m n] [-d n] [-o n] [-p n] [-f n] [-c n] " \
-  "prog"
+    " [-vP012] [-u user[:group]] [-U user[:group]] [-b argv0] [-e dir] [-/ " \
+    "root] [-n nice] [-l|-L lock] [-m n] [-d n] [-o n] [-p n] [-f n] [-c n] " \
+    "prog"
 #define FATAL "chpst: fatal: "
 #define WARNING "chpst: warning: "
 
@@ -210,10 +210,11 @@ void edir(const char *dirname)
                 --sa.len;
             }
 
-            for (i = 0; i < sa.len; ++i)
+            for (i = 0; i < sa.len; ++i) {
                 if (!sa.s[i]) {
                     sa.s[i] = '\n';
                 }
+            }
 
             if (!stralloc_0(&sa)) {
                 die_nomem();
@@ -430,11 +431,12 @@ int main(int argc, const char **argv)
 
     progname = argv[0];
 
-    for (i = str_len(progname); i; --i)
+    for (i = str_len(progname); i; --i) {
         if (progname[i - 1] == '/') {
             progname += i;
             break;
         }
+    }
 
     if (progname[0] == 'd') {
         ++progname;
@@ -466,7 +468,7 @@ int main(int argc, const char **argv)
     }
 
     while ((opt = getopt(argc, argv,
-                         "u:U:b:e:m:d:o:p:f:c:r:t:/:n:l:L:vP012V")) != opteof)
+                         "u:U:b:e:m:d:o:p:f:c:r:t:/:n:l:L:vP012V")) != opteof) {
         switch (opt) {
             case 'u':
                 set_user = (char *)optarg;
@@ -621,6 +623,7 @@ int main(int argc, const char **argv)
             case '?':
                 usage();
         }
+    }
 
     argv += optind;
 
@@ -649,10 +652,11 @@ int main(int argc, const char **argv)
     if (nicelvl) {
         errno = 0;
 
-        if (nice(nicelvl) == -1)
+        if (nice(nicelvl) == -1) {
             if (errno) {
                 fatal("unable to set nice level");
             }
+        }
     }
 
     if (env_user) {
@@ -667,20 +671,23 @@ int main(int argc, const char **argv)
         slock(lock, lockdelay, 0);
     }
 
-    if (nostdin)
+    if (nostdin) {
         if (close(0) == -1) {
             fatal("unable to close stdin");
         }
+    }
 
-    if (nostdout)
+    if (nostdout) {
         if (close(1) == -1) {
             fatal("unable to close stdout");
         }
+    }
 
-    if (nostderr)
+    if (nostderr) {
         if (close(2) == -1) {
             fatal("unable to close stderr");
         }
+    }
 
     slimit();
 
@@ -702,9 +709,9 @@ int main(int argc, const char **argv)
 #define USAGE_PGRPHACK " child"
 #define USAGE_SETLOCK " [ -nNxX ] file program [ arg ... ]"
 #define USAGE_SOFTLIMIT \
-  " [-a allbytes] [-c corebytes] [-d databytes] [-f filebytes] [-l " \
-  "lockbytes] [-m membytes] [-o openfiles] [-p processes] [-r residentbytes] " \
-  "[-s stackbytes] [-t cpusecs] child"
+    " [-a allbytes] [-c corebytes] [-d databytes] [-f filebytes] [-l " \
+    "lockbytes] [-m membytes] [-o openfiles] [-p processes] [-r residentbytes] " \
+    "[-s stackbytes] [-t cpusecs] child"
 
 void setuidgid_usage(void)
 {
@@ -795,7 +802,7 @@ void setlock(int argc, const char *const *argv)
     unsigned int x = 0;
     const char *fn;
 
-    while ((opt = getopt(argc, argv, "nNxX")) != opteof)
+    while ((opt = getopt(argc, argv, "nNxX")) != opteof) {
         switch (opt) {
             case 'n':
                 delay = 1;
@@ -816,6 +823,7 @@ void setlock(int argc, const char *const *argv)
             default:
                 setlock_usage();
         }
+    }
 
     argv += optind;
 
@@ -860,7 +868,7 @@ void softlimit(int argc, const char *const *argv)
 {
     int opt;
 
-    while ((opt = getopt(argc, argv, "a:c:d:f:l:m:o:p:r:s:t:")) != opteof)
+    while ((opt = getopt(argc, argv, "a:c:d:f:l:m:o:p:r:s:t:")) != opteof) {
         switch (opt) {
             case '?':
                 softlimit_usage();
@@ -910,6 +918,7 @@ void softlimit(int argc, const char *const *argv)
                 getlarg(&limitt);
                 break;
         }
+    }
 
     argv += optind;
 

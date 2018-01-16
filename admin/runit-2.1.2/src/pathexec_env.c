@@ -56,10 +56,11 @@ void pathexec_env_run(const char *file, const char *const *argv)
         ++elen;
     }
 
-    for (i = 0; i < plus.len; ++i)
+    for (i = 0; i < plus.len; ++i) {
         if (!plus.s[i]) {
             ++elen;
         }
+    }
 
     e = (const char **)alloc((elen + 1) * sizeof(char *));
 
@@ -75,17 +76,19 @@ void pathexec_env_run(const char *file, const char *const *argv)
 
     j = 0;
 
-    for (i = 0; i < plus.len; ++i)
+    for (i = 0; i < plus.len; ++i) {
         if (!plus.s[i]) {
             split = str_chr(plus.s + j, '=');
 
-            for (t = 0; t < elen; ++t)
-                if (byte_equal(plus.s + j, split, e[t]))
+            for (t = 0; t < elen; ++t) {
+                if (byte_equal(plus.s + j, split, e[t])) {
                     if (e[t][split] == '=') {
                         --elen;
                         e[t] = e[elen];
                         break;
                     }
+                }
+            }
 
             if (plus.s[j + split]) {
                 e[elen++] = plus.s + j;
@@ -93,6 +96,7 @@ void pathexec_env_run(const char *file, const char *const *argv)
 
             j = i + 1;
         }
+    }
 
     e[elen] = 0;
 

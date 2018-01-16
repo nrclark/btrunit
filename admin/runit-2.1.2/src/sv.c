@@ -302,7 +302,7 @@ int status(char *unused)
     islog = 0;
     flush("");
 
-    if (lsb)
+    if (lsb) {
         switch (rc) {
             case 1:
                 done(0);
@@ -313,6 +313,7 @@ int status(char *unused)
             case 0:
                 done(4);
         }
+    }
 
     return (rc);
 }
@@ -427,10 +428,11 @@ int check(char *a)
                 break;
 
             case 'C':
-                if (pid)
+                if (pid) {
                     if (!checkscript()) {
                         return (0);
                     }
+                }
 
                 break;
 
@@ -487,10 +489,11 @@ int control(char *a)
         return (-1);
     }
 
-    if (svstatus[17] == *a)
+    if (svstatus[17] == *a) {
         if (*a != 'd' || svstatus[18] == 1) {
             return (0); /* once w/o term */
         }
+    }
 
     if ((fd = open_write("supervise/control")) == -1) {
         if (errno != error_nodevice) {
@@ -520,10 +523,11 @@ int main(int argc, char **argv)
 
     progname = *argv;
 
-    for (i = str_len(*argv); i; --i)
+    for (i = str_len(*argv); i; --i) {
         if ((*argv)[i - 1] == '/') {
             break;
         }
+    }
 
     *argv += i;
     optprogname = progname = *argv;
@@ -732,10 +736,11 @@ int main(int argc, char **argv)
             *service = 0;
         }
 
-        if (*service)
+        if (*service) {
             if (act && (act(acts) == -1)) {
                 *service = 0;
             }
+        }
 
         if (fchdir(curdir) == -1) {
             fatal("unable to change to original directory");
@@ -744,7 +749,7 @@ int main(int argc, char **argv)
         service++;
     }
 
-    if (*cbk)
+    if (*cbk) {
         for (;;) {
             taia_sub(&tdiff, &tnow, &tstart);
             service = servicex;
@@ -802,6 +807,7 @@ int main(int argc, char **argv)
             usleep(420000);
             taia_now(&tnow);
         }
+    }
 
     return (rc > 99 ? 99 : rc);
 }

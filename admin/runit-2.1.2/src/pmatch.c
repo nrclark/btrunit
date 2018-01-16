@@ -50,14 +50,14 @@ int pmatch(const char *p, const char *s, unsigned int len)
                 continue;
 
             /*
-            case '?':
-            if (*p == '?') {
-            if (*s != '?') return(0);
-            ++p;
-            }
-            ++s; --len;
-            continue;
-            */
+               case '?':
+               if (*p == '?') {
+               if (*s != '?') return(0);
+             ++p;
+               }
+             ++s; --len;
+               continue;
+             */
             default:
                 if (!len) {
                     return (0);

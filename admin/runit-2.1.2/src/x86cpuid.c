@@ -34,7 +34,7 @@ int main(void)
                  : "=a"(y[0]), "=b"(y[1]), "=c"(y[2]), "=d"(y[3])
                  : "0"(1));
 
-    for (i = 1; i < 4; ++i)
+    for (i = 1; i < 4; ++i) {
         for (j = 0; j < 4; ++j) {
             c = x[i] >> (8 * j);
 
@@ -48,6 +48,7 @@ int main(void)
 
             putchar(c);
         }
+    }
 
     printf("-%08x-%08x\n", y[0], y[3]);
 

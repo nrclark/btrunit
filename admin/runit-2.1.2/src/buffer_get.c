@@ -11,10 +11,11 @@ static int oneread(int (*op)(), int fd, char *buf, unsigned int len)
     for (;;) {
         r = op(fd, buf, len);
 
-        if (r == -1)
+        if (r == -1) {
             if (errno == error_intr) {
                 continue;
             }
+        }
 
         return r;
     }

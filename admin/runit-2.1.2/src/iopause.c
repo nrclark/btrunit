@@ -95,15 +95,17 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
                 continue; /*XXX*/
             }
 
-            if (x[i].events & IOPAUSE_READ)
+            if (x[i].events & IOPAUSE_READ) {
                 if (FD_ISSET(fd, &rfds)) {
                     x[i].revents |= IOPAUSE_READ;
                 }
+            }
 
-            if (x[i].events & IOPAUSE_WRITE)
+            if (x[i].events & IOPAUSE_WRITE) {
                 if (FD_ISSET(fd, &wfds)) {
                     x[i].revents |= IOPAUSE_WRITE;
                 }
+            }
         }
     }
 #endif

@@ -35,10 +35,11 @@ void pathexec_run(const char *file, const char *const *argv,
             return;
         }
 
-        if (!split)
+        if (!split) {
             if (!stralloc_cats(&tmp, ".")) {
                 return;
             }
+        }
 
         if (!stralloc_cats(&tmp, "/")) {
             return;

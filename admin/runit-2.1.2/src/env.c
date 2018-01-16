@@ -14,10 +14,11 @@ extern /*@null@*/ char *env_get(const char *s)
 
     len = str_len(s);
 
-    for (i = 0; environ[i]; ++i)
+    for (i = 0; environ[i]; ++i) {
         if (str_start(environ[i], s) && (environ[i][len] == '=')) {
             return environ[i] + len + 1;
         }
+    }
 
     return 0;
 }

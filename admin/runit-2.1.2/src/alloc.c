@@ -36,10 +36,11 @@ static unsigned int avail = SPACE; /* multiple of ALIGNMENT; 0<=avail<=SPACE */
 
 void alloc_free(char *x)
 {
-    if (x >= space)
+    if (x >= space) {
         if (x < space + SPACE) {
             return; /* XXX: assuming that pointers are flat */
         }
+    }
 
     free(x);
 }

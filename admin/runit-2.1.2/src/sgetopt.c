@@ -1,16 +1,16 @@
 /* Public domain. */
 
 /* sgetopt.c, sgetopt.h: (yet another) improved getopt clone, outer layer
-D. J. Bernstein, djb@pobox.com.
-Depends on subgetopt.h, buffer.h.
-No system requirements.
-19991219: Switched to buffer.h.
-19970208: Cleanups.
-931201: Baseline.
-No known patent problems.
+   D. J. Bernstein, djb@pobox.com.
+   Depends on subgetopt.h, buffer.h.
+   No system requirements.
+   19991219: Switched to buffer.h.
+   19970208: Cleanups.
+   931201: Baseline.
+   No known patent problems.
 
-Documentation in sgetopt.3.
-*/
+   Documentation in sgetopt.3.
+ */
 
 #include "buffer.h"
 #define SGETOPTNOSHORT
@@ -39,15 +39,16 @@ int getopt(int argc, const char *const *argv, const char *opts)
             optprogname = "";
         }
 
-        for (s = optprogname; *s; ++s)
+        for (s = optprogname; *s; ++s) {
             if (*s == '/') {
                 optprogname = s + 1;
             }
+        }
     }
 
     c = subgetopt(argc, argv, opts);
 
-    if (opterr)
+    if (opterr) {
         if (c == '?') {
             char chp[2];
             chp[0] = optproblem;
@@ -63,6 +64,7 @@ int getopt(int argc, const char *const *argv, const char *opts)
             buffer_put(buffer_2, chp, 2);
             buffer_flush(buffer_2);
         }
+    }
 
     return c;
 }

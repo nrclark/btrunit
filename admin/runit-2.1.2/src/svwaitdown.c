@@ -92,10 +92,11 @@ int main(int argc, const char *const *argv)
     }
 
     for (dir = argv; *dir; ++dir) {
-        if (dir != argv)
+        if (dir != argv) {
             if (fchdir(wdir) == -1) {
                 fatal("unable to switch to starting directory");
             }
+        }
 
         if (chdir(*dir) == -1) {
             continue; /* bummer */

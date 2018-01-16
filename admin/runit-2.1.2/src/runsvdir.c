@@ -328,12 +328,13 @@ int main(int argc, char **argv)
             }
         }
 
-        if (rplog)
+        if (rplog) {
             if (taia_less(&now, &stamplog) == 0) {
                 write(logpipe[1], ".", 1);
                 taia_uint(&deadline, 900);
                 taia_add(&stamplog, &now, &deadline);
             }
+        }
 
         taia_uint(&deadline, check ? 1 : 5);
         taia_add(&deadline, &now, &deadline);
@@ -348,8 +349,8 @@ int main(int argc, char **argv)
 
         sig_unblock(sig_child);
 
-        if (rplog && (io[0].revents | IOPAUSE_READ))
-            while (read(logpipe[0], &ch, 1) > 0)
+        if (rplog && (io[0].revents | IOPAUSE_READ)) {
+            while (read(logpipe[0], &ch, 1) > 0) {
                 if (ch) {
                     for (i = 6; i < rploglen; i++) {
                         rplog[i - 1] = rplog[i];
@@ -357,16 +358,19 @@ int main(int argc, char **argv)
 
                     rplog[rploglen - 1] = ch;
                 }
+            }
+        }
 
         switch (exitsoon) {
             case 1:
                 _exit(0);
 
             case 2:
-                for (i = 0; i < svnum; i++)
+                for (i = 0; i < svnum; i++) {
                     if (sv[i].pid) {
                         kill(sv[i].pid, SIGTERM);
                     }
+                }
 
                 _exit(111);
         }

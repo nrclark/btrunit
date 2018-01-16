@@ -29,10 +29,11 @@ void runit_halt(void)
         strerr_die4sys(111, FATAL, "unable to chmod ", STOPIT, ": ");
     }
 
-    if (chmod(REBOOT, 0) == -1)
+    if (chmod(REBOOT, 0) == -1) {
         if (errno != error_noent) {
             strerr_die4sys(111, FATAL, "unable to chmod ", REBOOT, ": ");
         }
+    }
 
     kill(1, sig_cont);
     _exit(0);
