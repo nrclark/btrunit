@@ -14,7 +14,8 @@
 char *progname;
 char *new;
 
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }

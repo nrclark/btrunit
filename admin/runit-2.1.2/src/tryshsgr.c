@@ -1,6 +1,7 @@
 /* Public domain. */
 
-int main()
+int 
+main (void)
 {
     short x[4];
 

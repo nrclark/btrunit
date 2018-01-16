@@ -2,7 +2,8 @@
 
 #include <signal.h>
 
-main()
+int 
+main (void)
 {
     sigset_t ss;
 

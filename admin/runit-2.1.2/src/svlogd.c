@@ -97,11 +97,13 @@ struct logdir {
 } *dir;
 unsigned int dirn = 0;
 
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(111, "usage: ", progname, USAGE, "\n");
 }
-void die_nomem()
+void 
+die_nomem (void)
 {
     strerr_die2x(111, FATAL, "out of memory.");
 }
@@ -129,7 +131,8 @@ void warnx(char *m0, char *m1)
 {
     strerr_warn4(WARNING, m0, ": ", m1, 0);
 }
-void pause_nomem()
+void 
+pause_nomem (void)
 {
     strerr_warn2(PAUSE, "out of memory.", 0);
     sleep(3);

@@ -28,7 +28,8 @@ void warn(const char *s1, const char *s2, struct strerr *e)
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }

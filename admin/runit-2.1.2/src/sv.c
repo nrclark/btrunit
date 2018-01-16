@@ -52,7 +52,8 @@ int curdir, fd, r;
 char svstatus[20];
 char sulong[FMT_ULONG];
 
-void usage()
+void 
+usage (void)
 {
     if(!lsb) {
         strerr_die4x(100, "usage: ", progname, USAGE, "\n");
@@ -137,7 +138,8 @@ void flush2(const char *s)
     buffer_flush(buffer_2);
 }
 
-int svstatus_get()
+int 
+svstatus_get (void)
 {
     if((fd = open_write("supervise/ok")) == -1) {
         if(errno == error_nodevice) {
@@ -276,7 +278,8 @@ int status(char *unused)
     return(rc);
 }
 
-int checkscript()
+int 
+checkscript (void)
 {
     char *prog[2];
     struct stat s;

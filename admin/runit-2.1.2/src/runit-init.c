@@ -19,7 +19,8 @@ void usage(void)
     strerr_die4x(0, "usage: ", progname, USAGE, "\n");
 }
 
-void runit_halt()
+void 
+runit_halt (void)
 {
     if(open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");
@@ -35,7 +36,8 @@ void runit_halt()
     _exit(0);
 }
 
-void runit_reboot()
+void 
+runit_reboot (void)
 {
     if(open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");

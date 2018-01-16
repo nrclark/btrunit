@@ -2,12 +2,14 @@
 
 #include <signal.h>
 
-void nope()
+void 
+nope (void)
 {
     exit(1);
 }
 
-int main()
+int 
+main (void)
 {
     unsigned long x[4];
     unsigned long y[4];

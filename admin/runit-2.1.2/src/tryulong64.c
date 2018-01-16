@@ -1,6 +1,7 @@
 /* Public domain. */
 
-int main()
+int 
+main (void)
 {
     unsigned long u;
     u = 1;

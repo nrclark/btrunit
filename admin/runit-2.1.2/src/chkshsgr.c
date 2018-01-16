@@ -2,7 +2,8 @@
 
 #include <unistd.h>
 
-int main()
+int 
+main (void)
 {
     short x[4];
 

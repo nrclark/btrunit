@@ -60,7 +60,8 @@ int pidchanged = 1;
 int logpipe[2];
 char *dir;
 
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -92,11 +93,13 @@ void warnx(char *m1, char *m2, char *m3)
 
 void stopservice(struct svdir *);
 
-void s_child()
+void 
+s_child (void)
 {
     write(selfpipe[1], "", 1);
 }
-void s_term()
+void 
+s_term (void)
 {
     sigterm = 1;
     write(selfpipe[1], "", 1); /* XXX */

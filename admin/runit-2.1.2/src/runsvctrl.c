@@ -13,7 +13,8 @@
 char *progname;
 unsigned int rc = 0;
 
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }

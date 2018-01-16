@@ -41,7 +41,8 @@ struct taia stamplog;
 int exitsoon = 0;
 int pgrp = 0;
 
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -57,11 +58,13 @@ void warn3x(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsvdir ", svdir, ": warning: ", m1, m2, m3, 0);
 }
-void s_term()
+void 
+s_term (void)
 {
     exitsoon = 1;
 }
-void s_hangup()
+void 
+s_hangup (void)
 {
     exitsoon = 2;
 }
@@ -92,7 +95,8 @@ void runsv(int no, char *name)
     sv[no].pid = pid;
 }
 
-void runsvdir()
+void 
+runsvdir (void)
 {
     DIR *dir;
     direntry *d;
@@ -164,7 +168,8 @@ void runsvdir()
     }
 }
 
-int setup_log()
+int 
+setup_log (void)
 {
     if((rploglen = str_len(rplog)) < 7) {
         warn3x("log must have at least seven characters.", 0, 0);

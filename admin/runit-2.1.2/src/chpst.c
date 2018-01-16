@@ -43,11 +43,13 @@ void warn(const char *m)
 {
     strerr_warn2(WARNING, m, 0);
 }
-void die_nomem()
+void 
+die_nomem (void)
 {
     strerr_die2x(111, FATAL, "out of memory.");
 }
-void usage()
+void 
+usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_MAIN, "\n");
 }
@@ -242,7 +244,8 @@ void limit(int what, long l)
         fatal("unable to setrlimit()");
     }
 }
-void slimit()
+void 
+slimit (void)
 {
     if(limitd >= -1) {
 #ifdef RLIMIT_DATA
@@ -569,7 +572,8 @@ int main(int argc, const char **argv)
 #define USAGE_SETLOCK " [ -nNxX ] file program [ arg ... ]"
 #define USAGE_SOFTLIMIT " [-a allbytes] [-c corebytes] [-d databytes] [-f filebytes] [-l lockbytes] [-m membytes] [-o openfiles] [-p processes] [-r residentbytes] [-s stackbytes] [-t cpusecs] child"
 
-void setuidgid_usage()
+void 
+setuidgid_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETUIDGID, "\n");
 }
@@ -588,7 +592,8 @@ void setuidgid(int argc, const char *const *argv)
     fatal2("unable to run", *argv);
 }
 
-void envuidgid_usage()
+void 
+envuidgid_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVUIDGID, "\n");
 }
@@ -607,7 +612,8 @@ void envuidgid(int argc, const char *const *argv)
     fatal2("unable to run", *argv);
 }
 
-void envdir_usage()
+void 
+envdir_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVDIR, "\n");
 }
@@ -626,7 +632,8 @@ void envdir(int argc, const char *const *argv)
     fatal2("unable to run", *argv);
 }
 
-void pgrphack_usage()
+void 
+pgrphack_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_PGRPHACK, "\n");
 }
@@ -640,7 +647,8 @@ void pgrphack(int argc, const char *const *argv)
     fatal2("unable to run", *argv);
 }
 
-void setlock_usage()
+void 
+setlock_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETLOCK, "\n");
 }
@@ -684,7 +692,8 @@ void setlock(int argc, const char *const *argv)
     _exit(0);
 }
 
-void softlimit_usage()
+void 
+softlimit_usage (void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SOFTLIMIT, "\n");
 }
