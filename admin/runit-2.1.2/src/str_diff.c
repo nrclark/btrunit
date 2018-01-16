@@ -6,39 +6,39 @@ int str_diff(register const char *s, register const char *t)
 {
     register char x;
 
-    for(;;) {
+    for (;;) {
         x = *s;
-        if(x != *t) {
+        if (x != *t) {
             break;
         }
-        if(!x) {
+        if (!x) {
             break;
         }
         ++s;
         ++t;
         x = *s;
-        if(x != *t) {
+        if (x != *t) {
             break;
         }
-        if(!x) {
-            break;
-        }
-        ++s;
-        ++t;
-        x = *s;
-        if(x != *t) {
-            break;
-        }
-        if(!x) {
+        if (!x) {
             break;
         }
         ++s;
         ++t;
         x = *s;
-        if(x != *t) {
+        if (x != *t) {
             break;
         }
-        if(!x) {
+        if (!x) {
+            break;
+        }
+        ++s;
+        ++t;
+        x = *s;
+        if (x != *t) {
+            break;
+        }
+        if (!x) {
             break;
         }
         ++s;

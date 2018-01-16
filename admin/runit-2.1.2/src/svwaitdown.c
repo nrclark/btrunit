@@ -28,8 +28,8 @@ void warn(const char *s1, const char *s2, struct strerr *e)
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
-void 
-usage (void)
+void
+usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -51,11 +51,11 @@ int main(int argc, const char *const *argv)
 
     progname = *argv;
 
-    while((opt = getopt(argc, argv, "t:xkvV")) != opteof) {
-        switch(opt) {
+    while ((opt = getopt(argc, argv, "t:xkvV")) != opteof) {
+        switch (opt) {
             case 't':
                 scan_ulong(optarg, &sec);
-                if((sec < 1) || (sec > 6000)) {
+                if ((sec < 1) || (sec > 6000)) {
                     usage();
                 }
                 break;
@@ -75,26 +75,26 @@ int main(int argc, const char *const *argv)
         }
     }
     argv += optind;
-    if(! argv || ! *argv) {
+    if (! argv || ! *argv) {
         usage();
     }
 
-    if((wdir = open_read(".")) == -1) {
+    if ((wdir = open_read(".")) == -1) {
         fatal("unable to open current working directory");
     }
 
-    for(dir = argv; *dir; ++dir) {
-        if(dir != argv)
-            if(fchdir(wdir) == -1) {
+    for (dir = argv; *dir; ++dir) {
+        if (dir != argv)
+            if (fchdir(wdir) == -1) {
                 fatal("unable to switch to starting directory");
             }
-        if(chdir(*dir) == -1) {
+        if (chdir(*dir) == -1) {
             continue;    /* bummer */
         }
-        if((fd = open_write("supervise/control")) == -1) {
+        if ((fd = open_write("supervise/control")) == -1) {
             continue;    /* bummer */
         }
-        if(write(fd, "dx", 1 + doexit) != (1 + doexit)) {
+        if (write(fd, "dx", 1 + doexit) != (1 + doexit)) {
             close(fd);
             continue; /* bummer */
         }
@@ -103,17 +103,17 @@ int main(int argc, const char *const *argv)
     dir = argv;
 
     tai_now(&start);
-    while(*dir) {
-        if(fchdir(wdir) == -1) {
+    while (*dir) {
+        if (fchdir(wdir) == -1) {
             fatal("unable to switch to starting directory");
         }
-        if(chdir(*dir) == -1) {
+        if (chdir(*dir) == -1) {
             warn(*dir, ": unable to change directory: ", &strerr_sys);
             continue;
         }
-        if((fd = open_write("supervise/ok")) == -1) {
-            if(errno == error_nodevice) {
-                if(verbose) {
+        if ((fd = open_write("supervise/ok")) == -1) {
+            if (errno == error_nodevice) {
+                if (verbose) {
                     strerr_warn3(INFO, *dir, ": runsv not running.", 0);
                 }
                 dir++;
@@ -124,14 +124,14 @@ int main(int argc, const char *const *argv)
         }
         close(fd);
 
-        if((fd = open_read("supervise/status")) == -1) {
+        if ((fd = open_read("supervise/status")) == -1) {
             warn(*dir, "unable to open supervise/status: ", &strerr_sys);
             continue;
         }
         r = buffer_unixread(fd, status, 20);
         close(fd);
-        if((r < 18) || (r == 19)) {  /* supervise compatibility */
-            if(r == -1) {
+        if ((r < 18) || (r == 19)) { /* supervise compatibility */
+            if (r == -1) {
                 warn(*dir, "unable to read supervise/status: ", &strerr_sys);
             } else {
                 warn(*dir, ": unable to read supervise/status: bad format.", 0);
@@ -146,21 +146,21 @@ int main(int argc, const char *const *argv)
         pid <<= 8;
         pid += (unsigned char)status[12];
 
-        if(! doexit && ! pid) {
+        if (! doexit && ! pid) {
             /* ok, service is down */
-            if(verbose) {
+            if (verbose) {
                 strerr_warn3(INFO, *dir, ": down.", 0);
             }
             dir++;
             continue;
         }
 
-        if(status[17] != 'd') {  /* catch previous failures */
-            if((fd = open_write("supervise/control")) == -1) {
+        if (status[17] != 'd') { /* catch previous failures */
+            if ((fd = open_write("supervise/control")) == -1) {
                 warn(*dir, ": unable to open supervise/control: ", &strerr_sys);
                 continue;
             }
-            if(write(fd, "dx", 1 + doexit) != (1 + doexit)) {
+            if (write(fd, "dx", 1 + doexit) != (1 + doexit)) {
                 warn(*dir, ": unable to write to supervise/control: ", &strerr_sys);
                 close(fd);
                 continue;
@@ -170,19 +170,19 @@ int main(int argc, const char *const *argv)
 
         tai_now(&now);
         tai_sub(&now, &now, &start);
-        if(tai_approx(&now) >= sec) {
+        if (tai_approx(&now) >= sec) {
             /* timeout */
-            if(verbose) {
+            if (verbose) {
                 strerr_warn2(INFO, "timeout.", 0);
             }
-            if(dokill) {
-                if(chdir(*dir) == -1) {
+            if (dokill) {
+                if (chdir(*dir) == -1) {
                     warn(*dir, ": unable to change directory: ", &strerr_sys);
                     continue;
                 }
-                if((fd = open_write("supervise/control")) == -1) {
-                    if(errno == error_nodevice) {
-                        if(verbose) {
+                if ((fd = open_write("supervise/control")) == -1) {
+                    if (errno == error_nodevice) {
+                        if (verbose) {
                             strerr_warn3(INFO, *dir, ": runsv not running.", 0);
                         }
                         dir++;
@@ -191,14 +191,14 @@ int main(int argc, const char *const *argv)
                     }
                     continue;
                 }
-                if(write(fd, "k", 1) != 1) {
+                if (write(fd, "k", 1) != 1) {
                     warn(*argv, ": unable to write to supervise/control: ", &strerr_sys);
                 } else {
                     strerr_warn3(INFO, *dir, ": killed.", 0);
                 }
                 close(fd);
                 dir++;
-                if(! *dir) {
+                if (! *dir) {
                     _exit(111);
                 }
                 continue;
@@ -207,11 +207,11 @@ int main(int argc, const char *const *argv)
         }
         sleep(1);
     }
-    if(fchdir(wdir) == -1) {
+    if (fchdir(wdir) == -1) {
         strerr_warn2(WARN, "unable to switch to starting directory: ", &strerr_sys);
     }
     close(wdir);
-    if(rc > 100) {
+    if (rc > 100) {
         rc = 100;
     }
     _exit(rc);

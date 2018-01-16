@@ -16,26 +16,26 @@ static aligned realspace[SPACE / ALIGNMENT];
 static unsigned int avail = SPACE; /* multiple of ALIGNMENT; 0<=avail<=SPACE */
 
 /*@null@*//*@out@*/char *
-alloc (unsigned int n)
+alloc(unsigned int n)
 {
     char *x;
     n = ALIGNMENT + n - (n & (ALIGNMENT - 1)); /* XXX: could overflow */
-    if(n <= avail) {
+    if (n <= avail) {
         avail -= n;
         return space + avail;
     }
     x = malloc(n);
-    if(!x) {
+    if (!x) {
         errno = error_nomem;
     }
     return x;
 }
 
-void 
-alloc_free (char *x)
+void
+alloc_free(char *x)
 {
-    if(x >= space)
-        if(x < space + SPACE) {
+    if (x >= space)
+        if (x < space + SPACE) {
             return;    /* XXX: assuming that pointers are flat */
         }
     free(x);

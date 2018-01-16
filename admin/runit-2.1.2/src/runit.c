@@ -62,7 +62,7 @@ int main(int argc, const char *const *argv, char *const *envp)
     int ttyfd;
     struct stat s;
 
-    if(getpid() != 1) {
+    if (getpid() != 1) {
         strerr_die2x(111, FATAL, "must be run as process no 1.");
     }
     setsid();
@@ -79,17 +79,17 @@ int main(int argc, const char *const *argv, char *const *envp)
     sig_block(sig_term);
 
     /* console */
-    if((ttyfd = open_write("/dev/console")) != -1) {
+    if ((ttyfd = open_write("/dev/console")) != -1) {
         dup2(ttyfd, 0);
         dup2(ttyfd, 1);
         dup2(ttyfd, 2);
-        if(ttyfd > 2) {
+        if (ttyfd > 2) {
             close(ttyfd);
         }
     }
 
     /* create selfpipe */
-    while(pipe(selfpipe) == -1) {
+    while (pipe(selfpipe) == -1) {
         strerr_warn2(FATAL, "unable to create selfpipe, pausing: ", &strerr_sys);
         sleep(5);
     }
@@ -100,7 +100,7 @@ int main(int argc, const char *const *argv, char *const *envp)
 
 #ifdef RB_DISABLE_CAD
     /* activate ctrlaltdel handling, glibc, dietlibc */
-    if(RB_DISABLE_CAD == 0) {
+    if (RB_DISABLE_CAD == 0) {
         reboot_system(0);
     }
 #endif
@@ -109,26 +109,26 @@ int main(int argc, const char *const *argv, char *const *envp)
                  ": booting.", 0);
 
     /* runit */
-    for(st = 0; st < 3; st++) {
+    for (st = 0; st < 3; st++) {
         /* if (st == 2) logwtmp("~", "reboot", ""); */
-        while((pid = fork()) == -1) {
+        while ((pid = fork()) == -1) {
             strerr_warn4(FATAL, "unable to fork for \"", stage[st], "\" pausing: ",
                          &strerr_sys);
             sleep(5);
         }
-        if(!pid) {
+        if (!pid) {
             /* child */
             prog[0] = stage[st];
             prog[1] = 0;
 
             /* stage 1 gets full control of console */
-            if(st == 0) {
-                if((ttyfd = open("/dev/console", O_RDWR)) != -1) {
+            if (st == 0) {
+                if ((ttyfd = open("/dev/console", O_RDWR)) != -1) {
 #ifdef TIOCSCTTY
                     ioctl(ttyfd, TIOCSCTTY, (char *)0);
 #endif
                     dup2(ttyfd, 0);
-                    if(ttyfd > 2) {
+                    if (ttyfd > 2) {
                         close(ttyfd);
                     }
                 } else {
@@ -156,7 +156,7 @@ int main(int argc, const char *const *argv, char *const *envp)
 
         x.fd = selfpipe[0];
         x.events = IOPAUSE_READ;
-        for(;;) {
+        for (;;) {
             int child;
 
             sig_unblock(sig_child);
@@ -175,42 +175,42 @@ int main(int argc, const char *const *argv, char *const *envp)
             sig_block(sig_child);
             sig_block(sig_int);
 
-            while(read(selfpipe[0], &ch, 1) == 1) {}
-            while((child = wait_nohang(&wstat)) > 0)
-                if(child == pid) {
+            while (read(selfpipe[0], &ch, 1) == 1) {}
+            while ((child = wait_nohang(&wstat)) > 0)
+                if (child == pid) {
                     break;
                 }
-            if(child == -1) {
+            if (child == -1) {
                 strerr_warn2(WARNING, "wait_nohang, pausing: ", &strerr_sys);
                 sleep(5);
             }
 
             /* reget stderr */
-            if((ttyfd = open_write("/dev/console")) != -1) {
+            if ((ttyfd = open_write("/dev/console")) != -1) {
                 dup2(ttyfd, 2);
-                if(ttyfd > 2) {
+                if (ttyfd > 2) {
                     close(ttyfd);
                 }
             }
 
-            if(child == pid) {
-                if(wait_exitcode(wstat) != 0) {
-                    if(wait_crashed(wstat)) {
+            if (child == pid) {
+                if (wait_exitcode(wstat) != 0) {
+                    if (wait_crashed(wstat)) {
                         strerr_warn3(WARNING, "child crashed: ", stage[st], 0);
                     } else {
                         strerr_warn3(WARNING, "child failed: ", stage[st], 0);
                     }
-                    if(st == 0)
+                    if (st == 0)
                         /* this is stage 1 */
-                        if(wait_crashed(wstat) || (wait_exitcode(wstat) == 100)) {
+                        if (wait_crashed(wstat) || (wait_exitcode(wstat) == 100)) {
                             strerr_warn3(INFO, "leave stage: ", stage[st], 0);
                             strerr_warn2(WARNING, "skipping stage 2...", 0);
                             st++;
                             break;
                         }
-                    if(st == 1)
+                    if (st == 1)
                         /* this is stage 2 */
-                        if(wait_crashed(wstat) || (wait_exitcode(wstat) == 111)) {
+                        if (wait_crashed(wstat) || (wait_exitcode(wstat) == 111)) {
                             strerr_warn2(WARNING, "killing all processes in stage 2...", 0);
                             kill(-pid, 9);
                             sleep(5);
@@ -222,50 +222,50 @@ int main(int argc, const char *const *argv, char *const *envp)
                 strerr_warn3(INFO, "leave stage: ", stage[st], 0);
                 break;
             }
-            if(child != 0) {
+            if (child != 0) {
                 /* collect terminated children */
                 write(selfpipe[1], "", 1);
                 continue;
             }
 
             /* sig? */
-            if(!sigc  && !sigi) {
+            if (!sigc  && !sigi) {
 #ifdef DEBUG
                 strerr_warn2(WARNING, "poll: ", &strerr_sys);
 #endif
                 continue;
             }
-            if(st != 1) {
+            if (st != 1) {
                 strerr_warn2(WARNING, "signals only work in stage 2.", 0);
                 sigc = sigi = 0;
                 continue;
             }
-            if(sigi && (stat(CTRLALTDEL, &s) != -1) && (s.st_mode & S_IXUSR)) {
+            if (sigi && (stat(CTRLALTDEL, &s) != -1) && (s.st_mode & S_IXUSR)) {
                 strerr_warn2(INFO, "ctrl-alt-del request...", 0);
                 prog[0] = CTRLALTDEL;
                 prog[1] = 0;
-                while((pid2 = fork()) == -1) {
+                while ((pid2 = fork()) == -1) {
                     strerr_warn4(FATAL, "unable to fork for \"", CTRLALTDEL,
                                  "\" pausing: ", &strerr_sys);
                     sleep(5);
                 }
-                if(!pid2) {
+                if (!pid2) {
                     /* child */
                     strerr_warn3(INFO, "enter stage: ", prog[0], 0);
                     execve(*prog, (char *const *) prog, envp);
                     strerr_die4sys(0, FATAL, "unable to start child: ", prog[0], ": ");
                 }
-                if(wait_pid(&wstat, pid2) == -1) {
+                if (wait_pid(&wstat, pid2) == -1) {
                     strerr_warn2(FATAL, "wait_pid: ", &strerr_sys);
                 }
-                if(wait_crashed(wstat)) {
+                if (wait_crashed(wstat)) {
                     strerr_warn3(WARNING, "child crashed: ", CTRLALTDEL, 0);
                 }
                 strerr_warn3(INFO, "leave stage: ", prog[0], 0);
                 sigi = 0;
                 sigc++;
             }
-            if(sigc && (stat(STOPIT, &s) != -1) && (s.st_mode & S_IXUSR)) {
+            if (sigc && (stat(STOPIT, &s) != -1) && (s.st_mode & S_IXUSR)) {
                 int i;
                 /* unlink(STOPIT); */
                 chmod(STOPIT, 0);
@@ -276,18 +276,18 @@ int main(int argc, const char *const *argv, char *const *envp)
 #endif
                 kill(pid, sig_term);
                 i = 0;
-                while(i < 5) {
-                    if((child = wait_nohang(&wstat)) == pid) {
+                while (i < 5) {
+                    if ((child = wait_nohang(&wstat)) == pid) {
 #ifdef DEBUG
                         strerr_warn2(WARNING, "stage 2 terminated.", 0);
 #endif
                         pid = 0;
                         break;
                     }
-                    if(child) {
+                    if (child) {
                         continue;
                     }
-                    if(child == -1) {
+                    if (child == -1) {
                         strerr_warn2(WARNING, "wait_nohang: ", &strerr_sys);
                     }
 #ifdef DEBUG
@@ -296,12 +296,12 @@ int main(int argc, const char *const *argv, char *const *envp)
                     sleep(1);
                     i++;
                 }
-                if(pid) {
+                if (pid) {
                     /* still there */
                     strerr_warn2(WARNING,
                                  "stage 2 not terminated, sending sigkill...", 0);
                     kill(pid, 9);
-                    if(wait_pid(&wstat, pid) == -1) {
+                    if (wait_pid(&wstat, pid) == -1) {
                         strerr_warn2(WARNING, "wait_pid: ", &strerr_sys);
                     }
                 }
@@ -319,9 +319,9 @@ int main(int argc, const char *const *argv, char *const *envp)
     }
 
     /* reget stderr */
-    if((ttyfd = open_write("/dev/console")) != -1) {
+    if ((ttyfd = open_write("/dev/console")) != -1) {
         dup2(ttyfd, 2);
-        if(ttyfd > 2) {
+        if (ttyfd > 2) {
             close(ttyfd);
         }
     }
@@ -332,10 +332,10 @@ int main(int argc, const char *const *argv, char *const *envp)
     kill(-1, SIGKILL);
 
     pid = fork();
-    switch(pid) {
+    switch (pid) {
         case  0:
         case -1:
-            if((stat(REBOOT, &s) != -1) && (s.st_mode & S_IXUSR)) {
+            if ((stat(REBOOT, &s) != -1) && (s.st_mode & S_IXUSR)) {
                 strerr_warn2(INFO, "system reboot.", 0);
                 sync();
                 reboot_system(RB_AUTOBOOT);
@@ -362,20 +362,20 @@ int main(int argc, const char *const *argv, char *const *envp)
 #endif
 #endif
             }
-            if(pid == 0) {
+            if (pid == 0) {
                 _exit(0);
             }
             break;
         default:
             sig_unblock(sig_child);
-            while(wait_pid(0, pid) == -1);
+            while (wait_pid(0, pid) == -1);
     }
 #endif
 
-    for(;;) {
+    for (;;) {
         sig_pause();
     }
     /* not reached */
     strerr_die2x(0, INFO, "exit.");
-    return(0);
+    return (0);
 }

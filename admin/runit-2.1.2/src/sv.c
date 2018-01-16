@@ -52,17 +52,17 @@ int curdir, fd, r;
 char svstatus[20];
 char sulong[FMT_ULONG];
 
-void 
-usage (void)
+void
+usage(void)
 {
-    if(!lsb) {
+    if (!lsb) {
         strerr_die4x(100, "usage: ", progname, USAGE, "\n");
     }
     strerr_die4x(2, "usage: ", progname, USAGELSB, "\n");
 }
 void done(unsigned int e)
 {
-    if(curdir != -1) {
+    if (curdir != -1) {
         fchdir(curdir);
     }
     _exit(e);
@@ -81,12 +81,12 @@ void out(char *p, char *m1)
 {
     buffer_puts(buffer_1, p);
     buffer_puts(buffer_1, *service);
-    if(islog) {
+    if (islog) {
         buffer_puts(buffer_1, "/log");
     }
     buffer_puts(buffer_1, ": ");
     buffer_puts(buffer_1, m1);
-    if(errno) {
+    if (errno) {
         buffer_puts(buffer_1, ": ");
         buffer_puts(buffer_1, error_str(errno));
     }
@@ -138,35 +138,35 @@ void flush2(const char *s)
     buffer_flush(buffer_2);
 }
 
-int 
-svstatus_get (void)
+int
+svstatus_get(void)
 {
-    if((fd = open_write("supervise/ok")) == -1) {
-        if(errno == error_nodevice) {
+    if ((fd = open_write("supervise/ok")) == -1) {
+        if (errno == error_nodevice) {
             *acts == 'x' ? ok("runsv not running") : failx("runsv not running");
-            return(0);
+            return (0);
         }
         warn("unable to open supervise/ok");
-        return(-1);
+        return (-1);
     }
     close(fd);
-    if((fd = open_read("supervise/status")) == -1) {
+    if ((fd = open_read("supervise/status")) == -1) {
         warn("unable to open supervise/status");
-        return(-1);
+        return (-1);
     }
     r = read(fd, svstatus, 20);
     close(fd);
-    switch(r) {
+    switch (r) {
         case 20:
             break;
         case -1:
             warn("unable to read supervise/status");
-            return(-1);
+            return (-1);
         default:
             warnx("unable to read supervise/status: bad format");
-            return(-1);
+            return (-1);
     }
-    return(1);
+    return (1);
 }
 unsigned int svstatus_print(char *m)
 {
@@ -174,15 +174,15 @@ unsigned int svstatus_print(char *m)
     int normallyup = 0;
     struct stat s;
 
-    if(stat("down", &s) == -1) {
-        if(errno != error_noent) {
+    if (stat("down", &s) == -1) {
+        if (errno != error_noent) {
             outs2(WARN);
             outs2("unable to stat ");
             outs2(*service);
             outs2("/down: ");
             outs2(error_str(errno));
             flush2("\n");
-            return(0);
+            return (0);
         }
         normallyup = 1;
     }
@@ -194,7 +194,7 @@ unsigned int svstatus_print(char *m)
     pid <<= 8;
     pid += (unsigned char)svstatus[12];
     tai_unpack(svstatus, &tstatus);
-    switch(svstatus[19]) {
+    switch (svstatus[19]) {
         case 0:
             outs(DOWN);
             break;
@@ -207,7 +207,7 @@ unsigned int svstatus_print(char *m)
     }
     outs(m);
     outs(": ");
-    if(svstatus[19]) {
+    if (svstatus[19]) {
         outs("(pid ");
         sulong[fmt_ulong(sulong, pid)] = 0;
         outs(sulong);
@@ -216,43 +216,43 @@ unsigned int svstatus_print(char *m)
     buffer_put(buffer_1, sulong,
                fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x - tstatus.x));
     outs("s");
-    if(pid && !normallyup) {
+    if (pid && !normallyup) {
         outs(", normally down");
     }
-    if(!pid && normallyup) {
+    if (!pid && normallyup) {
         outs(", normally up");
     }
-    if(pid && svstatus[16]) {
+    if (pid && svstatus[16]) {
         outs(", paused");
     }
-    if(!pid && (svstatus[17] == 'u')) {
+    if (!pid && (svstatus[17] == 'u')) {
         outs(", want up");
     }
-    if(pid && (svstatus[17] == 'd')) {
+    if (pid && (svstatus[17] == 'd')) {
         outs(", want down");
     }
-    if(pid && svstatus[18]) {
+    if (pid && svstatus[18]) {
         outs(", got TERM");
     }
-    return(pid ? 1 : 2);
+    return (pid ? 1 : 2);
 }
 int status(char *unused)
 {
     int rc;
 
     rc = svstatus_get();
-    switch(rc) {
+    switch (rc) {
         case -1:
-            if(lsb) {
+            if (lsb) {
                 done(4);
             }
         case 0:
-            return(0);
+            return (0);
     }
     rc = svstatus_print(*service);
     islog = 1;
-    if(chdir("log") == -1) {
-        if(errno != error_noent) {
+    if (chdir("log") == -1) {
+        if (errno != error_noent) {
             outs("; ");
             warn("unable to change directory");
         } else {
@@ -260,14 +260,14 @@ int status(char *unused)
         }
     } else {
         outs("; ");
-        if(svstatus_get()) {
+        if (svstatus_get()) {
             rc = svstatus_print("log");
             outs("\n");
         }
     }
     islog = 0;
     flush("");
-    if(lsb) switch(rc) {
+    if (lsb) switch (rc) {
             case 1:
                 done(0);
             case 2:
@@ -275,19 +275,19 @@ int status(char *unused)
             case 0:
                 done(4);
         }
-    return(rc);
+    return (rc);
 }
 
-int 
-checkscript (void)
+int
+checkscript(void)
 {
     char *prog[2];
     struct stat s;
     int pid, w;
 
-    if(stat("check", &s) == -1) {
-        if(errno == error_noent) {
-            return(1);
+    if (stat("check", &s) == -1) {
+        if (errno == error_noent) {
+            return (1);
         }
         outs2(WARN);
         outs2("unable to stat ");
@@ -295,19 +295,19 @@ checkscript (void)
         outs2("/check: ");
         outs2(error_str(errno));
         flush2("\n");
-        return(0);
+        return (0);
     }
     /* if (!(s.st_mode & S_IXUSR)) return(1); */
-    if((pid = fork()) == -1) {
+    if ((pid = fork()) == -1) {
         outs2(WARN);
         outs2("unable to fork for ");
         outs2(*service);
         outs2("/check: ");
         outs2(error_str(errno));
         flush2("\n");
-        return(0);
+        return (0);
     }
-    if(!pid) {
+    if (!pid) {
         prog[0] = "./check";
         prog[1] = 0;
         close(1);
@@ -320,8 +320,8 @@ checkscript (void)
         flush2("\n");
         _exit(0);
     }
-    while(wait_pid(&w, pid) == -1) {
-        if(errno == error_intr) {
+    while (wait_pid(&w, pid) == -1) {
+        if (errno == error_intr) {
             continue;
         }
         outs2(WARN);
@@ -330,24 +330,24 @@ checkscript (void)
         outs2("/check: ");
         outs2(error_str(errno));
         flush2("\n");
-        return(0);
+        return (0);
     }
-    return(!wait_exitcode(w));
+    return (!wait_exitcode(w));
 }
 
 int check(char *a)
 {
     unsigned int pid;
 
-    if((r = svstatus_get()) == -1) {
-        return(-1);
+    if ((r = svstatus_get()) == -1) {
+        return (-1);
     }
-    while(*a) {
-        if(r == 0) {
-            if(*a == 'x') {
-                return(1);
+    while (*a) {
+        if (r == 0) {
+            if (*a == 'x') {
+                return (1);
             }
-            return(-1);
+            return (-1);
         }
         pid = (unsigned char)svstatus[15];
         pid <<= 8;
@@ -356,51 +356,51 @@ int check(char *a)
         pid += (unsigned char)svstatus[13];
         pid <<= 8;
         pid += (unsigned char)svstatus[12];
-        switch(*a) {
+        switch (*a) {
             case 'x':
-                return(0);
+                return (0);
             case 'u':
-                if(!pid || svstatus[19] != 1) {
-                    return(0);
+                if (!pid || svstatus[19] != 1) {
+                    return (0);
                 }
-                if(!checkscript()) {
-                    return(0);
+                if (!checkscript()) {
+                    return (0);
                 }
                 break;
             case 'd':
-                if(pid || svstatus[19] != 0) {
-                    return(0);
+                if (pid || svstatus[19] != 0) {
+                    return (0);
                 }
                 break;
             case 'C':
-                if(pid) if(!checkscript()) {
-                        return(0);
+                if (pid) if (!checkscript()) {
+                        return (0);
                     }
                 break;
             case 't':
             case 'k':
-                if(!pid && svstatus[17] == 'd') {
+                if (!pid && svstatus[17] == 'd') {
                     break;
                 }
                 tai_unpack(svstatus, &tstatus);
-                if((tstart.sec.x > tstatus.x) || !pid || svstatus[18] || !checkscript()) {
-                    return(0);
+                if ((tstart.sec.x > tstatus.x) || !pid || svstatus[18] || !checkscript()) {
+                    return (0);
                 }
                 break;
             case 'o':
                 tai_unpack(svstatus, &tstatus);
-                if((!pid && tstart.sec.x > tstatus.x) || (pid && svstatus[17] != 'd')) {
-                    return(0);
+                if ((!pid && tstart.sec.x > tstatus.x) || (pid && svstatus[17] != 'd')) {
+                    return (0);
                 }
                 break;
             case 'p':
-                if(pid && !svstatus[16]) {
-                    return(0);
+                if (pid && !svstatus[16]) {
+                    return (0);
                 }
                 break;
             case 'c':
-                if(pid && svstatus[16]) {
-                    return(0);
+                if (pid && svstatus[16]) {
+                    return (0);
                 }
                 break;
         }
@@ -409,32 +409,32 @@ int check(char *a)
     outs(OK);
     svstatus_print(*service);
     flush("\n");
-    return(1);
+    return (1);
 }
 int control(char *a)
 {
-    if(svstatus_get() <= 0) {
-        return(-1);
+    if (svstatus_get() <= 0) {
+        return (-1);
     }
-    if(svstatus[17] == *a)
-        if(*a != 'd' || svstatus[18] == 1) {
-            return(0);    /* once w/o term */
+    if (svstatus[17] == *a)
+        if (*a != 'd' || svstatus[18] == 1) {
+            return (0);   /* once w/o term */
         }
-    if((fd = open_write("supervise/control")) == -1) {
-        if(errno != error_nodevice) {
+    if ((fd = open_write("supervise/control")) == -1) {
+        if (errno != error_nodevice) {
             warn("unable to open supervise/control");
         } else {
             *a == 'x' ? ok("runsv not running") : failx("runsv not running");
         }
-        return(-1);
+        return (-1);
     }
     r = write(fd, a, str_len(a));
     close(fd);
-    if(r != str_len(a)) {
+    if (r != str_len(a)) {
         warn("unable to write to supervise/control");
-        return(-1);
+        return (-1);
     }
-    return(1);
+    return (1);
 }
 
 int main(int argc, char **argv)
@@ -443,7 +443,7 @@ int main(int argc, char **argv)
     char *x;
 
     progname = *argv;
-    for(i = str_len(*argv); i; --i) if((*argv)[i - 1] == '/') {
+    for (i = str_len(*argv); i; --i) if ((*argv)[i - 1] == '/') {
             break;
         }
     *argv += i;
@@ -451,14 +451,14 @@ int main(int argc, char **argv)
     service = argv;
     services = 1;
     lsb = (str_diff(progname, "sv"));
-    if((x = env_get("SVDIR"))) {
+    if ((x = env_get("SVDIR"))) {
         varservice = x;
     }
-    if((x = env_get("SVWAIT"))) {
+    if ((x = env_get("SVWAIT"))) {
         scan_ulong(x, &wait);
     }
-    while((i = getopt(argc, (const char *const *)argv, "w:vV")) != opteof) {
-        switch(i) {
+    while ((i = getopt(argc, (const char *const *)argv, "w:vV")) != opteof) {
+        switch (i) {
             case 'w':
                 scan_ulong(optarg, &wait);
             case 'v':
@@ -472,30 +472,30 @@ int main(int argc, char **argv)
     }
     argv += optind;
     argc -= optind;
-    if(!(action = *argv++)) {
+    if (!(action = *argv++)) {
         usage();
     }
     --argc;
-    if(!lsb) {
+    if (!lsb) {
         service = argv;
         services = argc;
     }
-    if(!*service) {
+    if (!*service) {
         usage();
     }
 
     taia_now(&tnow);
     tstart = tnow;
-    if((curdir = open_read(".")) == -1) {
+    if ((curdir = open_read(".")) == -1) {
         fatal("unable to open current directory");
     }
 
     act = &control;
     acts = "s";
-    if(verbose) {
+    if (verbose) {
         cbk = &check;
     }
-    switch(*action) {
+    switch (*action) {
         case 'x':
         case 'e':
             acts = "x";
@@ -517,13 +517,13 @@ int main(int argc, char **argv)
             cbk = &check;
             break;
         case 't':
-            if(!str_diff(action, "try-restart")) {
+            if (!str_diff(action, "try-restart")) {
                 acts = "tc";
                 cbk = &check;
                 break;
             }
         case 'c':
-            if(!str_diff(action, "check")) {
+            if (!str_diff(action, "check")) {
                 act = 0;
                 acts = "C";
                 cbk = &check;
@@ -544,59 +544,59 @@ int main(int argc, char **argv)
             acts = action;
             break;
         case 's':
-            if(!str_diff(action, "shutdown")) {
+            if (!str_diff(action, "shutdown")) {
                 acts = "x";
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "start")) {
+            if (!str_diff(action, "start")) {
                 acts = "u";
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "stop")) {
+            if (!str_diff(action, "stop")) {
                 acts = "d";
                 cbk = &check;
                 break;
             }
-            if(lsb && str_diff(action, "status")) {
+            if (lsb && str_diff(action, "status")) {
                 usage();
             }
             act = &status;
             cbk = 0;
             break;
         case 'r':
-            if(!str_diff(action, "restart")) {
+            if (!str_diff(action, "restart")) {
                 acts = "tcu";
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "reload")) {
+            if (!str_diff(action, "reload")) {
                 acts = "h";
                 cbk = &check;
                 break;
             }
             usage();
         case 'f':
-            if(!str_diff(action, "force-reload")) {
+            if (!str_diff(action, "force-reload")) {
                 acts = "tc";
                 kll = 1;
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "force-restart")) {
+            if (!str_diff(action, "force-restart")) {
                 acts = "tcu";
                 kll = 1;
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "force-shutdown")) {
+            if (!str_diff(action, "force-shutdown")) {
                 acts = "x";
                 kll = 1;
                 cbk = &check;
                 break;
             }
-            if(!str_diff(action, "force-stop")) {
+            if (!str_diff(action, "force-stop")) {
                 acts = "d";
                 kll = 1;
                 cbk = &check;
@@ -607,72 +607,72 @@ int main(int argc, char **argv)
     }
 
     servicex = service;
-    for(i = 0; i < services; ++i) {
-        if((**service != '/') && (**service != '.') && **service &&
-           ((*service)[str_len(*service) - 1] != '/')) {
-            if((chdir(varservice) == -1) || (chdir(*service) == -1)) {
+    for (i = 0; i < services; ++i) {
+        if ((**service != '/') && (**service != '.') && **service &&
+            ((*service)[str_len(*service) - 1] != '/')) {
+            if ((chdir(varservice) == -1) || (chdir(*service) == -1)) {
                 fail("unable to change to service directory");
                 *service = 0;
             }
-        } else if(chdir(*service) == -1) {
+        } else if (chdir(*service) == -1) {
             fail("unable to change to service directory");
             *service = 0;
         }
-        if(*service) if(act && (act(acts) == -1)) {
+        if (*service) if (act && (act(acts) == -1)) {
                 *service = 0;
             }
-        if(fchdir(curdir) == -1) {
+        if (fchdir(curdir) == -1) {
             fatal("unable to change to original directory");
         }
         service++;
     }
 
-    if(*cbk)
-        for(;;) {
+    if (*cbk)
+        for (;;) {
             taia_sub(&tdiff, &tnow, &tstart);
             service = servicex;
             done = 1;
-            for(i = 0; i < services; ++i, ++service) {
-                if(!*service) {
+            for (i = 0; i < services; ++i, ++service) {
+                if (!*service) {
                     continue;
                 }
-                if((**service != '/') && (**service != '.')) {
-                    if((chdir(varservice) == -1) || (chdir(*service) == -1)) {
+                if ((**service != '/') && (**service != '.')) {
+                    if ((chdir(varservice) == -1) || (chdir(*service) == -1)) {
                         fail("unable to change to service directory");
                         *service = 0;
                     }
-                } else if(chdir(*service) == -1) {
+                } else if (chdir(*service) == -1) {
                     fail("unable to change to service directory");
                     *service = 0;
                 }
-                if(*service) {
-                    if(cbk(acts) != 0) {
+                if (*service) {
+                    if (cbk(acts) != 0) {
                         *service = 0;
                     } else {
                         done = 0;
                     }
                 }
-                if(*service && taia_approx(&tdiff) > wait) {
+                if (*service && taia_approx(&tdiff) > wait) {
                     kll ? outs(KILL) : outs(TIMEOUT);
-                    if(svstatus_get() > 0) {
+                    if (svstatus_get() > 0) {
                         svstatus_print(*service);
                         ++rc;
                     }
                     flush("\n");
-                    if(kll) {
+                    if (kll) {
                         control("k");
                     }
                     *service = 0;
                 }
-                if(fchdir(curdir) == -1) {
+                if (fchdir(curdir) == -1) {
                     fatal("unable to change to original directory");
                 }
             }
-            if(done) {
+            if (done) {
                 break;
             }
             usleep(420000);
             taia_now(&tnow);
         }
-    return(rc > 99 ? 99 : rc);
+    return (rc > 99 ? 99 : rc);
 }

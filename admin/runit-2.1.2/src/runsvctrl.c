@@ -13,8 +13,8 @@
 char *progname;
 unsigned int rc = 0;
 
-void 
-usage (void)
+void
+usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -38,19 +38,19 @@ int ctrl(char *name, char c)
 {
     int fd;
 
-    if((fd = open_write("supervise/control")) == -1) {
-        if(errno == error_nodevice) {
+    if ((fd = open_write("supervise/control")) == -1) {
+        if (errno == error_nodevice) {
             warnx(name, "runsv not running.");
         } else {
             warn(name, "unable to open supervise/control");
         }
-        return(-1);
+        return (-1);
     }
-    if(write(fd, &c, 1) != 1) {
+    if (write(fd, &c, 1) != 1) {
         warn(name, "unable to write to supervise/control");
-        return(-1);
+        return (-1);
     }
-    return(1);
+    return (1);
 }
 
 int main(int argc, char **argv)
@@ -61,11 +61,11 @@ int main(int argc, char **argv)
 
     progname = *argv++;
 
-    if(! argv || ! *argv) {
+    if (! argv || ! *argv) {
         usage();
     }
 
-    switch((c = **argv)) {
+    switch ((c = **argv)) {
         case 'e':
             c = 'x';
         case 'u':
@@ -87,26 +87,26 @@ int main(int argc, char **argv)
             usage();
     }
     dir = ++argv;
-    if(! dir || ! *dir) {
+    if (! dir || ! *dir) {
         usage();
     }
 
-    if((curdir = open_read(".")) == -1) {
+    if ((curdir = open_read(".")) == -1) {
         rc = 100;
         fatal("unable to open current directory");
     }
-    for(; dir && *dir; dir++) {
-        if(chdir(*dir) == -1) {
+    for (; dir && *dir; dir++) {
+        if (chdir(*dir) == -1) {
             warn(*dir, "unable to change directory");
             continue;
         }
         ctrl(*dir, c);
-        if(fchdir(curdir) == -1) {
+        if (fchdir(curdir) == -1) {
             rc = 100;
             fatal("unable to change directory");
         }
     }
-    if(rc > 100) {
+    if (rc > 100) {
         rc = 100;
     }
     _exit(rc);

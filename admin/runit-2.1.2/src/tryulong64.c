@@ -1,7 +1,7 @@
 /* Public domain. */
 
-int 
-main (void)
+int
+main(void)
 {
     unsigned long u;
     u = 1;
@@ -37,7 +37,7 @@ main (void)
     u += u;
     u += u;
     u += u;
-    if(!u) {
+    if (!u) {
         _exit(1);
     }
     _exit(0);

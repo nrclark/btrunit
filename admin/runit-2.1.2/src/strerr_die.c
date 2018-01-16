@@ -9,33 +9,33 @@ void strerr_warn(const char *x1, const char *x2, const char *x3, const char *x4,
 {
     strerr_sysinit();
 
-    if(x1) {
+    if (x1) {
         buffer_puts(buffer_2, x1);
     }
-    if(x2) {
+    if (x2) {
         buffer_puts(buffer_2, x2);
     }
-    if(x3) {
+    if (x3) {
         buffer_puts(buffer_2, x3);
     }
-    if(x4) {
+    if (x4) {
         buffer_puts(buffer_2, x4);
     }
-    if(x5) {
+    if (x5) {
         buffer_puts(buffer_2, x5);
     }
-    if(x6) {
+    if (x6) {
         buffer_puts(buffer_2, x6);
     }
 
-    while(se) {
-        if(se->x) {
+    while (se) {
+        if (se->x) {
             buffer_puts(buffer_2, se->x);
         }
-        if(se->y) {
+        if (se->y) {
             buffer_puts(buffer_2, se->y);
         }
-        if(se->z) {
+        if (se->z) {
             buffer_puts(buffer_2, se->z);
         }
         se = se->who;

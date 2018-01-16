@@ -12,21 +12,21 @@ static stralloc tmp;
 
 int pathexec_env(const char *s, const char *t)
 {
-    if(!s) {
+    if (!s) {
         return 1;
     }
-    if(!stralloc_copys(&tmp, s)) {
+    if (!stralloc_copys(&tmp, s)) {
         return 0;
     }
-    if(t) {
-        if(!stralloc_cats(&tmp, "=")) {
+    if (t) {
+        if (!stralloc_cats(&tmp, "=")) {
             return 0;
         }
-        if(!stralloc_cats(&tmp, t)) {
+        if (!stralloc_cats(&tmp, t)) {
             return 0;
         }
     }
-    if(!stralloc_0(&tmp)) {
+    if (!stralloc_0(&tmp)) {
         return 0;
     }
     return stralloc_cat(&plus, &tmp);
@@ -41,41 +41,41 @@ void pathexec_env_run(const char *file, const char *const *argv)
     unsigned int split;
     unsigned int t;
 
-    if(!stralloc_cats(&plus, "")) {
+    if (!stralloc_cats(&plus, "")) {
         return;
     }
 
     elen = 0;
-    for(i = 0; environ[i]; ++i) {
+    for (i = 0; environ[i]; ++i) {
         ++elen;
     }
-    for(i = 0; i < plus.len; ++i)
-        if(!plus.s[i]) {
+    for (i = 0; i < plus.len; ++i)
+        if (!plus.s[i]) {
             ++elen;
         }
 
     e = (const char **) alloc((elen + 1) * sizeof(char *));
-    if(!e) {
+    if (!e) {
         return;
     }
 
     elen = 0;
-    for(i = 0; environ[i]; ++i) {
+    for (i = 0; environ[i]; ++i) {
         e[elen++] = environ[i];
     }
 
     j = 0;
-    for(i = 0; i < plus.len; ++i)
-        if(!plus.s[i]) {
+    for (i = 0; i < plus.len; ++i)
+        if (!plus.s[i]) {
             split = str_chr(plus.s + j, '=');
-            for(t = 0; t < elen; ++t)
-                if(byte_equal(plus.s + j, split, e[t]))
-                    if(e[t][split] == '=') {
+            for (t = 0; t < elen; ++t)
+                if (byte_equal(plus.s + j, split, e[t]))
+                    if (e[t][split] == '=') {
                         --elen;
                         e[t] = e[elen];
                         break;
                     }
-            if(plus.s[j + split]) {
+            if (plus.s[j + split]) {
                 e[elen++] = plus.s + j;
             }
             j = i + 1;

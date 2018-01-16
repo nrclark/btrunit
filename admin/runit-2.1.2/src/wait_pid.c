@@ -7,14 +7,14 @@
 
 #ifdef HASWAITPID
 
-int 
-wait_pid (int *wstat, int pid)
+int
+wait_pid(int *wstat, int pid)
 {
     int r;
 
     do {
         r = waitpid(pid, wstat, 0);
-    } while((r == -1) && (errno == error_intr));
+    } while ((r == -1) && (errno == error_intr));
     return r;
 }
 
@@ -25,12 +25,12 @@ wait_pid (int *wstat, int pid)
 static int oldpid = 0;
 static int oldwstat; /* defined if(oldpid) */
 
-int 
-wait_pid (int *wstat, int pid)
+int
+wait_pid(int *wstat, int pid)
 {
     int r;
 
-    if(pid == oldpid) {
+    if (pid == oldpid) {
         *wstat = oldwstat;
         oldpid = 0;
         return pid;
@@ -38,12 +38,12 @@ wait_pid (int *wstat, int pid)
 
     do {
         r = wait(wstat);
-        if((r != pid) && (r != -1)) {
+        if ((r != pid) && (r != -1)) {
             oldwstat = *wstat;
             oldpid = r;
             continue;
         }
-    } while((r == -1) && (errno == error_intr));
+    } while ((r == -1) && (errno == error_intr));
     return r;
 }
 

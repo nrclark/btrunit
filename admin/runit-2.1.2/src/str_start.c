@@ -6,33 +6,33 @@ int str_start(register const char *s, register const char *t)
 {
     register char x;
 
-    for(;;) {
+    for (;;) {
         x = *t++;
-        if(!x) {
+        if (!x) {
             return 1;
         }
-        if(x != *s++) {
+        if (x != *s++) {
             return 0;
         }
         x = *t++;
-        if(!x) {
+        if (!x) {
             return 1;
         }
-        if(x != *s++) {
+        if (x != *s++) {
             return 0;
         }
         x = *t++;
-        if(!x) {
+        if (!x) {
             return 1;
         }
-        if(x != *s++) {
+        if (x != *s++) {
             return 0;
         }
         x = *t++;
-        if(!x) {
+        if (!x) {
             return 1;
         }
-        if(x != *s++) {
+        if (x != *s++) {
             return 0;
         }
     }

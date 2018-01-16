@@ -7,20 +7,20 @@ unsigned int str_len(const char *s)
     register const char *t;
 
     t = s;
-    for(;;) {
-        if(!*t) {
+    for (;;) {
+        if (!*t) {
             return t - s;
         }
         ++t;
-        if(!*t) {
+        if (!*t) {
             return t - s;
         }
         ++t;
-        if(!*t) {
+        if (!*t) {
             return t - s;
         }
         ++t;
-        if(!*t) {
+        if (!*t) {
             return t - s;
         }
         ++t;

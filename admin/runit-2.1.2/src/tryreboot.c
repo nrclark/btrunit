@@ -3,5 +3,5 @@
 
 int main(void)
 {
-    return(reboot(0));
+    return (reboot(0));
 }

@@ -5,5 +5,5 @@
 
 int reboot_system(int what)
 {
-    return(reboot(what, (char *)0));
+    return (reboot(what, (char *)0));
 }

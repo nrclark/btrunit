@@ -1,7 +1,7 @@
 /* Public domain. */
 
-int 
-main (void)
+int
+main(void)
 {
 #ifdef NeXT
     printf("nextstep\n");

@@ -32,23 +32,23 @@ int getopt(int argc, const char *const *argv, const char *opts)
     int c;
     const char *s;
 
-    if(!optprogname) {
+    if (!optprogname) {
         optprogname = *argv;
-        if(!optprogname) {
+        if (!optprogname) {
             optprogname = "";
         }
-        for(s = optprogname; *s; ++s) if(*s == '/') {
+        for (s = optprogname; *s; ++s) if (*s == '/') {
                 optprogname = s + 1;
             }
     }
     c = subgetopt(argc, argv, opts);
-    if(opterr)
-        if(c == '?') {
+    if (opterr)
+        if (c == '?') {
             char chp[2];
             chp[0] = optproblem;
             chp[1] = '\n';
             buffer_puts(buffer_2, optprogname);
-            if(argv[optind] && (optind < argc)) {
+            if (argv[optind] && (optind < argc)) {
                 buffer_puts(buffer_2, ": illegal option -- ");
             } else {
                 buffer_puts(buffer_2, ": option requires an argument -- ");

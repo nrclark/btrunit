@@ -41,8 +41,8 @@ struct taia stamplog;
 int exitsoon = 0;
 int pgrp = 0;
 
-void 
-usage (void)
+void
+usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -58,13 +58,13 @@ void warn3x(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsvdir ", svdir, ": warning: ", m1, m2, m3, 0);
 }
-void 
-s_term (void)
+void
+s_term(void)
 {
     exitsoon = 1;
 }
-void 
-s_hangup (void)
+void
+s_hangup(void)
 {
     exitsoon = 2;
 }
@@ -73,11 +73,11 @@ void runsv(int no, char *name)
 {
     int pid;
 
-    if((pid = fork()) == -1) {
+    if ((pid = fork()) == -1) {
         warn("unable to fork for ", name);
         return;
     }
-    if(pid == 0) {
+    if (pid == 0) {
         /* child */
         const char *prog[3];
 
@@ -86,7 +86,7 @@ void runsv(int no, char *name)
         prog[2] = 0;
         sig_uncatch(sig_hangup);
         sig_uncatch(sig_term);
-        if(pgrp) {
+        if (pgrp) {
             setsid();
         }
         pathexec_run(*prog, prog, (const char *const *)environ);
@@ -95,46 +95,46 @@ void runsv(int no, char *name)
     sv[no].pid = pid;
 }
 
-void 
-runsvdir (void)
+void
+runsvdir(void)
 {
     DIR *dir;
     direntry *d;
     int i;
     struct stat s;
 
-    if(!(dir = opendir("."))) {
+    if (!(dir = opendir("."))) {
         warn("unable to open directory ", svdir);
         return;
     }
-    for(i = 0; i < svnum; i++) {
+    for (i = 0; i < svnum; i++) {
         sv[i].isgone = 1;
     }
     errno = 0;
-    while((d = readdir(dir))) {
-        if(d->d_name[0] == '.') {
+    while ((d = readdir(dir))) {
+        if (d->d_name[0] == '.') {
             continue;
         }
-        if(stat(d->d_name, &s) == -1) {
+        if (stat(d->d_name, &s) == -1) {
             warn("unable to stat ", d->d_name);
             errno = 0;
             continue;
         }
-        if(! S_ISDIR(s.st_mode)) {
+        if (! S_ISDIR(s.st_mode)) {
             continue;
         }
-        for(i = 0; i < svnum; i++) {
-            if((sv[i].ino == s.st_ino) && (sv[i].dev == s.st_dev)) {
+        for (i = 0; i < svnum; i++) {
+            if ((sv[i].ino == s.st_ino) && (sv[i].dev == s.st_dev)) {
                 sv[i].isgone = 0;
-                if(! sv[i].pid) {
+                if (! sv[i].pid) {
                     runsv(i, d->d_name);
                 }
                 break;
             }
         }
-        if(i == svnum) {
+        if (i == svnum) {
             /* new service */
-            if(svnum >= MAXSERVICES) {
+            if (svnum >= MAXSERVICES) {
                 warn3x("unable to start runsv ", d->d_name, ": too many services.");
                 continue;
             }
@@ -147,7 +147,7 @@ runsvdir (void)
             check = 1;
         }
     }
-    if(errno) {
+    if (errno) {
         warn("unable to read directory ", svdir);
         closedir(dir);
         check = 1;
@@ -156,11 +156,11 @@ runsvdir (void)
     closedir(dir);
 
     /* SIGTERM removed runsv's */
-    for(i = 0; i < svnum; i++) {
-        if(! sv[i].isgone) {
+    for (i = 0; i < svnum; i++) {
+        if (! sv[i].isgone) {
             continue;
         }
-        if(sv[i].pid) {
+        if (sv[i].pid) {
             kill(sv[i].pid, SIGTERM);
         }
         sv[i] = sv[--svnum];
@@ -168,29 +168,29 @@ runsvdir (void)
     }
 }
 
-int 
-setup_log (void)
+int
+setup_log(void)
 {
-    if((rploglen = str_len(rplog)) < 7) {
+    if ((rploglen = str_len(rplog)) < 7) {
         warn3x("log must have at least seven characters.", 0, 0);
-        return(0);
+        return (0);
     }
-    if(pipe(logpipe) == -1) {
+    if (pipe(logpipe) == -1) {
         warn3x("unable to create pipe for log.", 0, 0);
-        return(-1);
+        return (-1);
     }
     coe(logpipe[1]);
     coe(logpipe[0]);
     ndelay_on(logpipe[0]);
     ndelay_on(logpipe[1]);
-    if(fd_copy(2, logpipe[1]) == -1) {
+    if (fd_copy(2, logpipe[1]) == -1) {
         warn3x("unable to set filedescriptor for log.", 0, 0);
-        return(-1);
+        return (-1);
     }
     io[0].fd = logpipe[0];
     io[0].events = IOPAUSE_READ;
     taia_now(&stamplog);
-    return(1);
+    return (1);
 }
 
 int main(int argc, char **argv)
@@ -207,17 +207,17 @@ int main(int argc, char **argv)
     int i;
 
     progname = *argv++;
-    if(! argv || ! *argv) {
+    if (! argv || ! *argv) {
         usage();
     }
-    if(**argv == '-') {
-        switch(*(*argv + 1)) {
+    if (**argv == '-') {
+        switch (*(*argv + 1)) {
             case 'P':
                 pgrp = 1;
             case '-':
                 ++argv;
         }
-        if(! argv || ! *argv) {
+        if (! argv || ! *argv) {
             usage();
         }
     }
@@ -225,28 +225,28 @@ int main(int argc, char **argv)
     sig_catch(sig_term, s_term);
     sig_catch(sig_hangup, s_hangup);
     svdir = *argv++;
-    if(argv && *argv) {
+    if (argv && *argv) {
         rplog = *argv;
-        if(setup_log() != 1) {
+        if (setup_log() != 1) {
             rplog = 0;
             warn3x("log service disabled.", 0, 0);
         }
     }
-    if((curdir = open_read(".")) == -1) {
+    if ((curdir = open_read(".")) == -1) {
         fatal("unable to open current directory", 0);
     }
     coe(curdir);
 
     taia_now(&stampcheck);
 
-    for(;;) {
+    for (;;) {
         /* collect children */
-        for(;;) {
-            if((pid = wait_nohang(&wstat)) <= 0) {
+        for (;;) {
+            if ((pid = wait_nohang(&wstat)) <= 0) {
                 break;
             }
-            for(i = 0; i < svnum; i++) {
-                if(pid == sv[i].pid) {
+            for (i = 0; i < svnum; i++) {
+                if (pid == sv[i].pid) {
                     /* runsv has gone */
                     sv[i].pid = 0;
                     check = 1;
@@ -256,34 +256,34 @@ int main(int argc, char **argv)
         }
 
         taia_now(&now);
-        if(now.sec.x < (stampcheck.sec.x - 3)) {
+        if (now.sec.x < (stampcheck.sec.x - 3)) {
             /* time warp */
             warn3x("time warp: resetting time stamp.", 0, 0);
             taia_now(&stampcheck);
             taia_now(&now);
-            if(rplog) {
+            if (rplog) {
                 taia_now(&stamplog);
             }
         }
-        if(taia_less(&now, &stampcheck) == 0) {
+        if (taia_less(&now, &stampcheck) == 0) {
             /* wait at least a second */
             taia_uint(&deadline, 1);
             taia_add(&stampcheck, &now, &deadline);
 
-            if(stat(svdir, &s) != -1) {
-                if(check || \
-                   s.st_mtime != mtime || s.st_ino != ino || s.st_dev != dev) {
+            if (stat(svdir, &s) != -1) {
+                if (check || \
+                    s.st_mtime != mtime || s.st_ino != ino || s.st_dev != dev) {
                     /* svdir modified */
-                    if(chdir(svdir) != -1) {
+                    if (chdir(svdir) != -1) {
                         mtime = s.st_mtime;
                         dev = s.st_dev;
                         ino = s.st_ino;
                         check = 0;
-                        if(now.sec.x <= (4611686018427387914ULL + (uint64)mtime)) {
+                        if (now.sec.x <= (4611686018427387914ULL + (uint64)mtime)) {
                             sleep(1);
                         }
                         runsvdir();
-                        while(fchdir(curdir) == -1) {
+                        while (fchdir(curdir) == -1) {
                             warn("unable to change directory, pausing", 0);
                             sleep(5);
                         }
@@ -296,8 +296,8 @@ int main(int argc, char **argv)
             }
         }
 
-        if(rplog)
-            if(taia_less(&now, &stamplog) == 0) {
+        if (rplog)
+            if (taia_less(&now, &stamplog) == 0) {
                 write(logpipe[1], ".", 1);
                 taia_uint(&deadline, 900);
                 taia_add(&stamplog, &now, &deadline);
@@ -306,27 +306,27 @@ int main(int argc, char **argv)
         taia_add(&deadline, &now, &deadline);
 
         sig_block(sig_child);
-        if(rplog) {
+        if (rplog) {
             iopause(io, 1, &deadline, &now);
         } else {
             iopause(0, 0, &deadline, &now);
         }
         sig_unblock(sig_child);
 
-        if(rplog && (io[0].revents | IOPAUSE_READ))
-            while(read(logpipe[0], &ch, 1) > 0)
-                if(ch) {
-                    for(i = 6; i < rploglen; i++) {
+        if (rplog && (io[0].revents | IOPAUSE_READ))
+            while (read(logpipe[0], &ch, 1) > 0)
+                if (ch) {
+                    for (i = 6; i < rploglen; i++) {
                         rplog[i - 1] = rplog[i];
                     }
                     rplog[rploglen - 1] = ch;
                 }
 
-        switch(exitsoon) {
+        switch (exitsoon) {
             case 1:
                 _exit(0);
             case 2:
-                for(i = 0; i < svnum; i++) if(sv[i].pid) {
+                for (i = 0; i < svnum; i++) if (sv[i].pid) {
                         kill(sv[i].pid, SIGTERM);
                     }
                 _exit(111);

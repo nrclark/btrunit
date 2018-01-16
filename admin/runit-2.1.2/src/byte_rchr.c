@@ -2,8 +2,8 @@
 
 #include "byte.h"
 
-unsigned int 
-byte_rchr (char *s, register unsigned int n, int c)
+unsigned int
+byte_rchr(char *s, register unsigned int n, int c)
 {
     register char ch;
     register char *t;
@@ -12,41 +12,41 @@ byte_rchr (char *s, register unsigned int n, int c)
     ch = c;
     t = s;
     u = 0;
-    for(;;) {
-        if(!n) {
+    for (;;) {
+        if (!n) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
             u = t;
         }
         ++t;
         --n;
-        if(!n) {
+        if (!n) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
             u = t;
         }
         ++t;
         --n;
-        if(!n) {
+        if (!n) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
             u = t;
         }
         ++t;
         --n;
-        if(!n) {
+        if (!n) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
             u = t;
         }
         ++t;
         --n;
     }
-    if(!u) {
+    if (!u) {
         u = t;
     }
     return u - s;

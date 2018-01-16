@@ -28,8 +28,8 @@ void warn(const char *s1, const char *s2, struct strerr *e)
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
-void 
-usage (void)
+void
+usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -50,11 +50,11 @@ int main(int argc, const char *const *argv)
 
     progname = *argv;
 
-    while((opt = getopt(argc, argv, "s:vV")) != opteof) {
-        switch(opt) {
+    while ((opt = getopt(argc, argv, "s:vV")) != opteof) {
+        switch (opt) {
             case 's':
                 scan_ulong(optarg, &sec);
-                if((sec < 1) || (sec > 600)) {
+                if ((sec < 1) || (sec > 600)) {
                     usage();
                 }
                 break;
@@ -68,26 +68,26 @@ int main(int argc, const char *const *argv)
         }
     }
     argv += optind;
-    if(! argv || ! *argv) {
+    if (! argv || ! *argv) {
         usage();
     }
 
-    if((wdir = open_read(".")) == -1) {
+    if ((wdir = open_read(".")) == -1) {
         fatal("unable to open current working directory");
     }
 
     dir = argv;
-    while(*dir) {
-        if(dir != argv)
-            if(fchdir(wdir) == -1) {
+    while (*dir) {
+        if (dir != argv)
+            if (fchdir(wdir) == -1) {
                 fatal("unable to switch to starting directory");
             }
-        if(chdir(*dir) == -1) {
+        if (chdir(*dir) == -1) {
             warn(*dir, ": unable to change directory: ", &strerr_sys);
             continue;
         }
-        if((fd = open_write("supervise/ok")) == -1) {
-            if(errno == error_nodevice) {
+        if ((fd = open_write("supervise/ok")) == -1) {
+            if (errno == error_nodevice) {
                 warn(*dir, ": runsv not running.", 0);
             } else {
                 warn(*dir, ": unable to open supervise/ok: ", &strerr_sys);
@@ -96,14 +96,14 @@ int main(int argc, const char *const *argv)
         }
         close(fd);
 
-        if((fd = open_read("supervise/status")) == -1) {
+        if ((fd = open_read("supervise/status")) == -1) {
             warn(*dir, "unable to open supervise/status: ", &strerr_sys);
             continue;
         }
         r = buffer_unixread(fd, status, sizeof status);
         close(fd);
-        if(r < sizeof status) {
-            if(r == -1) {
+        if (r < sizeof status) {
+            if (r == -1) {
                 warn(*dir, "unable to read supervise/status: ", &strerr_sys);
             } else {
                 warn(*dir, ": unable to read supervise/status: bad format.", 0);
@@ -118,22 +118,22 @@ int main(int argc, const char *const *argv)
         pid += (unsigned char)status[13];
         pid <<= 8;
         pid += (unsigned char)status[12];
-        if(! pid) {
+        if (! pid) {
             warn(*dir, ": is down.", 0);
             continue;
         }
 
         tai_unpack(status, &when);
         tai_now(&now);
-        if(tai_less(&now, &when)) {
+        if (tai_less(&now, &when)) {
             when = now;
         }
         tai_sub(&when, &now, &when);
         is = tai_approx(&when);
 
-        if(is >= sec) {
+        if (is >= sec) {
             /* ok */
-            if(verbose) {
+            if (verbose) {
                 sulong[fmt_ulong(sulong, is)] = 0;
                 strerr_warn5(INFO, *dir, ": is up (", sulong, " seconds)", 0);
             }
@@ -142,11 +142,11 @@ int main(int argc, const char *const *argv)
         }
         sleep(sec - is);
     }
-    if(fchdir(wdir) == -1) {
+    if (fchdir(wdir) == -1) {
         strerr_warn2(WARN, "unable to switch to starting directory: ", &strerr_sys);
     }
     close(wdir);
-    if(rc > 100) {
+    if (rc > 100) {
         rc = 100;
     }
     _exit(rc);

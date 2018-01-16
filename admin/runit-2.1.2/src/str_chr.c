@@ -9,32 +9,32 @@ unsigned int str_chr(register const char *s, int c)
 
     ch = c;
     t = s;
-    for(;;) {
-        if(!*t) {
+    for (;;) {
+        if (!*t) {
             break;
         }
-        if(*t == ch) {
-            break;
-        }
-        ++t;
-        if(!*t) {
-            break;
-        }
-        if(*t == ch) {
+        if (*t == ch) {
             break;
         }
         ++t;
-        if(!*t) {
+        if (!*t) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
             break;
         }
         ++t;
-        if(!*t) {
+        if (!*t) {
             break;
         }
-        if(*t == ch) {
+        if (*t == ch) {
+            break;
+        }
+        ++t;
+        if (!*t) {
+            break;
+        }
+        if (*t == ch) {
             break;
         }
         ++t;

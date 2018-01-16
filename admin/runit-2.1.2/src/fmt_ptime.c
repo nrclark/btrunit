@@ -7,12 +7,12 @@ unsigned int fmt_ptime2(char *s, struct taia *ta, char sep)
     struct tm *t;
     time_t u;
 
-    if(ta->sec.x < 4611686018427387914ULL) {
-        return(0);    /* impossible? */
+    if (ta->sec.x < 4611686018427387914ULL) {
+        return (0);   /* impossible? */
     }
     u = ta->sec.x - 4611686018427387914ULL;
-    if(!(t = gmtime((time_t *)&u))) {
-        return(0);
+    if (!(t = gmtime((time_t *)&u))) {
+        return (0);
     }
     fmt_ulong(s, 1900 + t->tm_year);
     s[4] = '-';
@@ -27,17 +27,17 @@ unsigned int fmt_ptime2(char *s, struct taia *ta, char sep)
     fmt_uint0(&s[17], t->tm_sec, 2);
     s[19] = '.';
     fmt_uint0(&s[20], ta->nano, 9);
-    return(25);
+    return (25);
 }
 
 unsigned int fmt_ptime(char *s, struct taia *ta)
 {
-    return(fmt_ptime2(s, ta, '_'));
+    return (fmt_ptime2(s, ta, '_'));
 }
 
 unsigned int fmt_ptime_iso8601(char *s, struct taia *ta)
 {
-    return(fmt_ptime2(s, ta, 'T'));
+    return (fmt_ptime2(s, ta, 'T'));
 }
 
 unsigned int fmt_taia(char *s, struct taia *t)
@@ -48,9 +48,9 @@ unsigned int fmt_taia(char *s, struct taia *t)
 
     taia_pack(pack, t);
     s[0] = '@';
-    for(i = 0; i < 12; ++i) {
+    for (i = 0; i < 12; ++i) {
         s[i * 2 + 1] = hex[(pack[i] >> 4) & 15];
         s[i * 2 + 2] = hex[pack[i] & 15];
     }
-    return(25);
+    return (25);
 }

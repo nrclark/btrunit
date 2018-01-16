@@ -4,8 +4,8 @@
 #include <sys/wait.h>
 #include "haswaitp.h"
 
-int 
-wait_nohang (int *wstat)
+int
+wait_nohang(int *wstat)
 {
 #ifdef HASWAITPID
     return waitpid(-1, wstat, WNOHANG);

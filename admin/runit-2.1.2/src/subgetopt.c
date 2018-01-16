@@ -22,24 +22,24 @@ int sgopt(int argc, const char *const *argv, const char *opts)
     const char *s;
 
     optarg = 0;
-    if(!argv || (optind >= argc) || !argv[optind]) {
+    if (!argv || (optind >= argc) || !argv[optind]) {
         return optdone;
     }
-    if(optpos && !argv[optind][optpos]) {
+    if (optpos && !argv[optind][optpos]) {
         ++optind;
         optpos = 0;
-        if((optind >= argc) || !argv[optind]) {
+        if ((optind >= argc) || !argv[optind]) {
             return optdone;
         }
     }
-    if(!optpos) {
-        if(argv[optind][0] != '-') {
+    if (!optpos) {
+        if (argv[optind][0] != '-') {
             return optdone;
         }
         ++optpos;
         c = argv[optind][1];
-        if((c == '-') || (c == 0)) {
-            if(c) {
+        if ((c == '-') || (c == 0)) {
+            if (c) {
                 ++optind;
             }
             optpos = 0;
@@ -50,15 +50,15 @@ int sgopt(int argc, const char *const *argv, const char *opts)
     c = argv[optind][optpos];
     ++optpos;
     s = opts;
-    while(*s) {
-        if(c == *s) {
-            if(s[1] == ':') {
+    while (*s) {
+        if (c == *s) {
+            if (s[1] == ':') {
                 optarg = argv[optind] + optpos;
                 ++optind;
                 optpos = 0;
-                if(!*optarg) {
+                if (!*optarg) {
                     optarg = argv[optind];
-                    if((optind >= argc) || !optarg) {  /* argument past end */
+                    if ((optind >= argc) || !optarg) { /* argument past end */
                         optproblem = c;
                         return '?';
                     }
@@ -68,7 +68,7 @@ int sgopt(int argc, const char *const *argv, const char *opts)
             return c;
         }
         ++s;
-        if(*s == ':') {
+        if (*s == ':') {
             ++s;
         }
     }

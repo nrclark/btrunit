@@ -9,5 +9,5 @@ int main(void)
     int s;
 
     s = socket(AF_INET, SOCK_STREAM, 0);
-    return(close(s));
+    return (close(s));
 }
