@@ -28,8 +28,7 @@ void warn(const char *s1, const char *s2, struct strerr *e)
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -68,7 +67,7 @@ int main(int argc, const char *const *argv)
         }
     }
     argv += optind;
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
 
@@ -118,7 +117,7 @@ int main(int argc, const char *const *argv)
         pid += (unsigned char)status[13];
         pid <<= 8;
         pid += (unsigned char)status[12];
-        if (! pid) {
+        if (!pid) {
             warn(*dir, ": is down.", 0);
             continue;
         }

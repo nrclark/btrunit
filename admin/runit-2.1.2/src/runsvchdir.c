@@ -14,8 +14,7 @@
 char *progname;
 char *new;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -40,7 +39,7 @@ int main(int argc, char **argv)
     int ino;
 
     progname = *argv++;
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
 
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
         }
         fatal("unable to stat: ", new);
     }
-    if (! S_ISDIR(s.st_mode)) {
+    if (!S_ISDIR(s.st_mode)) {
         fatalx(new, "not a directory.");
     }
     ino = s.st_ino;

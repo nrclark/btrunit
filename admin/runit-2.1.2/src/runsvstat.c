@@ -21,8 +21,7 @@ unsigned int rc = 0;
 struct stat s;
 int showlog = 0;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -82,7 +81,7 @@ int show_status(char *name)
             warnx(name, "unable to read supervise/status: bad format.");
             return (-1);
     }
-    pid = (unsigned char) status[15];
+    pid = (unsigned char)status[15];
     pid <<= 8;
     pid += (unsigned char)status[14];
     pid <<= 8;
@@ -160,7 +159,7 @@ int main(int argc, char **argv)
     argv += optind;
 
     dir = argv;
-    if (! dir || ! *dir) {
+    if (!dir || !*dir) {
         usage();
     }
 
@@ -180,14 +179,14 @@ int main(int argc, char **argv)
                         warn("unable to stat()", "./log");
                     }
                 } else {
-                    if (! S_ISDIR(s.st_mode)) {
+                    if (!S_ISDIR(s.st_mode)) {
                         warnx("./log", "not a directory.");
                     } else {
                         if (chdir("log") == -1) {
                             warn(*dir, "unable to change directory");
                             continue;
                         }
-                        show_status("\n  log");
+                        show_status("\n log");
                     }
                 }
             }

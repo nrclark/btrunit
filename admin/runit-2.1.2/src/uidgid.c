@@ -68,7 +68,7 @@ unsigned int uidgids_get(struct uidgid *u, char *ug)
         return (0);
     }
     u->uid = pwd->pw_uid;
-    if (! g) {
+    if (!g) {
         u->gid[0] = pwd->pw_gid;
         u->gids = 1;
         return (1);

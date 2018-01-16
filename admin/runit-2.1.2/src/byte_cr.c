@@ -2,8 +2,8 @@
 
 #include "byte.h"
 
-void
-byte_copyr(register char *to, register unsigned int n, register char *from)
+void byte_copyr(register char *to, register unsigned int n,
+                register char *from)
 {
     to += n;
     from += n;

@@ -3,7 +3,9 @@
 #include <errno.h>
 #include "error.h"
 
-#define X(e,s) if (i == e) return s;
+#define X(e, s) \
+  if (i == e) \
+    return s;
 
 const char *error_str(int i)
 {

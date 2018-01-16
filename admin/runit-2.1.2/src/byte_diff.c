@@ -2,8 +2,7 @@
 
 #include "byte.h"
 
-int
-byte_diff(register char *s, register unsigned int n, register char *t)
+int byte_diff(register char *s, register unsigned int n, register char *t)
 {
     for (;;) {
         if (!n) {
@@ -43,6 +42,6 @@ byte_diff(register char *s, register unsigned int n, register char *t)
         ++t;
         --n;
     }
-    return ((int)(unsigned int)(unsigned char) * s)
-           - ((int)(unsigned int)(unsigned char) * t);
+    return ((int)(unsigned int)(unsigned char) * s) -
+           ((int)(unsigned int)(unsigned char) * t);
 }

@@ -19,15 +19,15 @@
 
 #define VERSION "$Id: 900314260c6d52c986c5357673bea2f3bd3f4698 $"
 
-#define FATAL   "fatal: "
-#define FAIL    "fail: "
-#define WARN    "warning: "
-#define OK      "ok: "
-#define RUN     "run: "
-#define FINISH  "finish: "
-#define DOWN    "down: "
+#define FATAL "fatal: "
+#define FAIL "fail: "
+#define WARN "warning: "
+#define OK "ok: "
+#define RUN "run: "
+#define FINISH "finish: "
+#define DOWN "down: "
 #define TIMEOUT "timeout: "
-#define KILL    "kill: "
+#define KILL "kill: "
 
 char *progname;
 char *action;
@@ -52,8 +52,7 @@ int curdir, fd, r;
 char svstatus[20];
 char sulong[FMT_ULONG];
 
-void
-usage(void)
+void usage(void)
 {
     if (!lsb) {
         strerr_die4x(100, "usage: ", progname, USAGE, "\n");
@@ -138,8 +137,7 @@ void flush2(const char *s)
     buffer_flush(buffer_2);
 }
 
-int
-svstatus_get(void)
+int svstatus_get(void)
 {
     if ((fd = open_write("supervise/ok")) == -1) {
         if (errno == error_nodevice) {
@@ -186,7 +184,7 @@ unsigned int svstatus_print(char *m)
         }
         normallyup = 1;
     }
-    pid = (unsigned char) svstatus[15];
+    pid = (unsigned char)svstatus[15];
     pid <<= 8;
     pid += (unsigned char)svstatus[14];
     pid <<= 8;
@@ -213,8 +211,9 @@ unsigned int svstatus_print(char *m)
         outs(sulong);
         outs(") ");
     }
-    buffer_put(buffer_1, sulong,
-               fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x - tstatus.x));
+    buffer_put(
+        buffer_1, sulong,
+        fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x - tstatus.x));
     outs("s");
     if (pid && !normallyup) {
         outs(", normally down");
@@ -267,7 +266,8 @@ int status(char *unused)
     }
     islog = 0;
     flush("");
-    if (lsb) switch (rc) {
+    if (lsb)
+        switch (rc) {
             case 1:
                 done(0);
             case 2:
@@ -278,8 +278,7 @@ int status(char *unused)
     return (rc);
 }
 
-int
-checkscript(void)
+int checkscript(void)
 {
     char *prog[2];
     struct stat s;
@@ -373,7 +372,8 @@ int check(char *a)
                 }
                 break;
             case 'C':
-                if (pid) if (!checkscript()) {
+                if (pid)
+                    if (!checkscript()) {
                         return (0);
                     }
                 break;
@@ -383,7 +383,8 @@ int check(char *a)
                     break;
                 }
                 tai_unpack(svstatus, &tstatus);
-                if ((tstart.sec.x > tstatus.x) || !pid || svstatus[18] || !checkscript()) {
+                if ((tstart.sec.x > tstatus.x) || !pid || svstatus[18] ||
+                    !checkscript()) {
                     return (0);
                 }
                 break;
@@ -418,7 +419,7 @@ int control(char *a)
     }
     if (svstatus[17] == *a)
         if (*a != 'd' || svstatus[18] == 1) {
-            return (0);   /* once w/o term */
+            return (0); /* once w/o term */
         }
     if ((fd = open_write("supervise/control")) == -1) {
         if (errno != error_nodevice) {
@@ -443,7 +444,8 @@ int main(int argc, char **argv)
     char *x;
 
     progname = *argv;
-    for (i = str_len(*argv); i; --i) if ((*argv)[i - 1] == '/') {
+    for (i = str_len(*argv); i; --i)
+        if ((*argv)[i - 1] == '/') {
             break;
         }
     *argv += i;
@@ -618,7 +620,8 @@ int main(int argc, char **argv)
             fail("unable to change to service directory");
             *service = 0;
         }
-        if (*service) if (act && (act(acts) == -1)) {
+        if (*service)
+            if (act && (act(acts) == -1)) {
                 *service = 0;
             }
         if (fchdir(curdir) == -1) {

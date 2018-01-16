@@ -3,8 +3,8 @@ int pmatch(const char *p, const char *s, unsigned int len)
 {
     for (;;) {
         char c = *p++;
-        if (! c) {
-            return (! len);
+        if (!c) {
+            return (!len);
         }
         switch (c) {
             case '*':
@@ -12,7 +12,7 @@ int pmatch(const char *p, const char *s, unsigned int len)
                     return (1);
                 }
                 for (;;) {
-                    if (! len) {
+                    if (!len) {
                         return (0);
                     }
                     if (*s == c) {
@@ -27,7 +27,7 @@ int pmatch(const char *p, const char *s, unsigned int len)
                     return (0);
                 }
                 for (;;) {
-                    if (! len) {
+                    if (!len) {
                         return (1);
                     }
                     if (*s != c) {
@@ -40,14 +40,14 @@ int pmatch(const char *p, const char *s, unsigned int len)
             /*
             case '?':
             if (*p == '?') {
-              if (*s != '?') return(0);
-              ++p;
+            if (*s != '?') return(0);
+            ++p;
             }
             ++s; --len;
             continue;
             */
             default:
-                if (! len) {
+                if (!len) {
                     return (0);
                 }
                 if (*s != c) {

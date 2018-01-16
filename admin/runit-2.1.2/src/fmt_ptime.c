@@ -8,7 +8,7 @@ unsigned int fmt_ptime2(char *s, struct taia *ta, char sep)
     time_t u;
 
     if (ta->sec.x < 4611686018427387914ULL) {
-        return (0);   /* impossible? */
+        return (0); /* impossible? */
     }
     u = ta->sec.x - 4611686018427387914ULL;
     if (!(t = gmtime((time_t *)&u))) {

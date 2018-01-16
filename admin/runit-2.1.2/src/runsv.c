@@ -60,8 +60,7 @@ int pidchanged = 1;
 int logpipe[2];
 char *dir;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -93,13 +92,11 @@ void warnx(char *m1, char *m2, char *m3)
 
 void stopservice(struct svdir *);
 
-void
-s_child(void)
+void s_child(void)
 {
     write(selfpipe[1], "", 1);
 }
-void
-s_term(void)
+void s_term(void)
 {
     sigterm = 1;
     write(selfpipe[1], "", 1); /* XXX */
@@ -253,7 +250,7 @@ unsigned int custom(struct svdir *s, char c)
                 warn2("unable to fork for ", a);
                 return (0);
             }
-            if (! pid) {
+            if (!pid) {
                 if (haslog && fd_copy(1, logpipe[1]) == -1) {
                     warn2("unable to setup stdout for ", a);
                 }
@@ -269,7 +266,7 @@ unsigned int custom(struct svdir *s, char c)
                 warn2("unable to wait for child ", a);
                 return (0);
             }
-            return (! wait_exitcode(w));
+            return (!wait_exitcode(w));
         }
     } else {
         if (errno == error_noent) {
@@ -281,7 +278,7 @@ unsigned int custom(struct svdir *s, char c)
 }
 void stopservice(struct svdir *s)
 {
-    if (s->pid && ! custom(s, 't')) {
+    if (s->pid && !custom(s, 't')) {
         kill(s->pid, SIGTERM);
         s->ctrl |= C_TERM;
         update_status(s);
@@ -318,7 +315,7 @@ void startservice(struct svdir *s)
     }
 
     if (s->pid != 0) {
-        stopservice(s);    /* should never happen */
+        stopservice(s); /* should never happen */
     }
     while ((p = fork()) == -1) {
         warn("unable to fork, sleeping");
@@ -395,20 +392,20 @@ int ctrl(struct svdir *s, char c)
             }
             break;
         case 'k': /* sig kill */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGKILL);
             }
             s->state = S_DOWN;
             break;
         case 'p': /* sig pause */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGSTOP);
             }
             s->ctrl |= C_PAUSE;
             update_status(s);
             break;
         case 'c': /* sig cont */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGCONT);
             }
             if (s->ctrl & C_PAUSE) {
@@ -424,32 +421,32 @@ int ctrl(struct svdir *s, char c)
             }
             break;
         case 'a': /* sig alarm */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGALRM);
             }
             break;
         case 'h': /* sig hup */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGHUP);
             }
             break;
         case 'i': /* sig int */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGINT);
             }
             break;
         case 'q': /* sig quit */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGQUIT);
             }
             break;
         case '1': /* sig usr1 */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGUSR1);
             }
             break;
         case '2': /* sig usr2 */
-            if ((s->state == S_RUN) && ! custom(s, c)) {
+            if ((s->state == S_RUN) && !custom(s, c)) {
                 kill(s->pid, SIGUSR2);
             }
             break;
@@ -465,7 +462,7 @@ int main(int argc, char **argv)
     char buf[256];
 
     progname = argv[0];
-    if (! argv[1] || argv[2]) {
+    if (!argv[1] || argv[2]) {
         usage();
     }
     dir = argv[1];
@@ -502,7 +499,7 @@ int main(int argc, char **argv)
             warn("unable to stat() ./log: ");
         }
     } else {
-        if (! S_ISDIR(s.st_mode)) {
+        if (!S_ISDIR(s.st_mode)) {
             warnx("./log", 0, ": not a directory.");
         } else {
             haslog = 1;
@@ -628,10 +625,10 @@ int main(int argc, char **argv)
         char ch;
 
         if (haslog)
-            if (! svd[1].pid && (svd[1].want == W_UP)) {
+            if (!svd[1].pid && (svd[1].want == W_UP)) {
                 startservice(&svd[1]);
             }
-        if (! svd[0].pid)
+        if (!svd[0].pid)
             if ((svd[0].want == W_UP) || (svd[0].state == S_FINISH)) {
                 startservice(&svd[0]);
             }

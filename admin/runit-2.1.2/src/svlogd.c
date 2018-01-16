@@ -97,13 +97,11 @@ struct logdir {
 } *dir;
 unsigned int dirn = 0;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(111, "usage: ", progname, USAGE, "\n");
 }
-void
-die_nomem(void)
+void die_nomem(void)
 {
     strerr_die2x(111, FATAL, "out of memory.");
 }
@@ -131,8 +129,7 @@ void warnx(char *m0, char *m1)
 {
     strerr_warn4(WARNING, m0, ": ", m1, 0);
 }
-void
-pause_nomem(void)
+void pause_nomem(void)
 {
     strerr_warn2(PAUSE, "out of memory.", 0);
     sleep(3);
@@ -152,7 +149,7 @@ unsigned int processorstart(struct logdir *ld)
 {
     int pid;
 
-    if (! ld->processor.len) {
+    if (!ld->processor.len) {
         return (0);
     }
     if (ld->ppid) {
@@ -162,7 +159,7 @@ unsigned int processorstart(struct logdir *ld)
     while ((pid = fork()) == -1) {
         pause2("unable to fork for processor", ld->name);
     }
-    if (! pid) {
+    if (!pid) {
         char *prog[4];
         int fd;
 
@@ -328,7 +325,9 @@ unsigned int rotate(struct logdir *ld)
         ld->tmax = 0;
         return (0);
     }
-    if (ld->ppid) while (! processorstop(ld));
+    if (ld->ppid)
+        while (!processorstop(ld))
+            ;
 
     while (fchdir(ld->fddir) == -1) {
         pause2("unable to change directory, want rotate", ld->name);
@@ -368,8 +367,7 @@ unsigned int rotate(struct logdir *ld)
         if (verbose) {
             tmp[0] = ' ';
             tmp[fmt_ulong(tmp + 1, ld->size) + 1] = 0;
-            strerr_warn6(INFO, "rename: ", ld->name, "/current ",
-                         ld->fnsave, tmp, 0);
+            strerr_warn6(INFO, "rename: ", ld->name, "/current ", ld->fnsave, tmp, 0);
         }
         while (rename("current", ld->fnsave) == -1) {
             pause2("unable to rename current", ld->name);
@@ -411,14 +409,16 @@ int buffer_pwrite(int n, char *s, unsigned int len)
             char oldest[FMT_PTIME];
             int j = 0;
 
-            while (fchdir((dir + n)->fddir) == -1)
+            while (fchdir((dir + n)->fddir) == -1) {
                 pause2("unable to change directory, want remove old logfile",
                        (dir + n)->name);
+            }
             oldest[0] = 'A';
             oldest[1] = oldest[27] = 0;
-            while (!(d = opendir(".")))
+            while (!(d = opendir("."))) {
                 pause2("unable to open directory, want remove old logfile",
                        (dir + n)->name);
+            }
             errno = 0;
             while ((f = readdir(d)))
                 if ((f->d_name[0] == '@') && (str_len(f->d_name) == 27)) {
@@ -427,8 +427,10 @@ int buffer_pwrite(int n, char *s, unsigned int len)
                         byte_copy(oldest, 27, f->d_name);
                     }
                 }
-            if (errno) warn2("unable to read directory, want remove old logfile",
-                                 (dir + n)->name);
+            if (errno) {
+                warn2("unable to read directory, want remove old logfile",
+                      (dir + n)->name);
+            }
             closedir(d);
             errno = ENOSPC;
             if (j > (dir + n)->nmin)
@@ -470,7 +472,7 @@ void logdir_close(struct logdir *ld)
     close(ld->fddir);
     ld->fddir = -1;
     if (ld->fdcur == -1) {
-        return;    /* impossible */
+        return; /* impossible */
     }
     buffer_flush(&ld->b);
     while (fsync(ld->fdcur) == -1) {
@@ -482,11 +484,11 @@ void logdir_close(struct logdir *ld)
     close(ld->fdcur);
     ld->fdcur = -1;
     if (ld->fdlock == -1) {
-        return;    /* impossible */
+        return; /* impossible */
     }
     close(ld->fdlock);
     ld->fdlock = -1;
-    while (! stralloc_copys(&ld->processor, "")) {
+    while (!stralloc_copys(&ld->processor, "")) {
         pause_nomem();
     }
 }
@@ -579,13 +581,13 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
     ld->match = '+';
     ld->udpaddr.sin_port = 0;
     ld->udponly = 0;
-    while (! stralloc_copys(&ld->prefix, "")) {
+    while (!stralloc_copys(&ld->prefix, "")) {
         pause_nomem();
     }
-    while (! stralloc_copys(&ld->inst, "")) {
+    while (!stralloc_copys(&ld->inst, "")) {
         pause_nomem();
     }
-    while (! stralloc_copys(&ld->processor, "")) {
+    while (!stralloc_copys(&ld->processor, "")) {
         pause_nomem();
     }
 
@@ -611,10 +613,10 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                 case '-':
                 case 'e':
                 case 'E':
-                    while (! stralloc_catb(&ld->inst, &sa.s[i], len)) {
+                    while (!stralloc_catb(&ld->inst, &sa.s[i], len)) {
                         pause_nomem();
                     }
-                    while (! stralloc_0(&ld->inst)) {
+                    while (!stralloc_0(&ld->inst)) {
                         pause_nomem();
                     }
                     break;
@@ -643,7 +645,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     if (ld->tmax) {
                         taia_uint(&ld->trotate, ld->tmax);
                         taia_add(&ld->trotate, &now, &ld->trotate);
-                        if (! tmaxflag || taia_less(&ld->trotate, &trotate)) {
+                        if (!tmaxflag || taia_less(&ld->trotate, &trotate)) {
                             trotate = ld->trotate;
                         }
                         tmaxflag = 1;
@@ -651,10 +653,10 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     break;
                 case '!':
                     if (len > 1) {
-                        while (! stralloc_copys(&ld->processor, &sa.s[i + 1])) {
+                        while (!stralloc_copys(&ld->processor, &sa.s[i + 1])) {
                             pause_nomem();
                         }
-                        while (! stralloc_0(&ld->processor)) {
+                        while (!stralloc_0(&ld->processor)) {
                             pause_nomem();
                         }
                     }
@@ -679,10 +681,10 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     break;
                 case 'p':
                     if (len > 1) {
-                        while (! stralloc_copys(&ld->prefix, &sa.s[i + 1])) {
+                        while (!stralloc_copys(&ld->prefix, &sa.s[i + 1])) {
                             pause_nomem();
                         }
-                        while (! stralloc_0(&ld->prefix)) {
+                        while (!stralloc_0(&ld->prefix)) {
                             pause_nomem();
                         }
                     }
@@ -755,7 +757,7 @@ void logdirs_reopen(void)
             ok = 1;
         }
     }
-    if (! ok) {
+    if (!ok) {
         fatalx("no functional log directories.");
     }
 }
@@ -890,13 +892,13 @@ int main(int argc, const char **argv)
         switch (opt) {
             case 'R':
                 replace = optarg;
-                if (! repl) {
+                if (!repl) {
                     repl = '_';
                 }
                 break;
             case 'r':
                 repl = *optarg;
-                if (! repl || *(optarg + 1)) {
+                if (!repl || *(optarg + 1)) {
                     usage();
                 }
                 break;
@@ -940,25 +942,25 @@ int main(int argc, const char **argv)
     }
     coe(fdwdir);
     dir = (struct logdir *)alloc(dirn * sizeof(struct logdir));
-    if (! dir) {
+    if (!dir) {
         die_nomem();
     }
     for (i = 0; i < dirn; ++i) {
         dir[i].fddir = -1;
         dir[i].fdcur = -1;
         dir[i].btmp = (char *)alloc(buflen * sizeof(char));
-        if (! dir[i].btmp) {
+        if (!dir[i].btmp) {
             die_nomem();
         }
         dir[i].ppid = 0;
     }
     databuf = (char *)alloc(buflen * sizeof(char));
-    if (! databuf) {
+    if (!databuf) {
         die_nomem();
     }
     buffer_init(&data, buffer_pread, 0, databuf, buflen);
     line = (char *)alloc(linemax * sizeof(char));
-    if (! line) {
+    if (!line) {
         die_nomem();
     }
     fndir = argv;
@@ -986,7 +988,7 @@ int main(int argc, const char **argv)
                 exitasap = 1;
                 break;
             }
-            if (! linelen && timestamp) {
+            if (!linelen && timestamp) {
                 taia_now(&now);
                 switch (timestamp) {
                     case 1:
@@ -1017,8 +1019,8 @@ int main(int argc, const char **argv)
             }
             line[linelen] = ch;
         }
-        if (exitasap && ! data.p) {
-            break;    /* data buffer is empty */
+        if (exitasap && !data.p) {
+            break; /* data buffer is empty */
         }
         for (i = 0; i < dirn; ++i)
             if (dir[i].fddir != -1) {
@@ -1061,25 +1063,25 @@ int main(int argc, const char **argv)
                         buffer_put(&dir[i].b, "\n", 1);
                         buffer_flush(&dir[i].b);
                     } else {
-                        while (! stralloc_copys(&sa, "")) {
+                        while (!stralloc_copys(&sa, "")) {
                             pause_nomem();
                         }
                         if (timestamp)
-                            while (! stralloc_cats(&sa, stamp)) {
+                            while (!stralloc_cats(&sa, stamp)) {
                                 pause_nomem();
                             }
                         if (dir[i].prefix.len)
-                            while (! stralloc_cats(&sa, dir[i].prefix.s)) {
+                            while (!stralloc_cats(&sa, dir[i].prefix.s)) {
                                 pause_nomem();
                             }
-                        while (! stralloc_catb(&sa, line, linelen)) {
+                        while (!stralloc_catb(&sa, line, linelen)) {
                             pause_nomem();
                         }
                         if (linelen == linemax)
-                            while (! stralloc_cats(&sa, "...")) {
+                            while (!stralloc_cats(&sa, "...")) {
                                 pause_nomem();
                             }
-                        while (! stralloc_append(&sa, "\n")) {
+                        while (!stralloc_append(&sa, "\n")) {
                             pause_nomem();
                         }
                         if (sendto(fdudp, sa.s, sa.len, 0,
@@ -1092,7 +1094,7 @@ int main(int argc, const char **argv)
                         close(fdudp);
                     }
                 }
-                if (! dir[i].udponly) {
+                if (!dir[i].udponly) {
                     if (timestamp) {
                         buffer_puts(&dir[i].b, stamp);
                     }
@@ -1116,7 +1118,7 @@ int main(int argc, const char **argv)
                         if (dir[i].match != '+') {
                             continue;
                         }
-                        if (! dir[i].udponly) {
+                        if (!dir[i].udponly) {
                             buffer_PUTC(&dir[i].b, ch);
                         }
                     }
@@ -1126,7 +1128,7 @@ int main(int argc, const char **argv)
                 if (dir[i].match != '+') {
                     continue;
                 }
-                if (! dir[i].udponly) {
+                if (!dir[i].udponly) {
                     ch = '\n';
                     buffer_PUTC(&dir[i].b, ch);
                     buffer_flush(&dir[i].b);
@@ -1135,7 +1137,9 @@ int main(int argc, const char **argv)
     }
 
     for (i = 0; i < dirn; ++i) {
-        if (dir[i].ppid) while (! processorstop(&dir[i]));
+        if (dir[i].ppid)
+            while (!processorstop(&dir[i]))
+                ;
         logdir_close(&dir[i]);
     }
     _exit(0);

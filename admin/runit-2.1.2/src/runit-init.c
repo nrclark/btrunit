@@ -19,8 +19,7 @@ void usage(void)
     strerr_die4x(0, "usage: ", progname, USAGE, "\n");
 }
 
-void
-runit_halt(void)
+void runit_halt(void)
 {
     if (open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");
@@ -36,8 +35,7 @@ runit_halt(void)
     _exit(0);
 }
 
-void
-runit_reboot(void)
+void runit_reboot(void)
 {
     if (open_trunc(STOPIT) == -1) {
         strerr_die4sys(111, FATAL, "unable to create ", STOPIT, ": ");
@@ -72,7 +70,7 @@ int main(int argc, const char *const *argv, char *const *envp)
         strerr_die4sys(111, FATAL, "unable to start ", prog[0], ": ");
     }
 
-    if (! *argv || ! **argv) {
+    if (!*argv || ! **argv) {
         usage();
     }
     switch (**argv) {

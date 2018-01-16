@@ -48,7 +48,8 @@ void pathexec_run(const char *file, const char *const *argv,
         execve(tmp.s, argv, envp);
         if (errno != error_noent) {
             savederrno = errno;
-            if ((errno != error_acces) && (errno != error_perm) && (errno != error_isdir)) {
+            if ((errno != error_acces) && (errno != error_perm) &&
+                (errno != error_isdir)) {
                 return;
             }
         }

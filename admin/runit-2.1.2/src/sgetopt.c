@@ -37,7 +37,8 @@ int getopt(int argc, const char *const *argv, const char *opts)
         if (!optprogname) {
             optprogname = "";
         }
-        for (s = optprogname; *s; ++s) if (*s == '/') {
+        for (s = optprogname; *s; ++s)
+            if (*s == '/') {
                 optprogname = s + 1;
             }
     }

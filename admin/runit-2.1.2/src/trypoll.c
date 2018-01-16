@@ -4,8 +4,7 @@
 #include <fcntl.h>
 #include <poll.h>
 
-int
-main(void)
+int main(void)
 {
     struct pollfd x;
 

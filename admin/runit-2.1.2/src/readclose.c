@@ -13,7 +13,8 @@ int readclose_append(int fd, stralloc *sa, unsigned int bufsize)
             return -1;
         }
         r = read(fd, sa->s + sa->len, bufsize);
-        if (r == -1) if (errno == error_intr) {
+        if (r == -1)
+            if (errno == error_intr) {
                 continue;
             }
         if (r <= 0) {

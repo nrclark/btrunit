@@ -28,8 +28,7 @@ void warn(const char *s1, const char *s2, struct strerr *e)
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -75,7 +74,7 @@ int main(int argc, const char *const *argv)
         }
     }
     argv += optind;
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
 
@@ -89,10 +88,10 @@ int main(int argc, const char *const *argv)
                 fatal("unable to switch to starting directory");
             }
         if (chdir(*dir) == -1) {
-            continue;    /* bummer */
+            continue; /* bummer */
         }
         if ((fd = open_write("supervise/control")) == -1) {
-            continue;    /* bummer */
+            continue; /* bummer */
         }
         if (write(fd, "dx", 1 + doexit) != (1 + doexit)) {
             close(fd);
@@ -146,7 +145,7 @@ int main(int argc, const char *const *argv)
         pid <<= 8;
         pid += (unsigned char)status[12];
 
-        if (! doexit && ! pid) {
+        if (!doexit && !pid) {
             /* ok, service is down */
             if (verbose) {
                 strerr_warn3(INFO, *dir, ": down.", 0);
@@ -198,7 +197,7 @@ int main(int argc, const char *const *argv)
                 }
                 close(fd);
                 dir++;
-                if (! *dir) {
+                if (!*dir) {
                     _exit(111);
                 }
                 continue;

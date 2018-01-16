@@ -41,8 +41,7 @@ struct taia stamplog;
 int exitsoon = 0;
 int pgrp = 0;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -58,13 +57,11 @@ void warn3x(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsvdir ", svdir, ": warning: ", m1, m2, m3, 0);
 }
-void
-s_term(void)
+void s_term(void)
 {
     exitsoon = 1;
 }
-void
-s_hangup(void)
+void s_hangup(void)
 {
     exitsoon = 2;
 }
@@ -95,8 +92,7 @@ void runsv(int no, char *name)
     sv[no].pid = pid;
 }
 
-void
-runsvdir(void)
+void runsvdir(void)
 {
     DIR *dir;
     direntry *d;
@@ -120,13 +116,13 @@ runsvdir(void)
             errno = 0;
             continue;
         }
-        if (! S_ISDIR(s.st_mode)) {
+        if (!S_ISDIR(s.st_mode)) {
             continue;
         }
         for (i = 0; i < svnum; i++) {
             if ((sv[i].ino == s.st_ino) && (sv[i].dev == s.st_dev)) {
                 sv[i].isgone = 0;
-                if (! sv[i].pid) {
+                if (!sv[i].pid) {
                     runsv(i, d->d_name);
                 }
                 break;
@@ -157,7 +153,7 @@ runsvdir(void)
 
     /* SIGTERM removed runsv's */
     for (i = 0; i < svnum; i++) {
-        if (! sv[i].isgone) {
+        if (!sv[i].isgone) {
             continue;
         }
         if (sv[i].pid) {
@@ -168,8 +164,7 @@ runsvdir(void)
     }
 }
 
-int
-setup_log(void)
+int setup_log(void)
 {
     if ((rploglen = str_len(rplog)) < 7) {
         warn3x("log must have at least seven characters.", 0, 0);
@@ -207,7 +202,7 @@ int main(int argc, char **argv)
     int i;
 
     progname = *argv++;
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
     if (**argv == '-') {
@@ -217,7 +212,7 @@ int main(int argc, char **argv)
             case '-':
                 ++argv;
         }
-        if (! argv || ! *argv) {
+        if (!argv || !*argv) {
             usage();
         }
     }
@@ -271,8 +266,8 @@ int main(int argc, char **argv)
             taia_add(&stampcheck, &now, &deadline);
 
             if (stat(svdir, &s) != -1) {
-                if (check || \
-                    s.st_mtime != mtime || s.st_ino != ino || s.st_dev != dev) {
+                if (check || s.st_mtime != mtime || s.st_ino != ino ||
+                    s.st_dev != dev) {
                     /* svdir modified */
                     if (chdir(svdir) != -1) {
                         mtime = s.st_mtime;
@@ -326,7 +321,8 @@ int main(int argc, char **argv)
             case 1:
                 _exit(0);
             case 2:
-                for (i = 0; i < svnum; i++) if (sv[i].pid) {
+                for (i = 0; i < svnum; i++)
+                    if (sv[i].pid) {
                         kill(sv[i].pid, SIGTERM);
                     }
                 _exit(111);

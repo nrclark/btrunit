@@ -5,18 +5,17 @@
 #include "error.h"
 
 #define ALIGNMENT 16 /* XXX: assuming that this alignment is enough */
-#define SPACE 2048 /* must be multiple of ALIGNMENT */
+#define SPACE 2048   /* must be multiple of ALIGNMENT */
 
 typedef union {
     char irrelevant[ALIGNMENT];
     double d;
 } aligned;
 static aligned realspace[SPACE / ALIGNMENT];
-#define space ((char *) realspace)
+#define space ((char *)realspace)
 static unsigned int avail = SPACE; /* multiple of ALIGNMENT; 0<=avail<=SPACE */
 
-/*@null@*//*@out@*/char *
-alloc(unsigned int n)
+/*@null@*/ /*@out@*/ char *alloc(unsigned int n)
 {
     char *x;
     n = ALIGNMENT + n - (n & (ALIGNMENT - 1)); /* XXX: could overflow */
@@ -31,12 +30,11 @@ alloc(unsigned int n)
     return x;
 }
 
-void
-alloc_free(char *x)
+void alloc_free(char *x)
 {
     if (x >= space)
         if (x < space + SPACE) {
-            return;    /* XXX: assuming that pointers are flat */
+            return; /* XXX: assuming that pointers are flat */
         }
     free(x);
 }

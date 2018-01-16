@@ -54,7 +54,7 @@ void pathexec_env_run(const char *file, const char *const *argv)
             ++elen;
         }
 
-    e = (const char **) alloc((elen + 1) * sizeof(char *));
+    e = (const char **)alloc((elen + 1) * sizeof(char *));
     if (!e) {
         return;
     }

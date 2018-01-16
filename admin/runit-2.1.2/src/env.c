@@ -3,7 +3,7 @@
 #include "str.h"
 #include "env.h"
 
-extern /*@null@*/char *env_get(const char *s)
+extern /*@null@*/ char *env_get(const char *s)
 {
     int i;
     unsigned int len;

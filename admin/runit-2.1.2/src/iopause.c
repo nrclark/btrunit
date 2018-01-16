@@ -54,7 +54,7 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
                 continue;
             }
             if (fd >= 8 * sizeof(fd_set)) {
-                continue;    /*XXX*/
+                continue; /*XXX*/
             }
 
             if (fd >= nfds) {
@@ -71,7 +71,7 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
         tv.tv_sec = millisecs / 1000;
         tv.tv_usec = 1000 * (millisecs % 1000);
 
-        if (select(nfds, &rfds, &wfds, (fd_set *) 0, &tv) <= 0) {
+        if (select(nfds, &rfds, &wfds, (fd_set *)0, &tv) <= 0) {
             return;
         }
         /* XXX: for EBADF, could seek out and destroy the bad descriptor */
@@ -82,7 +82,7 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
                 continue;
             }
             if (fd >= 8 * sizeof(fd_set)) {
-                continue;    /*XXX*/
+                continue; /*XXX*/
             }
 
             if (x[i].events & IOPAUSE_READ)
@@ -94,8 +94,6 @@ void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
                     x[i].revents |= IOPAUSE_WRITE;
                 }
         }
-
     }
 #endif
-
 }

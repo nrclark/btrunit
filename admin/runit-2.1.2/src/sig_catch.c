@@ -11,7 +11,7 @@ void sig_catch(int sig, void (*f)())
     sa.sa_handler = f;
     sa.sa_flags = 0;
     sigemptyset(&sa.sa_mask);
-    sigaction(sig, &sa, (struct sigaction *) 0);
+    sigaction(sig, &sa, (struct sigaction *)0);
 #else
     signal(sig, f); /* won't work under System V, even nowadays---dorks */
 #endif

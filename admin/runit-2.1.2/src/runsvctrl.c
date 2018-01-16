@@ -13,8 +13,7 @@
 char *progname;
 unsigned int rc = 0;
 
-void
-usage(void)
+void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
@@ -61,7 +60,7 @@ int main(int argc, char **argv)
 
     progname = *argv++;
 
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
 
@@ -87,7 +86,7 @@ int main(int argc, char **argv)
             usage();
     }
     dir = ++argv;
-    if (! dir || ! *dir) {
+    if (!dir || !*dir) {
         usage();
     }
 

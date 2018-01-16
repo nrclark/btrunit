@@ -11,6 +11,6 @@ extern unsigned int str_chr(const char *, int);
 extern unsigned int str_rchr(const char *, int);
 extern int str_start(const char *, const char *);
 
-#define str_equal(s,t) (!str_diff((s),(t)))
+#define str_equal(s, t) (!str_diff((s), (t)))
 
 #endif

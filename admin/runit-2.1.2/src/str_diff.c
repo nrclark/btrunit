@@ -44,6 +44,6 @@ int str_diff(register const char *s, register const char *t)
         ++s;
         ++t;
     }
-    return ((int)(unsigned int)(unsigned char) x)
-           - ((int)(unsigned int)(unsigned char) * t);
+    return ((int)(unsigned int)(unsigned char)x) -
+           ((int)(unsigned int)(unsigned char) * t);
 }

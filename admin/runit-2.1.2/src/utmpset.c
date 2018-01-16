@@ -120,15 +120,17 @@ int main(int argc, const char *const *argv, const char *const *envp)
     }
     argv += optind;
 
-    if (! argv || ! *argv) {
+    if (!argv || !*argv) {
         usage();
     }
-    if (utmp_logout(*argv) == -1)
+    if (utmp_logout(*argv) == -1) {
         strerr_die4x(111, WARNING, "unable to logout line ", *argv,
                      " in utmp: no such entry");
+    }
     if (wtmp)
-        if (wtmp_logout(*argv) == -1)
-            strerr_die4sys(111, WARNING,
-                           "unable to logout line ", *argv, " in wtmp: ");
+        if (wtmp_logout(*argv) == -1) {
+            strerr_die4sys(111, WARNING, "unable to logout line ", *argv,
+                           " in wtmp: ");
+        }
     _exit(0);
 }

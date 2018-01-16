@@ -2,8 +2,7 @@
 
 #include "byte.h"
 
-unsigned int
-byte_rchr(char *s, register unsigned int n, int c)
+unsigned int byte_rchr(char *s, register unsigned int n, int c)
 {
     register char ch;
     register char *t;

@@ -22,11 +22,7 @@
 #define WARNING "- runit: warning: "
 #define FATAL "- runit: fatal: "
 
-const char *const stage[3] = {
-    "/etc/runit/1",
-    "/etc/runit/2",
-    "/etc/runit/3"
-};
+const char *const stage[3] = {"/etc/runit/1", "/etc/runit/2", "/etc/runit/3"};
 
 int selfpipe[2];
 int sigc = 0;
@@ -112,8 +108,8 @@ int main(int argc, const char *const *argv, char *const *envp)
     for (st = 0; st < 3; st++) {
         /* if (st == 2) logwtmp("~", "reboot", ""); */
         while ((pid = fork()) == -1) {
-            strerr_warn4(FATAL, "unable to fork for \"", stage[st], "\" pausing: ",
-                         &strerr_sys);
+            strerr_warn4(FATAL, "unable to fork for \"", stage[st],
+                         "\" pausing: ", &strerr_sys);
             sleep(5);
         }
         if (!pid) {
@@ -175,7 +171,8 @@ int main(int argc, const char *const *argv, char *const *envp)
             sig_block(sig_child);
             sig_block(sig_int);
 
-            while (read(selfpipe[0], &ch, 1) == 1) {}
+            while (read(selfpipe[0], &ch, 1) == 1) {
+            }
             while ((child = wait_nohang(&wstat)) > 0)
                 if (child == pid) {
                     break;
@@ -229,7 +226,7 @@ int main(int argc, const char *const *argv, char *const *envp)
             }
 
             /* sig? */
-            if (!sigc  && !sigi) {
+            if (!sigc && !sigi) {
 #ifdef DEBUG
                 strerr_warn2(WARNING, "poll: ", &strerr_sys);
 #endif
@@ -252,7 +249,7 @@ int main(int argc, const char *const *argv, char *const *envp)
                 if (!pid2) {
                     /* child */
                     strerr_warn3(INFO, "enter stage: ", prog[0], 0);
-                    execve(*prog, (char *const *) prog, envp);
+                    execve(*prog, (char *const *)prog, envp);
                     strerr_die4sys(0, FATAL, "unable to start child: ", prog[0], ": ");
                 }
                 if (wait_pid(&wstat, pid2) == -1) {
@@ -298,8 +295,8 @@ int main(int argc, const char *const *argv, char *const *envp)
                 }
                 if (pid) {
                     /* still there */
-                    strerr_warn2(WARNING,
-                                 "stage 2 not terminated, sending sigkill...", 0);
+                    strerr_warn2(WARNING, "stage 2 not terminated, sending sigkill...",
+                                 0);
                     kill(pid, 9);
                     if (wait_pid(&wstat, pid) == -1) {
                         strerr_warn2(WARNING, "wait_pid: ", &strerr_sys);
@@ -333,7 +330,7 @@ int main(int argc, const char *const *argv, char *const *envp)
 
     pid = fork();
     switch (pid) {
-        case  0:
+        case 0:
         case -1:
             if ((stat(REBOOT, &s) != -1) && (s.st_mode & S_IXUSR)) {
                 strerr_warn2(INFO, "system reboot.", 0);
@@ -368,7 +365,8 @@ int main(int argc, const char *const *argv, char *const *envp)
             break;
         default:
             sig_unblock(sig_child);
-            while (wait_pid(0, pid) == -1);
+            while (wait_pid(0, pid) == -1)
+                ;
     }
 #endif
 
