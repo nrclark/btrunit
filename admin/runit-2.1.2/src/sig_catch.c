@@ -2,11 +2,11 @@
 
 #include <signal.h>
 #include "sig.h"
-#include "hassgact.h"
+#include "config.h"
 
 void sig_catch(int sig, void (*f)())
 {
-#ifdef HASSIGACTION
+#ifdef HAVE_SIGACTION
     struct sigaction sa;
     sa.sa_handler = f;
     sa.sa_flags = 0;

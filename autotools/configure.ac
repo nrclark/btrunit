@@ -62,9 +62,11 @@ AC_TYPE_OFF_T
 AC_FUNC_FORK
 AC_FUNC_GETGROUPS
 AC_FUNC_MALLOC
-AC_FUNC_WAIT3
+
 AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo \
-                select socket flock sigprocmask])
+                select socket flock sigprocmask sigaction waitpid])
+
+AS_IF([test "x$ac_cv_func_waitpid" = xyes],,[AC_FUNC_WAIT3])
 
 AC_HEADER_DIRENT
 

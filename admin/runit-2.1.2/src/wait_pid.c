@@ -3,9 +3,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "error.h"
-#include "haswaitp.h"
+#include "config.h"
 
-#ifdef HASWAITPID
+#ifdef HAVE_WAITPID
 
 int wait_pid(int *wstat, int pid)
 {
