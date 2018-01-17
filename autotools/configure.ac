@@ -46,6 +46,8 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 
+AC_TYPE_MODE_T
+
 #------------------------- Run Basic Feature Checks  --------------------------#
 
 AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h utmp.h utmpx.h])
@@ -59,7 +61,7 @@ AC_FUNC_FORK
 AC_FUNC_GETGROUPS
 AC_FUNC_MALLOC
 AC_FUNC_WAIT3
-AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo select socket])
+AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo select socket flock])
 
 AC_HEADER_DIRENT
 

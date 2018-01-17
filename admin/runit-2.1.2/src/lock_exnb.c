@@ -3,10 +3,11 @@
 #include <sys/types.h>
 #include <sys/file.h>
 #include <fcntl.h>
-#include "hasflock.h"
+
+#include "config.h"
 #include "lock.h"
 
-#ifdef HASFLOCK
+#ifdef HAVE_FLOCK
 int lock_exnb(int fd)
 {
     return flock(fd, LOCK_EX | LOCK_NB);
