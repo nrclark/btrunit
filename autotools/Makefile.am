@@ -21,8 +21,8 @@ src/byte_chr.c src/byte_copy.c src/byte_cr.c src/byte_diff.c src/byte_rchr.c \
 src/fmt_uint.c src/fmt_uint0.c src/fmt_ulong.c src/scan_ulong.c src/str_chr.c \
 src/str_diff.c src/str_len.c src/str_start.c
 
-#LDADD = libunix.la
+LDADD = libunix.la libbyte.la
 #bin_PROGRAMS = chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset
-#bin_PROGRAMS = chpst
-#ubcrypt_SOURCES = ubcrypt.c ubcrypt_strings.h
+bin_PROGRAMS = chpst
+chpst_SOURCES = src/chpst.c src/uidgid.c
 
