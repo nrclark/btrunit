@@ -5,9 +5,9 @@
 #include <netinet/in.h>
 #include <time.h>
 #include <sys/time.h>
-#include <dirent.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "dirent_config.h"
 #include "pmatch.h"
 #include "fmt_ptime.h"
 #include "alloc.h"
@@ -27,7 +27,6 @@
 #include "str.h"
 #include "byte.h"
 #include "scan.h"
-#include "direntry.h"
 #include "taia.h"
 #include "fmt.h"
 #include "ndelay.h"
@@ -309,7 +308,7 @@ unsigned int processorstop(struct logdir *ld)
 void rmoldest(struct logdir *ld)
 {
     DIR *d;
-    direntry *f;
+    struct dirent *f;
     char oldest[FMT_PTIME];
     int n = 0;
 
@@ -463,7 +462,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
     while ((i = write((dir + n)->fdcur, s, len)) == -1) {
         if ((errno == ENOSPC) && ((dir + n)->nmin < (dir + n)->nmax)) {
             DIR *d;
-            direntry *f;
+            struct dirent *f;
             char oldest[FMT_PTIME];
             int j = 0;
 

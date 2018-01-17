@@ -18,7 +18,7 @@
 #include "byte.h"
 #include "open.h"
 #include "openreadclose.h"
-#include "direntry.h"
+#include "dirent_config.h"
 
 #define USAGE_MAIN \
     " [-vP012] [-u user[:group]] [-U user[:group]] [-b argv0] [-e dir] [-/ " \
@@ -158,7 +158,7 @@ void edir(const char *dirname)
 {
     int wdir;
     DIR *dir;
-    direntry *d;
+    struct dirent *d;
     int i;
 
     if ((wdir = open_read(".")) == -1) {

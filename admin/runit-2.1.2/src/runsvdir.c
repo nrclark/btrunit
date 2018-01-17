@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <signal.h>
-#include "direntry.h"
+#include "dirent_config.h"
 #include "strerr.h"
 #include "error.h"
 #include "wait.h"
@@ -99,7 +99,7 @@ void runsv(int no, char *name)
 void runsvdir(void)
 {
     DIR *dir;
-    direntry *d;
+    struct dirent *d;
     int i;
     struct stat s;
 
