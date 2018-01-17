@@ -1,3 +1,5 @@
+*.o
+*.lo
 alloc.c
 alloc.h
 alloc_re.c
