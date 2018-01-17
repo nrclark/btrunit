@@ -2,11 +2,11 @@
 
 #include <signal.h>
 #include "sig.h"
-#include "hassgprm.h"
+#include "config.h"
 
 void sig_block(int sig)
 {
-#ifdef HASSIGPROCMASK
+#ifdef HAVE_SIGPROCMASK
     sigset_t ss;
     sigemptyset(&ss);
     sigaddset(&ss, sig);
@@ -18,7 +18,7 @@ void sig_block(int sig)
 
 void sig_unblock(int sig)
 {
-#ifdef HASSIGPROCMASK
+#ifdef HAVE_SIGPROCMASK
     sigset_t ss;
     sigemptyset(&ss);
     sigaddset(&ss, sig);
@@ -30,7 +30,7 @@ void sig_unblock(int sig)
 
 void sig_blocknone(void)
 {
-#ifdef HASSIGPROCMASK
+#ifdef HAVE_SIGPROCMASK
     sigset_t ss;
     sigemptyset(&ss);
     sigprocmask(SIG_SETMASK, &ss, (sigset_t *)0);

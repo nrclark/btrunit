@@ -63,7 +63,8 @@ AC_FUNC_FORK
 AC_FUNC_GETGROUPS
 AC_FUNC_MALLOC
 AC_FUNC_WAIT3
-AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo select socket flock])
+AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo \
+                select socket flock sigprocmask])
 
 AC_HEADER_DIRENT
 

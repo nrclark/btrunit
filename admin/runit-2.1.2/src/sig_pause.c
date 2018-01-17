@@ -2,11 +2,11 @@
 
 #include <signal.h>
 #include "sig.h"
-#include "hassgprm.h"
+#include "config.h"
 
 void sig_pause(void)
 {
-#ifdef HASSIGPROCMASK
+#ifdef HAVE_SIGPROCMASK
     sigset_t ss;
     sigemptyset(&ss);
     sigsuspend(&ss);
