@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 --install
 
-lib_LTLIBRARIES = libunix.la libbyte.la
+lib_LTLIBRARIES = libunix.la libbyte.la libtime.la
 
 libunix_la_LDFLAGS = -release @LIB_RELEASE@
 libunix_la_SOURCES = \
@@ -21,8 +21,29 @@ src/byte_chr.c src/byte_copy.c src/byte_cr.c src/byte_diff.c src/byte_rchr.c \
 src/fmt_uint.c src/fmt_uint0.c src/fmt_ulong.c src/scan_ulong.c src/str_chr.c \
 src/str_diff.c src/str_len.c src/str_start.c
 
-LDADD = libunix.la libbyte.la
-#bin_PROGRAMS = chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset
-bin_PROGRAMS = chpst
-chpst_SOURCES = src/chpst.c src/uidgid.c
+libtime_la_LDFLAGS = -release @LIB_RELEASE@
+libtime_la_SOURCES = \
+src/iopause.c src/tai_now.c src/tai_pack.c src/tai_sub.c src/tai_unpack.c \
+src/taia_add.c src/taia_approx.c src/taia_frac.c src/taia_less.c src/taia_now.c \
+src/taia_pack.c src/taia_sub.c src/taia_uint.c
 
+LDADD = libunix.la libbyte.la libtime.la
+#bin_PROGRAMS = chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset
+#bin_PROGRAMS = chpst
+
+bin_PROGRAMS = runit runit-init runsv runsvdir runsvstat runsvctrl sv svwaitup svwaitdown utmpset runsvchdir svlogd chpst chkshsgr
+
+runit_SOURCES = src/runit.c
+runit_init_SOURCES = src/runit-init.c
+runsv_SOURCES = src/runsv.c
+runsvdir_SOURCES = src/runsvdir.c
+runsvstat_SOURCES = src/runsvstat.c
+runsvctrl_SOURCES = src/runsvctrl.c
+sv_SOURCES = src/sv.c
+svwaitup_SOURCES = src/svwaitup.c
+svwaitdown_SOURCES = src/svwaitdown.c
+utmpset_SOURCES = src/utmpset.c
+runsvchdir_SOURCES = src/runsvchdir.c
+svlogd_SOURCES = src/svlogd.c src/pmatch.c src/fmt_ptime.c
+chpst_SOURCES = src/chpst.c src/uidgid.c
+chkshsgr_SOURCES = src/chkshsgr.c

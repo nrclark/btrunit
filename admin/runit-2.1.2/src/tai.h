@@ -1,15 +1,18 @@
 /* Public domain. */
-
 #ifndef TAI_H
 #define TAI_H
 
-#include "uint64.h"
+#include "config.h"
+
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
 
 struct tai {
-    uint64 x;
+    uint64_t x;
 };
 
-#define tai_unix(t, u) ((void)((t)->x = 4611686018427387914ULL + (uint64)(u)))
+#define tai_unix(t, u) ((void)((t)->x = 4611686018427387914ULL + (uint64_t)(u)))
 
 extern void tai_now(struct tai *);
 
