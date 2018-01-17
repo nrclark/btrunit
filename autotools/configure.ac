@@ -50,7 +50,9 @@ AC_TYPE_MODE_T
 
 #------------------------- Run Basic Feature Checks  --------------------------#
 
-AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h utmp.h utmpx.h])
+AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/file.h \
+                  sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h \
+                  utmp.h utmpx.h grp.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_UID_T
