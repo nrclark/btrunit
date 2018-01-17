@@ -2,10 +2,11 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "hasmkffo.h"
+
+#include "config.h"
 #include "fifo.h"
 
-#ifdef HASMKFIFO
+#ifdef HAVE_MKFIFO
 int fifo_make(const char *fn, int mode)
 {
     return mkfifo(fn, mode);
