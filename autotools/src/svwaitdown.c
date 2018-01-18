@@ -72,7 +72,7 @@ int main(int argc, char *const *argv)
                 break;
 
             case 'V':
-                strerr_warn1(VERSION, 0);
+                strerr_warn1("Version: " VERSION, 0);
 
             case '?':
                 usage();
