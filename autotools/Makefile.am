@@ -31,7 +31,7 @@ LDADD = libunix.la libbyte.la libtime.la
 #bin_PROGRAMS = chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset
 #bin_PROGRAMS = chpst
 
-bin_PROGRAMS = runit runit-init runsv runsvdir runsvstat runsvctrl sv svwaitup svwaitdown utmpset runsvchdir svlogd chpst chkshsgr
+bin_PROGRAMS = runit runit-init runsv runsvdir runsvstat runsvctrl sv svwaitup svwaitdown utmpset runsvchdir svlogd chpst
 
 runit_SOURCES = src/runit.c
 runit_init_SOURCES = src/runit-init.c
@@ -46,4 +46,3 @@ utmpset_SOURCES = src/utmpset.c
 runsvchdir_SOURCES = src/runsvchdir.c
 svlogd_SOURCES = src/svlogd.c src/pmatch.c src/fmt_ptime.c
 chpst_SOURCES = src/chpst.c src/uidgid.c
-chkshsgr_SOURCES = src/chkshsgr.c
