@@ -1,7 +1,16 @@
 /* Public domain. */
 
+#include "config.h"
+
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#else
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
 #include "taia.h"
-#include "select.h"
 #include "iopause.h"
 
 void iopause(iopause_fd *x, unsigned int len, struct taia *deadline,
