@@ -15,7 +15,7 @@
 #define VERSION "$Id: 6cd3efc2e15e5e3d2fa60cd0c028e60958676ec7 $"
 
 const char *progname;
-const char *const *dir;
+char *const *dir;
 unsigned int rc = 0;
 
 void fatal(const char *m)
@@ -33,7 +33,7 @@ void usage(void)
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
 
-int main(int argc, const char *const *argv)
+int main(int argc, char *const *argv)
 {
     int opt;
     unsigned long sec = 600;

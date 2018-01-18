@@ -543,7 +543,7 @@ int main(int argc, char **argv)
         scan_ulong(x, &wait);
     }
 
-    while ((i = getopt(argc, (const char *const *)argv, "w:vV")) != opteof) {
+    while ((i = getopt(argc, (char *const *)argv, "w:vV")) != opteof) {
         switch (i) {
             case 'w':
                 scan_ulong(optarg, &wait);

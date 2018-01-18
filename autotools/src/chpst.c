@@ -57,7 +57,7 @@ void usage(void)
 
 char *set_user = 0;
 char *env_user = 0;
-const char *argv0 = 0;
+char *argv0 = 0;
 const char *env_dir = 0;
 unsigned int verbose = 0;
 unsigned int pgrp = 0;
@@ -416,14 +416,14 @@ void slimit(void)
 }
 
 /* argv[0] */
-void setuidgid(int, const char *const *);
-void envuidgid(int, const char *const *);
-void envdir(int, const char *const *);
-void pgrphack(int, const char *const *);
-void setlock(int, const char *const *);
-void softlimit(int, const char *const *);
+void setuidgid(int, char *const *);
+void envuidgid(int, char *const *);
+void envdir(int, char *const *);
+void pgrphack(int, char *const *);
+void setlock(int, char *const *);
+void softlimit(int, char *const *);
 
-int main(int argc, const char **argv)
+int main(int argc, char **argv)
 {
     int opt;
     int i;
@@ -717,7 +717,7 @@ void setuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETUIDGID, "\n");
 }
-void setuidgid(int argc, const char *const *argv)
+void setuidgid(int argc, char *const *argv)
 {
     const char *account;
 
@@ -738,7 +738,7 @@ void envuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVUIDGID, "\n");
 }
-void envuidgid(int argc, const char *const *argv)
+void envuidgid(int argc, char *const *argv)
 {
     const char *account;
 
@@ -759,7 +759,7 @@ void envdir_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVDIR, "\n");
 }
-void envdir(int argc, const char *const *argv)
+void envdir(int argc, char *const *argv)
 {
     const char *dir;
 
@@ -780,7 +780,7 @@ void pgrphack_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_PGRPHACK, "\n");
 }
-void pgrphack(int argc, const char *const *argv)
+void pgrphack(int argc, char *const *argv)
 {
     if (!*++argv) {
         pgrphack_usage();
@@ -795,7 +795,7 @@ void setlock_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETLOCK, "\n");
 }
-void setlock(int argc, const char *const *argv)
+void setlock(int argc, char *const *argv)
 {
     int opt;
     unsigned int delay = 0;
@@ -864,7 +864,7 @@ void getlarg(long *l)
 
     *l = ul;
 }
-void softlimit(int argc, const char *const *argv)
+void softlimit(int argc, char *const *argv)
 {
     int opt;
 

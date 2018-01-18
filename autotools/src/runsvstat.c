@@ -167,7 +167,7 @@ int main(int argc, char **argv)
 
     progname = *argv;
 
-    while ((opt = getopt(argc, (const char *const *)argv, "lV")) != opteof) {
+    while ((opt = getopt(argc, (char *const *)argv, "lV")) != opteof) {
         switch (opt) {
             case 'l':
                 showlog = 1;

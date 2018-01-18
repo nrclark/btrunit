@@ -16,7 +16,7 @@
 const char *progname;
 unsigned long sec = 2;
 unsigned int rc = 0;
-const char *const *dir;
+char *const *dir;
 
 void fatal(const char *m)
 {
@@ -33,7 +33,7 @@ void usage(void)
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
 
-int main(int argc, const char *const *argv)
+int main(int argc, char *const *argv)
 {
     int opt;
     int verbose = 0;

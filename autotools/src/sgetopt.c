@@ -27,7 +27,7 @@
 int opterr = 1;
 const char *optprogname = 0;
 
-int getopt(int argc, const char *const *argv, const char *opts)
+int getopt(int argc, char *const *argv, const char *opts)
 {
     int c;
     const char *s;

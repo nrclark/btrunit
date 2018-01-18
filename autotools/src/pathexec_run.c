@@ -8,8 +8,8 @@
 
 static stralloc tmp;
 
-void pathexec_run(const char *file, const char *const *argv,
-                  const char *const *envp)
+void pathexec_run(const char *file, char *const *argv,
+                  char *const *envp)
 {
     const char *path;
     unsigned int split;
