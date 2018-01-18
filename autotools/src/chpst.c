@@ -428,6 +428,7 @@ int main(int argc, char **argv)
     int opt;
     int i;
     unsigned long ul;
+    unsigned int result;
 
     progname = argv[0];
 
@@ -557,7 +558,8 @@ int main(int argc, char **argv)
             case 'n':
                 switch (*optarg) {
                     case '-':
-                        if (optarg[scan_ulong(++optarg, &ul)]) {
+                        result = scan_ulong(++optarg, &ul);
+                        if (optarg[result]) {
                             usage();
                         }
 
