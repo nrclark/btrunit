@@ -17,8 +17,6 @@
 #define USAGE " [-v] [-w sec] command service ..."
 #define USAGELSB " [-w sec] command"
 
-#define VERSION "$Id: 900314260c6d52c986c5357673bea2f3bd3f4698 $"
-
 #define FATAL "fatal: "
 #define FAIL "fail: "
 #define WARN "warning: "

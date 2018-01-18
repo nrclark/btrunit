@@ -12,8 +12,6 @@
 #define INFO "svwaitdown: "
 #define USAGE " [-v] [-t 1..6000] service ..."
 
-#define VERSION "$Id: 6cd3efc2e15e5e3d2fa60cd0c028e60958676ec7 $"
-
 const char *progname;
 char *const *dir;
 unsigned int rc = 0;
