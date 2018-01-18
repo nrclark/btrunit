@@ -98,6 +98,12 @@ AX_CHECK_FUNC_POLL
 
 # XXX Make FCNTL mandatory!
 
+AC_CHECK_TYPE([struct futmpx],
+[AC_DEFINE(HAVE_STRUCT_FUTMPX, 1, [Define to 1 if you have the 'struct futmpx' type])],
+[],
+[[#include <sys/types.h>
+#include <utmpx.h>]])
+
 #---------------------- Configure For Feature Selection  ----------------------#
 
 AH_TOP([#ifndef __CONFIG_H__
