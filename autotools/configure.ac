@@ -52,7 +52,7 @@ AC_TYPE_MODE_T
 
 AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/file.h \
                   sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h \
-                  utmp.h utmpx.h grp.h sys/select.h])
+                  utmp.h utmpx.h grp.h sys/select.h poll.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_UID_T
@@ -67,6 +67,11 @@ AC_HEADER_DIRENT
 
 AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo \
                 select socket flock sigprocmask sigaction waitpid])
+
+# Upstream runit uses a runtime test to see whether poll() works correctly
+# on files. This logic is encoded into a custom AX macro called below.
+
+AX_CHECK_FUNC_POLL
 
 # The wait3() function has been obsolete for a while now. However, legacy
 # runit does support it as an alternative to waitpid(). The generated
@@ -83,7 +88,15 @@ AC_SEARCH_LIBS(socket, [xnet socket])
 AS_IF([test "x$ac_cv_search_socket" = "x-lsocket"],
       [AS_VAR_APPEND([LIBS],[" -lnsl"])])
 
+#------------------------- Run Basic Feature Checks  --------------------------#
+
+# XXX Make FCNTL mandatory!
+
 #---------------------- Configure For Feature Selection  ----------------------#
+
+AH_TOP([#ifndef __CONFIG_H__
+#define __CONFIG_H__])
+AH_BOTTOM([#endif])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
