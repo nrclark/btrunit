@@ -620,7 +620,7 @@ int main(int argc, char **argv)
                 break;
 
             case 'V':
-                strerr_warn1("$Id: f279d44141c981dd7535a12260efcf1ef7beed26 $", 0);
+                strerr_warn1("Version: " VERSION, 0);
 
             case '?':
                 usage();

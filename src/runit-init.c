@@ -2,6 +2,8 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <unistd.h>
+
+#include "config.h"
 #include "runit.h"
 #include "strerr.h"
 #include "sig.h"
@@ -93,7 +95,7 @@ int main(int argc, char *const *argv, char *const *envp)
 
         case '-':
             if ((*argv)[1] == 'V') {
-                strerr_warn1("$Id: f075d98bf7dd17c893021f9572cbb970cdad8dcf $\n", 0);
+                strerr_warn1("Version: " VERSION, 0);
             }
 
         default:

@@ -105,9 +105,7 @@ int main(int argc, char *const *argv, char *const *envp)
     }
 
 #endif
-
-    strerr_warn3(INFO, "$Id: 25da3b86f7bed4038b8a039d2f8e8c9bbcf0822b $",
-                 ": booting.", 0);
+    strerr_warn3(INFO, "Version " VERSION, ": booting.", 0);
 
     /* runit */
     for (st = 0; st < 3; st++) {
