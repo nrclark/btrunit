@@ -1,0 +1,15 @@
+--suffix=none
+--style=linux
+--convert-tabs
+--add-brackets
+--add-braces
+--break-blocks
+--pad-header
+--align-reference=name
+--align-pointer=name
+--unpad-paren
+--pad-comma
+--pad-oper
+--indent=spaces=4
+--indent-switches
+--max-code-length=80
