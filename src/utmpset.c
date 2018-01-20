@@ -28,6 +28,7 @@ int utmp_logout(const char *line)
 {
     int fd;
     uw_tmp ut;
+    time_t result;
     int ok = -1;
 
     if ((fd = open(UW_TMP_UFILE, O_RDWR, 0)) < 0) {
@@ -46,9 +47,11 @@ int utmp_logout(const char *line)
         memset(ut.ut_name, 0, sizeof ut.ut_name);
         memset(ut.ut_host, 0, sizeof ut.ut_host);
 
-        if (time(&ut.ut_time) == -1) {
+        if (time(&result) == -1) {
             break;
         }
+
+        ut.ut_time = result;
 
 #ifdef DEAD_PROCESS
         ut.ut_type = DEAD_PROCESS;
@@ -74,6 +77,7 @@ int wtmp_logout(const char *line)
     int fd;
     int len;
     struct stat st;
+    time_t result;
     uw_tmp ut;
 
     if ((fd = open_append(UW_TMP_WFILE)) == -1) {
@@ -97,10 +101,12 @@ int wtmp_logout(const char *line)
 
     byte_copy(ut.ut_line, len, line);
 
-    if (time(&ut.ut_time) == -1) {
+    if (time(&result) == -1) {
         close(fd);
         return (-1);
     }
+
+    ut.ut_time = result;
 
 #ifdef DEAD_PROCESS
     ut.ut_type = DEAD_PROCESS;
