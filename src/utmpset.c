@@ -44,8 +44,8 @@ int utmp_logout(const char *line)
             continue;
         }
 
-        memset(ut.ut_name, 0, sizeof ut.ut_name);
-        memset(ut.ut_host, 0, sizeof ut.ut_host);
+        memset(ut.ut_name, 0, sizeof(ut.ut_name));
+        memset(ut.ut_host, 0, sizeof(ut.ut_host));
 
         if (time(&result) == -1) {
             break;
@@ -95,8 +95,8 @@ int wtmp_logout(const char *line)
 
     memset(&ut, 0, sizeof(uw_tmp));
 
-    if ((len = str_len(line)) > sizeof ut.ut_line) {
-        len = sizeof ut.ut_line - 2;
+    if ((len = str_len(line)) > sizeof(ut.ut_line)) {
+        len = sizeof(ut.ut_line) - 2;
     }
 
     byte_copy(ut.ut_line, len, line);

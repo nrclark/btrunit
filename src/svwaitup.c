@@ -113,10 +113,10 @@ int main(int argc, char *const *argv)
             continue;
         }
 
-        r = buffer_unixread(fd, status, sizeof status);
+        r = buffer_unixread(fd, status, sizeof(status));
         close(fd);
 
-        if (r < sizeof status) {
+        if (r < sizeof(status)) {
             if (r == -1) {
                 warn(*dir, "unable to read supervise/status: ", &strerr_sys);
             } else {

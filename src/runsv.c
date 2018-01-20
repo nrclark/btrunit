@@ -131,7 +131,7 @@ void update_status(struct svdir *s)
             return;
         }
 
-        buffer_init(&b, buffer_unixwrite, fd, bspace, sizeof bspace);
+        buffer_init(&b, buffer_unixwrite, fd, bspace, sizeof(bspace));
         spid[fmt_ulong(spid, (unsigned long)s->pid)] = 0;
 
         if (s->pid) {
@@ -156,7 +156,7 @@ void update_status(struct svdir *s)
         return;
     }
 
-    buffer_init(&b, buffer_unixwrite, fd, bspace, sizeof bspace);
+    buffer_init(&b, buffer_unixwrite, fd, bspace, sizeof(bspace));
 
     switch (s->state) {
         case S_DOWN:
@@ -236,7 +236,7 @@ void update_status(struct svdir *s)
         return;
     }
 
-    if ((l = write(fd, status, sizeof status)) == -1) {
+    if ((l = write(fd, status, sizeof(status))) == -1) {
         warn2("unable to write ", fstatusnew);
         close(fd);
         unlink(fstatusnew);
@@ -245,7 +245,7 @@ void update_status(struct svdir *s)
 
     close(fd);
 
-    if (l < sizeof status) {
+    if (l < sizeof(status)) {
         warnx("unable to write ", fstatusnew, ": partial write.");
         return;
     }
