@@ -14,6 +14,7 @@
 #define FATAL "init: fatal: "
 /* #define WARNING "init: warning: " */
 
+extern char *const *environ;
 const char *progname;
 
 void usage(void)
@@ -63,7 +64,7 @@ void runit_reboot(void)
     _exit(0);
 }
 
-int main(int argc, char *const *argv, char *const *envp)
+int main(int argc, char *const *argv)
 {
     const char *prog[2];
 
@@ -74,7 +75,7 @@ int main(int argc, char *const *argv, char *const *envp)
         prog[0] = "runit";
 
         /* kernel is starting init, runit does the job. */
-        execve(RUNIT, (char *const *)prog, envp);
+        execve(RUNIT, (char *const *)prog, environ);
 
         /* serious error */
         strerr_die4sys(111, FATAL, "unable to start ", prog[0], ": ");

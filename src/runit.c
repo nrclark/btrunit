@@ -24,6 +24,7 @@
 
 const char *const stage[3] = {"/etc/runit/1", "/etc/runit/2", "/etc/runit/3"};
 
+extern char *const *environ;
 int selfpipe[2];
 int sigc = 0;
 int sigi = 0;
@@ -43,7 +44,7 @@ void sig_child_handler(void)
     write(selfpipe[1], "", 1);
 }
 
-int main(int argc, char *const *argv, char *const *envp)
+int main(int argc, char *const *argv)
 {
     const char *prog[2];
     int pid, pid2;
@@ -151,7 +152,7 @@ int main(int argc, char *const *argv, char *const *envp)
             sig_unblock(sig_term);
 
             strerr_warn3(INFO, "enter stage: ", stage[st], 0);
-            execve(*prog, (char *const *)prog, envp);
+            execve(*prog, (char *const *)prog, environ);
             strerr_die4sys(0, FATAL, "unable to start child: ", stage[st], ": ");
         }
 
@@ -271,7 +272,7 @@ int main(int argc, char *const *argv, char *const *envp)
                 if (!pid2) {
                     /* child */
                     strerr_warn3(INFO, "enter stage: ", prog[0], 0);
-                    execve(*prog, (char *const *)prog, envp);
+                    execve(*prog, (char *const *)prog, environ);
                     strerr_die4sys(0, FATAL, "unable to start child: ", prog[0], ": ");
                 }
 
