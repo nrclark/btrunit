@@ -1,8 +1,9 @@
+#include <grp.h>
 #include <sys/types.h>
-#include <time.h>
-#include <sys/time.h>
 #include <sys/resource.h>
+#include <time.h>
 #include <unistd.h>
+
 #include "sgetopt.h"
 #include "error.h"
 #include "strerr.h"
