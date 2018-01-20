@@ -10,7 +10,7 @@ int wait_nohang(int *wstat)
     return waitpid(-1, wstat, WNOHANG);
 #else
 #ifndef HAVE_WAIT3
-    #error "No wait function could be found."
+#error "No wait function could be found."
 #endif
     return wait3(wstat, WNOHANG, (struct rusage *)0);
 #endif

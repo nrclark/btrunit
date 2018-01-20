@@ -559,6 +559,7 @@ int main(int argc, char **argv)
                 switch (*optarg) {
                     case '-':
                         result = scan_ulong(++optarg, &ul);
+
                         if (optarg[result]) {
                             usage();
                         }

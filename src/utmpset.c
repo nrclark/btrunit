@@ -131,6 +131,7 @@ int main(int argc, char *const *argv, char *const *envp)
 
             case 'V':
                 strerr_warn1("Version: " VERSION, 0);
+
             case '?':
                 usage();
         }
