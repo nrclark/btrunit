@@ -15,7 +15,7 @@ static aligned realspace[SPACE / ALIGNMENT];
 #define space ((char *)realspace)
 static unsigned int avail = SPACE; /* multiple of ALIGNMENT; 0<=avail<=SPACE */
 
-/*@null@*/ /*@out@*/ char *alloc(unsigned int n)
+char *alloc(unsigned int n)
 {
     char *x;
     n = ALIGNMENT + n - (n & (ALIGNMENT - 1)); /* XXX: could overflow */

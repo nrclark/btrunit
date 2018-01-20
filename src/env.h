@@ -5,6 +5,6 @@
 
 extern char **environ;
 
-extern /*@null@*/ char *env_get(const char *);
+extern char *env_get(const char *);
 
 #endif
