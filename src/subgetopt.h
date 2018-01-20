@@ -15,12 +15,12 @@
 
 #define SUBGETOPTDONE -1
 
-extern int subgetopt(int, char *const *, const char *);
-extern const char *subgetoptarg;
-extern int subgetoptind;
-extern int subgetoptpos;
-extern int subgetoptproblem;
-extern const char *subgetoptprogname;
-extern int subgetoptdone;
+int subgetopt(int, char *const *, const char *);
+const char *subgetoptarg;
+int subgetoptind;
+int subgetoptpos;
+int subgetoptproblem;
+const char *subgetoptprogname;
+int subgetoptdone;
 
 #endif

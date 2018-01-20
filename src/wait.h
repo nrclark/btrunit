@@ -3,10 +3,10 @@
 #ifndef WAIT_H
 #define WAIT_H
 
-extern int wait_pid();
-extern int wait_nohang();
-extern int wait_stop();
-extern int wait_stopnohang();
+int wait_pid();
+int wait_nohang();
+int wait_stop();
+int wait_stopnohang();
 
 #define wait_crashed(w) ((w)&127)
 #define wait_exitcode(w) ((w) >> 8)

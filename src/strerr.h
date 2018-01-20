@@ -11,9 +11,9 @@ struct strerr {
 };
 
 extern struct strerr strerr_sys;
-extern void strerr_sysinit(void);
+void strerr_sysinit(void);
 
-extern const char *strerr(const struct strerr *);
+const char *strerr(const struct strerr *);
 extern void strerr_warn(const char *, const char *, const char *, const char *,
                         const char *, const char *, const struct strerr *);
 extern void strerr_die(int, const char *, const char *, const char *,
