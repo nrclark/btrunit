@@ -212,7 +212,11 @@ void edir(const char *dirname)
         if (sa.len) {
             sa.len = byte_chr(sa.s, sa.len, '\n');
 
-            while (sa.len && (sa.s[sa.len - 1] == ' ' || sa.s[sa.len - 1] == '\t')) {
+            while (sa.len) {
+                if (sa.s[sa.len - 1] != ' ' && sa.s[sa.len - 1] != '\t') {
+                    break;
+                }
+
                 --sa.len;
             }
 
@@ -476,8 +480,13 @@ int main(int argc, char **argv)
         softlimit(argc, argv);
     }
 
-    while ((opt = getopt(argc, argv,
-                         "u:U:b:e:m:d:o:p:f:c:r:t:/:n:l:L:vP012V")) != opteof) {
+    while (1) {
+        opt = getopt(argc, argv, "u:U:b:e:m:d:o:p:f:c:r:t:/:n:l:L:vP012V");
+
+        if (opt == opteof) {
+            break;
+        }
+
         switch (opt) {
             case 'u':
                 set_user = (char *)optarg;
