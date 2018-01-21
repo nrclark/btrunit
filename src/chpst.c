@@ -35,22 +35,27 @@ void fatal(const char *m)
 {
     strerr_die3sys(111, FATAL, m, ": ");
 }
+
 void fatal2(const char *m0, const char *m1)
 {
     strerr_die5sys(111, FATAL, m0, ": ", m1, ": ");
 }
+
 void fatalx(const char *m0, const char *m1)
 {
     strerr_die4x(111, FATAL, m0, ": ", m1);
 }
+
 void warn(const char *m)
 {
     strerr_warn2(WARNING, m, 0);
 }
+
 void die_nomem(void)
 {
     strerr_die2x(111, FATAL, "out of memory.");
 }
+
 void usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_MAIN, "\n");
@@ -246,6 +251,7 @@ void slock_die(const char *m, const char *f, unsigned int x)
 
     _exit(0);
 }
+
 void slock(const char *f, unsigned int d, unsigned int x)
 {
     int fd;
@@ -285,6 +291,7 @@ void limit(int what, long l)
         fatal("unable to setrlimit()");
     }
 }
+
 void slimit(void)
 {
     if (limitd >= -1) {
@@ -721,6 +728,7 @@ void setuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETUIDGID, "\n");
 }
+
 void setuidgid(char *const *argv)
 {
     const char *account;
@@ -742,6 +750,7 @@ void envuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVUIDGID, "\n");
 }
+
 void envuidgid(char *const *argv)
 {
     const char *account;
@@ -763,6 +772,7 @@ void envdir_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVDIR, "\n");
 }
+
 void envdir(char *const *argv)
 {
     const char *dir;
@@ -784,6 +794,7 @@ void pgrphack_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_PGRPHACK, "\n");
 }
+
 void pgrphack(char *const *argv)
 {
     if (!*++argv) {
@@ -799,6 +810,7 @@ void setlock_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETLOCK, "\n");
 }
+
 void setlock(int argc, char *const *argv)
 {
     int opt;
@@ -853,6 +865,7 @@ void softlimit_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SOFTLIMIT, "\n");
 }
+
 void getlarg(long *l)
 {
     unsigned long ul;
@@ -868,6 +881,7 @@ void getlarg(long *l)
 
     *l = ul;
 }
+
 void softlimit(int argc, char *const *argv)
 {
     int opt;

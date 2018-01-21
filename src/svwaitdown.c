@@ -20,12 +20,14 @@ void fatal(const char *m)
 {
     strerr_die3sys(111, FATAL, m, ": ");
 }
+
 void warn(const char *s1, const char *s2, struct strerr *e)
 {
     dir++;
     rc++;
     strerr_warn3(WARN, s1, s2, e);
 }
+
 void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");

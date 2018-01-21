@@ -67,22 +67,27 @@ void fatal(char *m)
 {
     strerr_die5sys(111, "runsv ", dir, ": fatal: ", m, ": ");
 }
+
 void fatal2(char *m1, char *m2)
 {
     strerr_die6sys(111, "runsv ", dir, ": fatal: ", m1, m2, ": ");
 }
+
 void fatalx(char *m1, char *m2)
 {
     strerr_die5x(111, "runsv ", dir, ": fatal: ", m1, m2);
 }
+
 void warn(char *m)
 {
     strerr_warn5("runsv ", dir, ": warning: ", m, ": ", &strerr_sys);
 }
+
 void warn2(char *m1, char *m2)
 {
     strerr_warn6("runsv ", dir, ": warning: ", m1, m2, ": ", &strerr_sys);
 }
+
 void warnx(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsv ", dir, ": warning: ", m1, m2, m3, 0);
@@ -94,6 +99,7 @@ void s_child(void)
 {
     write(selfpipe[1], "", 1);
 }
+
 void s_term(void)
 {
     sigterm = 1;
@@ -258,6 +264,7 @@ void update_status(struct svdir *s)
         warn2("unable to rename status.new to ", fstatus);
     }
 }
+
 unsigned int custom(struct svdir *s, char c)
 {
     int pid;
@@ -312,6 +319,7 @@ unsigned int custom(struct svdir *s, char c)
 
     return (0);
 }
+
 void stopservice(struct svdir *s)
 {
     if (s->pid && !custom(s, 't')) {
@@ -406,6 +414,7 @@ void startservice(struct svdir *s)
     s->ctrl = C_NOOP;
     update_status(s);
 }
+
 int ctrl(struct svdir *s, char c)
 {
     switch (c) {

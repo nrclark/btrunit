@@ -44,22 +44,27 @@ void usage(void)
 {
     strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
+
 void fatal(char *m1, char *m2)
 {
     strerr_die6sys(100, "runsvdir ", svdir, ": fatal: ", m1, m2, ": ");
 }
+
 void warn(char *m1, char *m2)
 {
     strerr_warn6("runsvdir ", svdir, ": warning: ", m1, m2, ": ", &strerr_sys);
 }
+
 void warn3x(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsvdir ", svdir, ": warning: ", m1, m2, m3, 0);
 }
+
 void s_term(void)
 {
     exitsoon = 1;
 }
+
 void s_hangup(void)
 {
     exitsoon = 2;

@@ -34,11 +34,13 @@ void sig_cont_handler(void)
     sigc++;
     write(selfpipe[1], "", 1);
 }
+
 void sig_int_handler(void)
 {
     sigi++;
     write(selfpipe[1], "", 1);
 }
+
 void sig_child_handler(void)
 {
     write(selfpipe[1], "", 1);

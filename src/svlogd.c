@@ -99,44 +99,54 @@ void usage(void)
 {
     strerr_die4x(111, "usage: ", progname, USAGE, "\n");
 }
+
 void die_nomem(void)
 {
     strerr_die2x(111, FATAL, "out of memory.");
 }
+
 void fatal(char *m0)
 {
     strerr_die3sys(111, FATAL, m0, ": ");
 }
+
 void fatalx(char *m0)
 {
     strerr_die2x(111, FATAL, m0);
 }
+
 void fatal2(char *m0, char *m1)
 {
     strerr_die5sys(111, FATAL, m0, ": ", m1, ": ");
 }
+
 void warn(char *m0)
 {
     strerr_warn3(WARNING, m0, ": ", &strerr_sys);
 }
+
 void warn2(char *m0, char *m1)
 {
     strerr_warn5(WARNING, m0, ": ", m1, ": ", &strerr_sys);
 }
+
 void warnx(char *m0, char *m1)
 {
     strerr_warn4(WARNING, m0, ": ", m1, 0);
 }
+
 void pause_nomem(void)
 {
     strerr_warn2(PAUSE, "out of memory.", 0);
     sleep(3);
 }
+
 void pause1(char *m0)
 {
     strerr_warn3(PAUSE, m0, ": ", &strerr_sys);
     sleep(3);
 }
+
 void pause2(char *m0, char *m1)
 {
     strerr_warn5(PAUSE, m0, ": ", m1, ": ", &strerr_sys);
@@ -233,6 +243,7 @@ unsigned int processorstart(struct logdir *ld)
     ld->ppid = pid;
     return (1);
 }
+
 unsigned int processorstop(struct logdir *ld)
 {
     char f[28];
@@ -983,6 +994,7 @@ int buffer_pread(int fd, char *s, unsigned int len)
 
     return (i);
 }
+
 void sig_term_handler(void)
 {
     if (verbose) {
@@ -991,6 +1003,7 @@ void sig_term_handler(void)
 
     exitasap = 1;
 }
+
 void sig_child_handler(void)
 {
     pid_t pid;
@@ -1010,6 +1023,7 @@ void sig_child_handler(void)
         }
     }
 }
+
 void sig_alarm_handler(void)
 {
     if (verbose) {
@@ -1018,6 +1032,7 @@ void sig_alarm_handler(void)
 
     rotateasap = 1;
 }
+
 void sig_hangup_handler(void)
 {
     if (verbose) {
@@ -1056,6 +1071,7 @@ void logmatch(struct logdir *ld)
         i += byte_chr(&ld->inst.s[i], ld->inst.len - i, 0);
     }
 }
+
 int main(int argc, char *const *argv)
 {
     int i;

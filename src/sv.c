@@ -58,6 +58,7 @@ void usage(void)
 
     strerr_die4x(2, "usage: ", progname, USAGELSB, "\n");
 }
+
 void done(unsigned int e)
 {
     if (curdir != -1) {
@@ -66,16 +67,19 @@ void done(unsigned int e)
 
     _exit(e);
 }
+
 void fatal(char *m1)
 {
     strerr_warn3(FATAL, m1, ": ", &strerr_sys);
     done(lsb ? 151 : 100);
 }
+
 void fatal2(char *m1, char *m2)
 {
     strerr_warn4(FATAL, m1, m2, ": ", &strerr_sys);
     done(lsb ? 151 : 100);
 }
+
 void out(char *p, char *m1)
 {
     buffer_puts(buffer_1, p);
@@ -96,26 +100,31 @@ void out(char *p, char *m1)
     buffer_puts(buffer_1, "\n");
     buffer_flush(buffer_1);
 }
+
 void fail(char *m1)
 {
     ++rc;
     out(FAIL, m1);
 }
+
 void failx(char *m1)
 {
     errno = 0;
     fail(m1);
 }
+
 void warn(char *m1)
 {
     ++rc;
     out(WARN, m1);
 }
+
 void warnx(char *m1)
 {
     errno = 0;
     warn(m1);
 }
+
 void ok(char *m1)
 {
     errno = 0;
@@ -126,15 +135,18 @@ void outs(const char *s)
 {
     buffer_puts(buffer_1, s);
 }
+
 void flush(const char *s)
 {
     outs(s);
     buffer_flush(buffer_1);
 }
+
 void outs2(const char *s)
 {
     buffer_puts(buffer_2, s);
 }
+
 void flush2(const char *s)
 {
     outs2(s);
@@ -178,6 +190,7 @@ int svstatus_get(void)
 
     return (1);
 }
+
 unsigned int svstatus_print(char *m)
 {
     int pid;
@@ -262,6 +275,7 @@ unsigned int svstatus_print(char *m)
 
     return (pid ? 1 : 2);
 }
+
 int status(char *unused)
 {
     int rc;
@@ -482,6 +496,7 @@ int check(char *a)
     flush("\n");
     return (1);
 }
+
 int control(char *a)
 {
     if (svstatus_get() <= 0) {

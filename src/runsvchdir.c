@@ -21,10 +21,12 @@ void fatal(char *m1, char *m2)
 {
     strerr_die5sys(111, progname, ": fatal: ", m1, m2, ": ");
 }
+
 void fatalx(char *m1, char *m2)
 {
     strerr_die4x(111, progname, ": fatal: ", m1, m2);
 }
+
 void warn(char *m1, char *m2)
 {
     strerr_warn5(progname, ": fatal: ", m1, m2, ": ", &strerr_sys);

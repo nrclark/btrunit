@@ -72,6 +72,7 @@ int utmp_logout(const char *line)
     close(fd);
     return (ok);
 }
+
 int wtmp_logout(const char *line)
 {
     int fd;
