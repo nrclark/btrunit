@@ -160,7 +160,7 @@ void edir(const char *dirname)
     int wdir;
     DIR *dir;
     struct dirent *d;
-    int i;
+    unsigned int i;
 
     if ((wdir = open_read(".")) == -1) {
         fatal("unable to open current working directory");
@@ -275,7 +275,7 @@ void limit(int what, long l)
         fatal("unable to getrlimit()");
     }
 
-    if ((l < 0) || (l > r.rlim_max)) {
+    if ((l < 0) || (l > (long)r.rlim_max)) {
         r.rlim_cur = r.rlim_max;
     } else {
         r.rlim_cur = l;

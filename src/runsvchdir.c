@@ -33,8 +33,8 @@ void warn(char *m1, char *m2)
 int main(int argc, char **argv)
 {
     struct stat s;
-    int dev;
-    int ino;
+    dev_t dev;
+    ino_t ino;
 
     progname = *argv++;
 

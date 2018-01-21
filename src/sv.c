@@ -506,7 +506,7 @@ int control(char *a)
     r = write(fd, a, str_len(a));
     close(fd);
 
-    if (r != str_len(a)) {
+    if (r != (int)str_len(a)) {
         warn("unable to write to supervise/control");
         return (-1);
     }
@@ -517,6 +517,7 @@ int control(char *a)
 int main(int argc, char **argv)
 {
     unsigned int i, done;
+    int result;
     char *x;
 
     progname = *argv;
@@ -541,7 +542,11 @@ int main(int argc, char **argv)
         scan_ulong(x, &wait);
     }
 
-    while ((i = getopt(argc, (char *const *)argv, "w:vV")) != opteof) {
+    result = getopt(argc, (char *const *)argv, "w:vV");
+
+    while (result != opteof) {
+        i = result;
+
         switch (i) {
             case 'w':
                 scan_ulong(optarg, &wait);
@@ -556,6 +561,8 @@ int main(int argc, char **argv)
             case '?':
                 usage();
         }
+
+        result = getopt(argc, (char *const *)argv, "w:vV");
     }
 
     argv += optind;

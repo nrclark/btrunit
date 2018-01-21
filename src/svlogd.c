@@ -309,7 +309,7 @@ void rmoldest(struct logdir *ld)
     DIR *d;
     struct dirent *f;
     char oldest[FMT_PTIME];
-    int n = 0;
+    unsigned int n = 0;
 
     oldest[0] = 'A';
     oldest[1] = oldest[27] = 0;
@@ -463,7 +463,7 @@ int buffer_pwrite(int n, char *s, unsigned int len)
             DIR *d;
             struct dirent *f;
             char oldest[FMT_PTIME];
-            int j = 0;
+            unsigned int j = 0;
 
             while (fchdir((dir + n)->fddir) == -1) {
                 pause2("unable to change directory, want remove old logfile",
@@ -711,11 +711,11 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
             strerr_warn4(INFO, "read: ", ld->name, "/config", 0);
         }
 
-        for (i = 0; i + 1 < sa.len; ++i) {
-            len = byte_chr(&sa.s[i], sa.len - i, '\n');
-            sa.s[len + i] = 0;
+        for (unsigned int x = 0; (x + 1) < sa.len; ++x) {
+            len = byte_chr(&sa.s[x], sa.len - x, '\n');
+            sa.s[len + x] = 0;
 
-            switch (sa.s[i]) {
+            switch (sa.s[x]) {
                 case '\n':
                 case '#':
                     break;
@@ -724,7 +724,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                 case '-':
                 case 'e':
                 case 'E':
-                    while (!stralloc_catb(&ld->inst, &sa.s[i], len)) {
+                    while (!stralloc_catb(&ld->inst, &sa.s[x], len)) {
                         pause_nomem();
                     }
 
@@ -735,7 +735,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     break;
 
                 case 's':
-                    switch (sa.s[scan_ulong(&sa.s[i + 1], &ld->sizemax) + i + 1]) {
+                    switch (sa.s[scan_ulong(&sa.s[x + 1], &ld->sizemax) + x + 1]) {
                         case 'm':
                             ld->sizemax *= 1024;
 
@@ -746,15 +746,15 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     break;
 
                 case 'n':
-                    scan_ulong(&sa.s[i + 1], &ld->nmax);
+                    scan_ulong(&sa.s[x + 1], &ld->nmax);
                     break;
 
                 case 'N':
-                    scan_ulong(&sa.s[i + 1], &ld->nmin);
+                    scan_ulong(&sa.s[x + 1], &ld->nmin);
                     break;
 
                 case 't':
-                    switch (sa.s[scan_ulong(&sa.s[i + 1], &ld->tmax) + i + 1]) {
+                    switch (sa.s[scan_ulong(&sa.s[x + 1], &ld->tmax) + x + 1]) {
                         /* case 'd': ld->tmax *=24; */
                         case 'h':
                             ld->tmax *= 60;
@@ -778,7 +778,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
 
                 case '!':
                     if (len > 1) {
-                        while (!stralloc_copys(&ld->processor, &sa.s[i + 1])) {
+                        while (!stralloc_copys(&ld->processor, &sa.s[x + 1])) {
                             pause_nomem();
                         }
 
@@ -793,16 +793,16 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     ld->udponly = 1;
 
                 case 'u':
-                    if (!(c = ip4_scan(sa.s + i + 1, (char *)&ld->udpaddr.sin_addr))) {
-                        warnx("unable to scan ip address", sa.s + i + 1);
+                    if (!(c = ip4_scan(sa.s + x + 1, (char *)&ld->udpaddr.sin_addr))) {
+                        warnx("unable to scan ip address", sa.s + x + 1);
                         break;
                     }
 
-                    if (sa.s[i + 1 + c] == ':') {
-                        scan_ulong(sa.s + i + c + 2, &port);
+                    if (sa.s[x + 1 + c] == ':') {
+                        scan_ulong(sa.s + x + c + 2, &port);
 
                         if (port == 0) {
-                            warnx("unable to scan port number", sa.s + i + c + 2);
+                            warnx("unable to scan port number", sa.s + x + c + 2);
                             break;
                         }
                     } else {
@@ -814,7 +814,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
 
                 case 'p':
                     if (len > 1) {
-                        while (!stralloc_copys(&ld->prefix, &sa.s[i + 1])) {
+                        while (!stralloc_copys(&ld->prefix, &sa.s[x + 1])) {
                             pause_nomem();
                         }
 
@@ -826,7 +826,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     break;
             }
 
-            i += len;
+            x += len;
         }
     }
 
@@ -892,13 +892,12 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
 
 void logdirs_reopen(void)
 {
-    int l;
     int ok = 0;
 
     tmaxflag = 0;
     taia_now(&now);
 
-    for (l = 0; l < dirn; ++l) {
+    for (unsigned int l = 0; l < dirn; ++l) {
         logdir_close(&dir[l]);
 
         if (logdir_open(&dir[l], fndir[l])) {
@@ -914,14 +913,15 @@ void logdirs_reopen(void)
 int buffer_pread(int fd, char *s, unsigned int len)
 {
     int i;
+    unsigned int x;
 
-    for (i = 0; i < dirn; ++i) {
-        buffer_flush(&dir[i].b);
+    for (x = 0; x < dirn; ++x) {
+        buffer_flush(&dir[x].b);
     }
 
     if (rotateasap) {
-        for (i = 0; i < dirn; ++i) {
-            rotate(dir + i);
+        for (x = 0; x < dirn; ++x) {
+            rotate(dir + x);
         }
 
         rotateasap = 0;
@@ -944,14 +944,14 @@ int buffer_pread(int fd, char *s, unsigned int len)
     taia_uint(&trotate, 2744);
     taia_add(&trotate, &now, &trotate);
 
-    for (i = 0; i < dirn; ++i) {
-        if ((dir + i)->tmax) {
-            if (taia_less(&dir[i].trotate, &now)) {
-                rotate(dir + i);
+    for (x = 0; x < dirn; ++x) {
+        if ((dir + x)->tmax) {
+            if (taia_less(&dir[x].trotate, &now)) {
+                rotate(dir + x);
             }
 
-            if (taia_less(&dir[i].trotate, &trotate)) {
-                trotate = dir[i].trotate;
+            if (taia_less(&dir[x].trotate, &trotate)) {
+                trotate = dir[x].trotate;
             }
         }
     }
@@ -993,7 +993,8 @@ void sig_term_handler(void)
 }
 void sig_child_handler(void)
 {
-    int pid, l;
+    pid_t pid;
+    unsigned int l;
 
     if (verbose) {
         strerr_warn2(INFO, "sigchild received.", 0);
@@ -1028,7 +1029,7 @@ void sig_hangup_handler(void)
 
 void logmatch(struct logdir *ld)
 {
-    int i;
+    unsigned int i;
 
     ld->match = '+';
     ld->matcherr = 'E';
@@ -1058,6 +1059,7 @@ void logmatch(struct logdir *ld)
 int main(int argc, char *const *argv)
 {
     int i;
+    unsigned int x;
     int opt;
 
     progname = *argv;
@@ -1142,16 +1144,16 @@ int main(int argc, char *const *argv)
         die_nomem();
     }
 
-    for (i = 0; i < dirn; ++i) {
-        dir[i].fddir = -1;
-        dir[i].fdcur = -1;
-        dir[i].btmp = (char *)alloc(buflen * sizeof(char));
+    for (x = 0; x < dirn; ++x) {
+        dir[x].fddir = -1;
+        dir[x].fdcur = -1;
+        dir[x].btmp = (char *)alloc(buflen * sizeof(char));
 
-        if (!dir[i].btmp) {
+        if (!dir[x].btmp) {
             die_nomem();
         }
 
-        dir[i].ppid = 0;
+        dir[x].ppid = 0;
     }
 
     databuf = (char *)alloc(buflen * sizeof(char));
@@ -1239,19 +1241,19 @@ int main(int argc, char *const *argv)
             break; /* data buffer is empty */
         }
 
-        for (i = 0; i < dirn; ++i) {
-            if (dir[i].fddir != -1) {
-                if (dir[i].inst.len) {
-                    logmatch(&dir[i]);
+        for (x = 0; x < dirn; ++x) {
+            if (dir[x].fddir != -1) {
+                if (dir[x].inst.len) {
+                    logmatch(&dir[x]);
                 }
 
-                if (dir[i].matcherr == 'e') {
+                if (dir[x].matcherr == 'e') {
                     if (timestamp) {
                         buffer_puts(buffer_2, stamp);
                     }
 
-                    if (dir[i].prefix.len) {
-                        buffer_puts(buffer_2, dir[i].prefix.s);
+                    if (dir[x].prefix.len) {
+                        buffer_puts(buffer_2, dir[x].prefix.s);
                     }
 
                     buffer_put(buffer_2, line, linelen);
@@ -1264,11 +1266,11 @@ int main(int argc, char *const *argv)
                     buffer_flush(buffer_2);
                 }
 
-                if (dir[i].match != '+') {
+                if (dir[x].match != '+') {
                     continue;
                 }
 
-                if (dir[i].udpaddr.sin_port != 0) {
+                if (dir[x].udpaddr.sin_port != 0) {
                     fdudp = socket(AF_INET, SOCK_DGRAM, 0);
 
                     if (fdudp) {
@@ -1279,19 +1281,19 @@ int main(int argc, char *const *argv)
                     }
 
                     if (fdudp == -1) {
-                        buffer_puts(&dir[i].b, "warning: no udp socket available: ");
+                        buffer_puts(&dir[x].b, "warning: no udp socket available: ");
 
                         if (timestamp) {
-                            buffer_puts(&dir[i].b, stamp);
+                            buffer_puts(&dir[x].b, stamp);
                         }
 
-                        if (dir[i].prefix.len) {
-                            buffer_puts(&dir[i].b, dir[i].prefix.s);
+                        if (dir[x].prefix.len) {
+                            buffer_puts(&dir[x].b, dir[x].prefix.s);
                         }
 
-                        buffer_put(&dir[i].b, line, linelen);
-                        buffer_put(&dir[i].b, "\n", 1);
-                        buffer_flush(&dir[i].b);
+                        buffer_put(&dir[x].b, line, linelen);
+                        buffer_put(&dir[x].b, "\n", 1);
+                        buffer_flush(&dir[x].b);
                     } else {
                         while (!stralloc_copys(&sa, "")) {
                             pause_nomem();
@@ -1303,8 +1305,8 @@ int main(int argc, char *const *argv)
                             }
                         }
 
-                        if (dir[i].prefix.len) {
-                            while (!stralloc_cats(&sa, dir[i].prefix.s)) {
+                        if (dir[x].prefix.len) {
+                            while (!stralloc_cats(&sa, dir[x].prefix.s)) {
                                 pause_nomem();
                             }
                         }
@@ -1324,27 +1326,27 @@ int main(int argc, char *const *argv)
                         }
 
                         if (sendto(fdudp, sa.s, sa.len, 0,
-                                   (struct sockaddr *)&dir[i].udpaddr,
-                                   sizeof(dir[i].udpaddr)) != sa.len) {
-                            buffer_puts(&dir[i].b, "warning: failure sending through udp: ");
-                            buffer_put(&dir[i].b, sa.s, sa.len);
-                            buffer_flush(&dir[i].b);
+                                   (struct sockaddr *)&dir[x].udpaddr,
+                                   sizeof(dir[x].udpaddr)) != sa.len) {
+                            buffer_puts(&dir[x].b, "warning: failure sending through udp: ");
+                            buffer_put(&dir[x].b, sa.s, sa.len);
+                            buffer_flush(&dir[x].b);
                         }
 
                         close(fdudp);
                     }
                 }
 
-                if (!dir[i].udponly) {
+                if (!dir[x].udponly) {
                     if (timestamp) {
-                        buffer_puts(&dir[i].b, stamp);
+                        buffer_puts(&dir[x].b, stamp);
                     }
 
-                    if (dir[i].prefix.len) {
-                        buffer_puts(&dir[i].b, dir[i].prefix.s);
+                    if (dir[x].prefix.len) {
+                        buffer_puts(&dir[x].b, dir[x].prefix.s);
                     }
 
-                    buffer_put(&dir[i].b, line, linelen);
+                    buffer_put(&dir[x].b, line, linelen);
                 }
             }
         }
@@ -1360,42 +1362,42 @@ int main(int argc, char *const *argv)
                     break;
                 }
 
-                for (i = 0; i < dirn; ++i) {
-                    if (dir[i].fddir != -1) {
-                        if (dir[i].match != '+') {
+                for (x = 0; x < dirn; ++x) {
+                    if (dir[x].fddir != -1) {
+                        if (dir[x].match != '+') {
                             continue;
                         }
 
-                        if (!dir[i].udponly) {
-                            buffer_PUTC(&dir[i].b, ch);
+                        if (!dir[x].udponly) {
+                            buffer_PUTC(&dir[x].b, ch);
                         }
                     }
                 }
             }
         }
 
-        for (i = 0; i < dirn; ++i) {
-            if (dir[i].fddir != -1) {
-                if (dir[i].match != '+') {
+        for (x = 0; x < dirn; ++x) {
+            if (dir[x].fddir != -1) {
+                if (dir[x].match != '+') {
                     continue;
                 }
 
-                if (!dir[i].udponly) {
+                if (!dir[x].udponly) {
                     ch = '\n';
-                    buffer_PUTC(&dir[i].b, ch);
-                    buffer_flush(&dir[i].b);
+                    buffer_PUTC(&dir[x].b, ch);
+                    buffer_flush(&dir[x].b);
                 }
             }
         }
     }
 
-    for (i = 0; i < dirn; ++i) {
-        if (dir[i].ppid) {
-            while (!processorstop(&dir[i])) {
+    for (x = 0; x < dirn; ++x) {
+        if (dir[x].ppid) {
+            while (!processorstop(&dir[x])) {
             }
         }
 
-        logdir_close(&dir[i]);
+        logdir_close(&dir[x]);
     }
 
     _exit(0);

@@ -75,7 +75,7 @@ int utmp_logout(const char *line)
 int wtmp_logout(const char *line)
 {
     int fd;
-    int len;
+    unsigned int len;
     struct stat st;
     time_t result;
     uw_tmp ut;

@@ -116,7 +116,7 @@ int main(int argc, char *const *argv)
         r = buffer_unixread(fd, status, sizeof(status));
         close(fd);
 
-        if (r < sizeof(status)) {
+        if (r != sizeof(status)) {
             if (r == -1) {
                 warn(*dir, "unable to read supervise/status: ", &strerr_sys);
             } else {
@@ -149,7 +149,7 @@ int main(int argc, char *const *argv)
         tai_sub(&when, &now, &when);
         is = tai_approx(&when);
 
-        if (is >= sec) {
+        if (is >= (double)sec) {
             /* ok */
             if (verbose) {
                 sulong[fmt_ulong(sulong, is)] = 0;

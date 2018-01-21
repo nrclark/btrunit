@@ -103,6 +103,7 @@ void s_term(void)
 void update_status(struct svdir *s)
 {
     unsigned long l;
+    int result;
     int fd;
     char status[20];
     char bspace[64];
@@ -236,13 +237,16 @@ void update_status(struct svdir *s)
         return;
     }
 
-    if ((l = write(fd, status, sizeof(status))) == -1) {
+    result = write(fd, status, sizeof(status));
+
+    if (result == -1) {
         warn2("unable to write ", fstatusnew);
         close(fd);
         unlink(fstatusnew);
         return;
     }
 
+    l = result;
     close(fd);
 
     if (l < sizeof(status)) {
