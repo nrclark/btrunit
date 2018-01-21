@@ -110,5 +110,5 @@ AH_TOP([#ifndef __CONFIG_H__
 #define __CONFIG_H__])
 AH_BOTTOM([#endif])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
