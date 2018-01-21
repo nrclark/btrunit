@@ -9,4 +9,20 @@ libtool
 src/.deps/
 src/.dirstamp
 stamp-h1
+btrunit-*/
+btrunit-*.tar.gz
+
+*/chpst
+*/runit
+*/runit-init
+*/runsv
+*/runsvchdir
+*/runsvctrl
+*/runsvdir
+*/runsvstat
+*/sv
+*/svlogd
+*/svwaitdown
+*/svwaitup
+*/utmpset
 
