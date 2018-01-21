@@ -81,7 +81,7 @@ int main(int argc, char *const *argv)
         strerr_die4sys(111, FATAL, "unable to start ", prog[0], ": ");
     }
 
-    if (!*argv || ! **argv) {
+    if ((argc != 2) || !*argv || ! **argv) {
         usage();
     }
 

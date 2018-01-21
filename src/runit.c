@@ -44,7 +44,7 @@ void sig_child_handler(void)
     write(selfpipe[1], "", 1);
 }
 
-int main(int argc, char *const *argv)
+int main()
 {
     const char *prog[2];
     int pid, pid2;

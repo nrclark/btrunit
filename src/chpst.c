@@ -417,12 +417,12 @@ void slimit(void)
 }
 
 /* argv[0] */
-void setuidgid(int, char *const *);
-void envuidgid(int, char *const *);
-void envdir(int, char *const *);
-void pgrphack(int, char *const *);
-void setlock(int, char *const *);
-void softlimit(int, char *const *);
+void setuidgid(char *const *argv);
+void envuidgid(char *const *argv);
+void envdir(char *const *argv);
+void pgrphack(char *const *argv);
+void setlock(int argc, char *const *argv);
+void softlimit(int argc, char *const *argv);
 
 int main(int argc, char **argv)
 {
@@ -446,19 +446,19 @@ int main(int argc, char **argv)
 
     /* argv[0] */
     if (str_equal(progname, "setuidgid")) {
-        setuidgid(argc, argv);
+        setuidgid(argv);
     }
 
     if (str_equal(progname, "envuidgid")) {
-        envuidgid(argc, argv);
+        envuidgid(argv);
     }
 
     if (str_equal(progname, "envdir")) {
-        envdir(argc, argv);
+        envdir(argv);
     }
 
     if (str_equal(progname, "pgrphack")) {
-        pgrphack(argc, argv);
+        pgrphack(argv);
     }
 
     if (str_equal(progname, "setlock")) {
@@ -721,7 +721,7 @@ void setuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_SETUIDGID, "\n");
 }
-void setuidgid(int argc, char *const *argv)
+void setuidgid(char *const *argv)
 {
     const char *account;
 
@@ -742,7 +742,7 @@ void envuidgid_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVUIDGID, "\n");
 }
-void envuidgid(int argc, char *const *argv)
+void envuidgid(char *const *argv)
 {
     const char *account;
 
@@ -763,7 +763,7 @@ void envdir_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_ENVDIR, "\n");
 }
-void envdir(int argc, char *const *argv)
+void envdir(char *const *argv)
 {
     const char *dir;
 
@@ -784,7 +784,7 @@ void pgrphack_usage(void)
 {
     strerr_die4x(100, "usage: ", progname, USAGE_PGRPHACK, "\n");
 }
-void pgrphack(int argc, char *const *argv)
+void pgrphack(char *const *argv)
 {
     if (!*++argv) {
         pgrphack_usage();

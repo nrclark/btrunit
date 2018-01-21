@@ -265,6 +265,7 @@ unsigned int svstatus_print(char *m)
 int status(char *unused)
 {
     int rc;
+    (void)(unused);
 
     rc = svstatus_get();
 

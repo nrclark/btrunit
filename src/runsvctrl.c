@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     progname = *argv++;
 
-    if (!argv || !*argv) {
+    if ((argc < 3) || !argv || !*argv) {
         usage();
     }
 
