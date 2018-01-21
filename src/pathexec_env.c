@@ -106,5 +106,5 @@ void pathexec_env_run(const char *file, char *const *argv)
 
 void pathexec(char *const *argv)
 {
-    return pathexec_env_run(*argv, argv);
+    pathexec_env_run(*argv, argv);
 }
