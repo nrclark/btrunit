@@ -24,7 +24,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([src/sv.c])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([foreign subdir-objects serial-tests])
+AM_INIT_AUTOMAKE([foreign subdir-objects serial-tests -Wall -Werror])
 AC_USE_SYSTEM_EXTENSIONS
 
 #------------------------- Run Basic Feature Checks  --------------------------#

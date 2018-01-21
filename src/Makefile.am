@@ -36,3 +36,5 @@ utmpset_SOURCES = utmpset.c
 runsvchdir_SOURCES = runsvchdir.c
 svlogd_SOURCES = svlogd.c pmatch.c fmt_ptime.c
 chpst_SOURCES = chpst.c uidgid.c
+
+noinst_HEADERS = *.h
