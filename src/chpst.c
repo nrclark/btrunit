@@ -587,6 +587,7 @@ int main(int argc, char **argv)
 
                     case '+':
                         ++optarg;
+                        break;
 
                     default:
                         if (optarg[scan_ulong(optarg, &ul)]) {
@@ -639,6 +640,7 @@ int main(int argc, char **argv)
 
             case 'V':
                 strerr_warn1("Version: " VERSION, 0);
+                break;
 
             case '?':
                 usage();
@@ -899,6 +901,7 @@ void softlimit(int argc, char *const *argv)
         switch (opt) {
             case '?':
                 softlimit_usage();
+                break;
 
             case 'a':
                 getlarg(&limita);

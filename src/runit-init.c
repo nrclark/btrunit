@@ -97,7 +97,11 @@ int main(int argc, char *const *argv)
         case '-':
             if ((*argv)[1] == 'V') {
                 strerr_warn1("Version: " VERSION, 0);
+            } else {
+                usage();
             }
+
+            break;
 
         default:
             usage();

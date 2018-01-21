@@ -284,13 +284,13 @@ int status(char *unused)
     rc = svstatus_get();
 
     switch (rc) {
+        case 0:
+            return 0;
+
         case -1:
             if (lsb) {
                 done(4);
             }
-
-        case 0:
-            return (0);
     }
 
     rc = svstatus_print(*service);
@@ -319,9 +319,11 @@ int status(char *unused)
         switch (rc) {
             case 1:
                 done(0);
+                break;
 
             case 2:
                 done(3);
+                break;
 
             case 0:
                 done(4);
@@ -566,6 +568,7 @@ int main(int argc, char **argv)
         switch (i) {
             case 'w':
                 scan_ulong(optarg, &wait);
+                break;
 
             case 'v':
                 verbose = 1;
@@ -573,6 +576,7 @@ int main(int argc, char **argv)
 
             case 'V':
                 strerr_warn1("Version: " VERSION, 0);
+                break;
 
             case '?':
                 usage();
@@ -642,16 +646,18 @@ int main(int argc, char **argv)
             if (!str_diff(action, "try-restart")) {
                 acts = "tc";
                 cbk = &check;
-                break;
             }
+
+            break;
 
         case 'c':
             if (!str_diff(action, "check")) {
                 act = 0;
                 acts = "C";
                 cbk = &check;
-                break;
             }
+
+            break;
 
         case 'u':
         case 'd':
@@ -699,45 +705,37 @@ int main(int argc, char **argv)
             if (!str_diff(action, "restart")) {
                 acts = "tcu";
                 cbk = &check;
-                break;
-            }
-
-            if (!str_diff(action, "reload")) {
+            } else if (!str_diff(action, "reload")) {
                 acts = "h";
                 cbk = &check;
-                break;
+            } else {
+                usage();
             }
 
-            usage();
+            break;
 
         case 'f':
             if (!str_diff(action, "force-reload")) {
                 acts = "tc";
                 kll = 1;
                 cbk = &check;
-                break;
-            }
-
-            if (!str_diff(action, "force-restart")) {
+            } else if (!str_diff(action, "force-restart")) {
                 acts = "tcu";
                 kll = 1;
                 cbk = &check;
-                break;
-            }
-
-            if (!str_diff(action, "force-shutdown")) {
+            } else if (!str_diff(action, "force-shutdown")) {
                 acts = "x";
                 kll = 1;
                 cbk = &check;
-                break;
-            }
-
-            if (!str_diff(action, "force-stop")) {
+            } else if (!str_diff(action, "force-stop")) {
                 acts = "d";
                 kll = 1;
                 cbk = &check;
-                break;
+            } else {
+                usage();
             }
+
+            break;
 
         default:
             usage();

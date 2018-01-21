@@ -749,6 +749,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                     switch (sa.s[scan_ulong(&sa.s[x + 1], &ld->sizemax) + x + 1]) {
                         case 'm':
                             ld->sizemax *= 1024;
+                            break;
 
                         case 'k':
                             ld->sizemax *= 1024;
@@ -769,6 +770,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
                         /* case 'd': ld->tmax *=24; */
                         case 'h':
                             ld->tmax *= 60;
+                            break;
 
                         case 'm':
                             ld->tmax *= 60;
@@ -802,6 +804,7 @@ unsigned int logdir_open(struct logdir *ld, const char *fn)
 
                 case 'U':
                     ld->udponly = 1;
+                    break;
 
                 case 'u':
                     if (!(c = ip4_scan(sa.s + x + 1, (char *)&ld->udpaddr.sin_addr))) {
@@ -1131,6 +1134,7 @@ int main(int argc, char *const *argv)
 
             case 'V':
                 strerr_warn1("Version: " VERSION, 0);
+                break;
 
             case '?':
                 usage();
