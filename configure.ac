@@ -95,13 +95,10 @@ AX_GUESS_REBOOT_NARGS
 
 AX_CHECK_FUNC_POLL
 
-# XXX Make FCNTL mandatory!
+# Upstream runit looks for a stuct named 'futmpx' which is Solaris-specific.
+# The check is encoded into the custom macro below.
 
-AC_CHECK_TYPE([struct futmpx],
-[AC_DEFINE(HAVE_STRUCT_FUTMPX, 1, [Define to 1 if you have the 'struct futmpx' type])],
-[],
-[[#include <sys/types.h>
-#include <utmpx.h>]])
+AX_TYPE_STRUCT_FUTMPX
 
 #---------------------- Configure For Feature Selection  ----------------------#
 
