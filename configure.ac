@@ -34,39 +34,33 @@ AC_PROG_INSTALL
 AM_PROG_AR
 AC_PROG_RANLIB
 
-AC_CHECK_HEADERS([inttypes.h limits.h stdint.h stdlib.h string.h])
 AC_C_INLINE
 
-AC_TYPE_INT32_T
-AC_TYPE_INT64_T
-
-AC_TYPE_UINT8_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
-
 AC_TYPE_MODE_T
+AC_TYPE_UID_T
+AC_TYPE_OFF_T
 
-#------------------------- Run Basic Feature Checks  --------------------------#
+#--------------------- Run System Library / Header Checks ---------------------#
+
+# Checks for system headers
 
 AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/file.h \
                   sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h \
                   utmp.h utmpx.h grp.h sys/select.h sys/reboot.h poll.h])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_TYPE_UID_T
-AC_TYPE_OFF_T
+AC_HEADER_DIRENT
 
 # Checks for library functions.
+
 AC_FUNC_FORK
 AC_FUNC_GETGROUPS
 AC_FUNC_MALLOC
 
-AC_HEADER_DIRENT
-
 AC_CHECK_FUNCS([dup2 fchdir ftruncate gettimeofday memset mkdir mkfifo \
                 select socket flock sigprocmask sigaction waitpid])
 
+#--------------------- Runit Custom Configuration Checks ----------------------#
 
 # The wait3() function has been obsolete for a while now. However, legacy
 # runit does support it as an alternative to waitpid(). The generated
@@ -82,8 +76,6 @@ AS_IF([test "x$ac_cv_func_waitpid" = xyes],,[AC_FUNC_WAIT3])
 AC_SEARCH_LIBS(socket, [xnet socket])
 AS_IF([test "x$ac_cv_search_socket" = "x-lsocket"],
       [AS_VAR_APPEND([LIBS],[" -lnsl"])])
-
-#------------------------- Run Basic Feature Checks  --------------------------#
 
 # Upstream runit is willing to use a reboot() with two arguments instead of
 # just one. The correct arg-count is chosen by the custom AX macro called below.
