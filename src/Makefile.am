@@ -37,4 +37,10 @@ runsvchdir_SOURCES = runsvchdir.c
 svlogd_SOURCES = svlogd.c pmatch.c fmt_ptime.c
 chpst_SOURCES = chpst.c uidgid.c
 
-noinst_HEADERS = *.h
+noinst_HEADERS = \
+alloc.h buffer.h byte.h coe.h dirent_config.h env.h error.h fd.h fifo.h \
+fmt.h fmt_ptime.h gen_allocdefs.h gen_alloc.h iopause.h lock.h ndelay.h \
+open.h openreadclose.h pathexec.h pmatch.h prot.h readclose.h reboot_system.h \
+runit.h scan.h seek.h sgetopt.h sig.h stralloc.h strerr.h str.h subgetopt.h \
+taia.h tai.h uidgid.h uw_tmp.h wait.h
+
