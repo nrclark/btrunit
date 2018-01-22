@@ -1,7 +1,7 @@
 usage: svwaitup [-v] [-s 1..600] service ...
 
 1
-$Id$
+Version: 1.0.0
 usage: svwaitup [-v] [-s 1..600] service ...
 
 1

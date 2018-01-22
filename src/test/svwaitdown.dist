@@ -1,7 +1,7 @@
 usage: svwaitdown [-v] [-t 1..6000] service ...
 
 1
-$Id$
+Version: 1.0.0
 usage: svwaitdown [-v] [-t 1..6000] service ...
 
 1

@@ -1,7 +1,7 @@
 usage: runsvstat [ -l ] service ...
 
 1
-$Id$
+Version: 1.0.0
 usage: runsvstat [ -l ] service ...
 
 1

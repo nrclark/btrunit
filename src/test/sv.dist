@@ -1,7 +1,7 @@
 usage: sv [-v] [-w sec] command service ...
 
 100
-$Id: 900314260c6d52c986c5357673bea2f3bd3f4698 $
+Version: 1.0.0
 usage: sv [-v] [-w sec] command service ...
 
 100
