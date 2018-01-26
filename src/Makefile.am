@@ -44,7 +44,8 @@ open.h openreadclose.h pathexec.h pmatch.h prot.h readclose.h reboot_system.h \
 runit.h scan.h seek.h sgetopt.h sig.h stralloc.h strerr.h str.h subgetopt.h \
 taia.h tai.h uidgid.h uw_tmp.h wait.h
 
-TESTS_ENVIRONMENT = TESTSRC_DIR=$(srcdir)/test PATH=.:$(PATH) ctmp=ctmp $(SHELL)
+#------------------------------------------------------------------------------#
+
 TESTS = \
 test-chpst test-runit test-runit-init test-runsvchdir test-runsv \
 test-runsvctrl test-runsvdir test-runsvstat test-sv test-svlogd \
@@ -52,3 +53,23 @@ test-svwaitdown test-svwaitup test-utmpset
 
 $(TESTS): $(srcdir)/test/runner.sh
 	$(INSTALL_SCRIPT) $< $@
+
+TESTS_ENVIRONMENT = TESTSRC_DIR=$(srcdir)/test PATH=.:$(PATH) ctmp=ctmp $(SHELL)
+
+EXTRA_DIST = test/chpst.check test/chpst.dist test/runit.check test/runit.dist \
+             test/runit-init.check test/runit-init.dist test/runner.sh \
+             test/runsvchdir.check test/runsvchdir.dist test/runsv.check \
+             test/runsvctrl.check test/runsvctrl.dist test/runsvdir.check \
+             test/runsvdir.dist test/runsv.dist test/runsvstat.check \
+             test/runsvstat.dist test/sv.check test/sv.dist test/svlogd.check \
+             test/svlogd.dist test/svwaitdown.check test/svwaitdown.dist \
+             test/svwaitup.check test/svwaitup.dist test/utmpset.check \
+             test/utmpset.dist
+
+CLEANFILES = $(TESTS) runit.stdout runit-init.stdout runsv.stdout \
+             runsvdir.stdout runsvstat.stdout runsvctrl.stdout sv.stdout \
+             svwaitup.stdout svwaitdown.stdout utmpset.stdout \
+             runsvchdir.stdout svlogd.stdout chpst.stdout
+
+clean-local:
+	-rm -rf ctmp
