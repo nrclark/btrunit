@@ -1,3 +1,4 @@
-dist_man_MANS = chpst.8 runit.8 runit-init.8 runsv.8 runsvchdir.8 runsvctrl.8 \
-				runsvdir.8 runsvstat.8 sv.8 svlogd.8 svwaitdown.8 svwaitup.8 \
-				utmpset.8
+dist_man_MANS = \
+%D%/chpst.8 %D%/runit.8 %D%/runit-init.8 %D%/runsv.8 %D%/runsvchdir.8 \
+%D%/runsvctrl.8 %D%/runsvdir.8 %D%/runsvstat.8 %D%/sv.8 %D%/svlogd.8 \
+%D%/svwaitdown.8 %D%/svwaitup.8 %D%/utmpset.8

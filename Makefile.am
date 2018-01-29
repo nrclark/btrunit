@@ -1,2 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4 --install
-SUBDIRS = src man
+
+include $(top_srcdir)/man/Makefile.am
+
+SUBDIRS = src
