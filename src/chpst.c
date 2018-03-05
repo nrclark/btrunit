@@ -285,7 +285,7 @@ void limit(int what, long l)
         fatal("unable to getrlimit()");
     }
 
-    if ((l < 0) || (l > (long)r.rlim_max)) {
+    if ((l < 0) || ((rlim_t) l > r.rlim_max)) {
         r.rlim_cur = r.rlim_max;
     } else {
         r.rlim_cur = l;
