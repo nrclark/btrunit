@@ -1,7 +1,7 @@
 usage: utmpset [-w] line
 
 1
-Version: 1.0.0
+Version: 2.2.0
 usage: utmpset [-w] line
 
 1
