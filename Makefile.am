@@ -2,6 +2,6 @@ ACLOCAL_AMFLAGS = -I m4 --install
 
 include $(top_srcdir)/man/Makefile.am
 
-EXTRA_DIST = LICENSE HISTORY
+EXTRA_DIST = LICENSE HISTORY README.md
 
 SUBDIRS = src
