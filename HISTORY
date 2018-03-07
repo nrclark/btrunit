@@ -1,0 +1,21 @@
+Runit was originally written by Gerrit Pape, based on Daniel J. Bernstein's
+daemontools supervision suite. A lot of the code in this repo originated
+from various DJB libraries by way of Runit.
+
+All of the code in the original Runit repo was released as public-domain
+code. It was/is a mix of code from Gerrit Pape, DJB, and it's anybody's
+guess who else.
+
+Runit 2.1.2's installer wasn't particularly friendly for packagers. It
+offered no way at all to cross-compile the suite, no control over the
+installation, and no simple way to package for distribution. There were
+also a number of compiler warnings when building the code. Formatting
+was all over the map, and the codebase was a weird mix of K&R and ANSI
+C.
+
+This project aims to modernize and improve Runit by converting it
+to autotools and fixing all warnings. Over time, I plan to rewrite
+the suite using modern POSIX APIs (which have changed a lot since
+Runit was written).
+
+-Nick Clark
