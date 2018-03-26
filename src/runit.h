@@ -1,4 +1,4 @@
-#define RUNIT "/sbin/runit"
-#define STOPIT "/etc/runit/stopit"
-#define REBOOT "/etc/runit/reboot"
-#define CTRLALTDEL "/etc/runit/ctrlaltdel"
+#define RUNIT SBINDIR"/runit"
+#define STOPIT SYSCONFDIR"/runit/stopit"
+#define REBOOT SYSCONFDIR"/runit/reboot"
+#define CTRLALTDEL SYSCONFDIR"/runit/ctrlaltdel"

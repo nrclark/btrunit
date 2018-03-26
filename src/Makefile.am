@@ -19,6 +19,7 @@ iopause.c tai_now.c tai_pack.c tai_sub.c tai_unpack.c taia_add.c taia_approx.c \
 taia_frac.c taia_less.c taia_now.c taia_pack.c taia_sub.c taia_uint.c
 
 LDADD = libunix.a libbyte.a libtime.a
+AM_CFLAGS = -DSYSCONFDIR='"${sysconfdir}"' -DSBINDIR='"${sbindir}"'
 
 bin_PROGRAMS = runit runit-init runsv runsvdir runsvstat runsvctrl sv svwaitup \
 svwaitdown utmpset runsvchdir svlogd chpst

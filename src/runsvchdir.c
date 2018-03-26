@@ -7,7 +7,7 @@
 #include "buffer.h"
 
 #define USAGE " dir"
-#define SVDIR "/etc/runit/runsvdir"
+#define SVDIR SYSCONFDIR"/runit/runsvdir"
 
 char *progname;
 char *new;

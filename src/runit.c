@@ -22,7 +22,11 @@
 #define WARNING "- runit: warning: "
 #define FATAL "- runit: fatal: "
 
-const char *const stage[3] = {"/etc/runit/1", "/etc/runit/2", "/etc/runit/3"};
+const char *const stage[3] = {
+    SYSCONFDIR"/runit/1",
+    SYSCONFDIR"/runit/2",
+    SYSCONFDIR"/runit/3"
+};
 
 extern char *const *environ;
 int selfpipe[2];
