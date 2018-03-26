@@ -1165,6 +1165,8 @@ int main(int argc, char *const *argv)
         die_nomem();
     }
 
+    memset(dir, 0, dirn * sizeof(struct logdir));
+
     for (x = 0; x < dirn; ++x) {
         dir[x].fddir = -1;
         dir[x].fdcur = -1;
