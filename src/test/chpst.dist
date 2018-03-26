@@ -1,7 +1,7 @@
 usage: chpst [-vP012] [-u user[:group]] [-U user[:group]] [-b argv0] [-e dir] [-/ root] [-n nice] [-l|-L lock] [-m n] [-d n] [-o n] [-p n] [-f n] [-c n] prog
 
 100
-Version: 2.2.0
+Version: 2.3.0
 usage: chpst [-vP012] [-u user[:group]] [-U user[:group]] [-b argv0] [-e dir] [-/ root] [-n nice] [-l|-L lock] [-m n] [-d n] [-o n] [-p n] [-f n] [-c n] prog
 
 100

@@ -1,7 +1,7 @@
 usage: svlogd [-ttv] [-r c] [-R abc] [-l len] [-b buflen] dir ...
 
 111
-Version: 2.2.0
+Version: 2.3.0
 usage: svlogd [-ttv] [-r c] [-R abc] [-l len] [-b buflen] dir ...
 
 111
