@@ -16,9 +16,9 @@ left off.
 3. All type warnings and signed/unsigned warnings are fixed.
 4. The build system is migrated to GNU Autotools. Yes, this is
    an improvement. Just ask your local distro packager.
-5. Folder directories are set at configration time. This lets you compile
-   Runit with an alternate $sysconfdir, which allows you to build it and
-   use it if you're not root.
+5. Folder directories are set at configration time instead of hard-coded. This
+   lets you compile Btrunit with an alternate $sysconfdir, which means you can
+   build it and use it even if you're not root.
 6. Cross-compilation works. Legacy Runit's build system used a lot
    of runtime checks during the build process, which prevented any
    kind of cross-compilation.
