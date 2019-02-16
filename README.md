@@ -16,6 +16,9 @@ left off.
 3. All type warnings and signed/unsigned warnings are fixed.
 4. The build system is migrated to GNU Autotools. Yes, this is
    an improvement. Just ask your local distro packager.
+5. Cross-compilation works. Legacy RUnit's build system used a lot
+   of runtime checks during the build process, which prevented any
+   kind of cross-compilation.
 
 ## Installation ##
 
